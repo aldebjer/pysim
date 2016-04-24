@@ -7,7 +7,7 @@ from pysim.systems.defaultsystemcollection1 import _setupSystem
 from pysim.systems.defaultsystemcollection1 import _getSystemNames
 from pysim.systems.defaultsystemcollection1 import _getSystemDocs
 
-__copyright__ = 'Copyright (c) 2014 SSPA Sweden AB'
+__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
 
 def setup_my_system(system):

@@ -12,7 +12,7 @@ from pysim.simulation import Dormand_Prince_5
 
 from pysim.systems import MassSpringDamper
 
-__copyright__ = 'Copyright (c) 2014 SSPA Sweden AB'
+__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
 def solve_msd_analytically(t):
     """Returns the analytical solution to the differential equation

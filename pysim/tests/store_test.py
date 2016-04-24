@@ -7,7 +7,7 @@ from nose.tools import raises
 from pysim.simulation import Sim
 from pysim.systems import VanDerPol, SquareWave, RigidBody
 
-__copyright__ = 'Copyright (c) 2014 SSPA Sweden AB'
+__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
 @raises(ValueError)
 def test_storetwice():

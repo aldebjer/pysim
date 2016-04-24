@@ -6,7 +6,7 @@ import numpy as np
 from pysim.simulation import Sim
 from pysim.systems import ReadTextInput
 
-__copyright__ = 'Copyright (c) 2014-2015 SSPA Sweden AB'
+__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
 def test_read_inputfile():
     """Tests that the system for reading text file values are ok

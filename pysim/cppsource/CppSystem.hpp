@@ -1,4 +1,4 @@
-//   Copyright (c) 2014 SSPA Sweden AB
+//   Copyright (c) 2014-2016 SSPA Sweden AB
 
 #pragma once
 

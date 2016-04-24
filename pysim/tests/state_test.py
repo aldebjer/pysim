@@ -4,7 +4,7 @@ import re
 
 from pysim.systems import VanDerPol
 
-__copyright__ = 'Copyright (c) 2014 SSPA Sweden AB'
+__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
 def test_setstate():
     """Test that it is possible to set and receive a state variable.

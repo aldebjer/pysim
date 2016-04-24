@@ -4,7 +4,7 @@
 import os
 import os.path
 
-__copyright__ = 'Copyright (c) 2014 SSPA Sweden AB'
+__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
 def get_include():
     """Gets the include file dir for cython extions to pysim"""
