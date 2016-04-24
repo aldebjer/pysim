@@ -437,7 +437,7 @@ std::vector<double> CppSystem::getStateVector(char* name) {
 //
 ///////////////////////////////////////
 
-void CppSystem::state(double* state, char* stateName, char* description) {
+void CppSystem::state(double* state, char* stateName, const char* description) {
     string str(stateName);
     boost::algorithm::trim(str);
     states.push_back(state);
@@ -445,7 +445,7 @@ void CppSystem::state(double* state, char* stateName, char* description) {
     state_descriptions[stateName] = string(description);
 }
 
-void CppSystem::state(vector<double>* state,char* stateName, char* description) {
+void CppSystem::state(vector<double>* state,char* stateName, const char* description) {
     string str(stateName);
     boost::algorithm::trim(str);
     statevectors.push_back(state);
@@ -453,7 +453,7 @@ void CppSystem::state(vector<double>* state,char* stateName, char* description) 
     state_descriptions[stateName] = string(description);
 }
 
-void CppSystem::state(pysim::vector* state, char* stateName, char* description) {
+void CppSystem::state(pysim::vector* state, char* stateName, const char* description) {
     string str(stateName);
     boost::algorithm::trim(str);
     state_boost_vectors.push_back(state);

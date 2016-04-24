@@ -188,9 +188,9 @@ protected:
     //
     ///////////////////////////////////////
 
-    void state(double* state, char* stateName, char* desc = "");
-    void state(std::vector<double>* state, char* stateName, char* desc = "");
-    void state(pysim::vector* state, char* stateName, char* desc = "");
+    void state(double* state, char* stateName, const char* desc = "");
+    void state(std::vector<double>* state, char* stateName,const char* desc = "");
+    void state(pysim::vector* state, char* stateName,const char* desc = "");
     void der(double* der,char* derName);
     void der(std::vector<double>* der, char* derName);
     void der(pysim::vector* der, char* derName);
