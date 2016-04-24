@@ -192,7 +192,7 @@ void Simulation::setup_odeint(double endtime,
             }
         } else {
             char errmsg[50];
-            _snprintf(errmsg, sizeof(errmsg), "Unknown solver: %s", solvername);
+            snprintf(errmsg, sizeof(errmsg), "Unknown solver: %s", solvername);
             throw std::invalid_argument(errmsg);
         }
     } catch (EarlyBreakException &eb) {

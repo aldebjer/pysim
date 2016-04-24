@@ -14,6 +14,7 @@ if sys.platform == "win32":
     config.add_include_dirs(["E:\\Dev\\boost_1_60_0",])
         
 elif sys.platform == "linux":
+    config.add_include_dirs(["E:\\Dev\\boost_1_60_0",])
     extracompileargs.append("-std=c++11")
 
 config.add_installed_library("cppsystemlib",
@@ -36,17 +37,17 @@ extensions = [Extension("pysim.cppsystem",
                         extra_compile_args=extracompileargs,
                         ),
               Extension("pysim.systems.defaultsystemcollection1",
-                         ['pysim/systems/DefaultSystemCollection1/defaultsystemcollection1.pyx',
-                          'pysim/systems/DefaultSystemCollection1/cppsource/Factory.cpp',
-                          'pysim/systems/DefaultSystemCollection1/cppsource/MassSpringDamper.cpp',
-                          'pysim/systems/DefaultSystemCollection1/cppsource/PredatorPrey.cpp',
-                          'pysim/systems/DefaultSystemCollection1/cppsource/VanDerPolSystem.cpp',
-                          'pysim/systems/DefaultSystemCollection1/cppsource/Adder3D.cpp',
-                          'pysim/systems/DefaultSystemCollection1/cppsource/ScalarAdder.cpp',
-                          'pysim/systems/DefaultSystemCollection1/cppsource/SquareWave.cpp',
-                          'pysim/systems/DefaultSystemCollection1/cppsource/DiscretePID.cpp',
-                          'pysim/systems/DefaultSystemCollection1/cppsource/ReadTextInput.cpp',
-                          'pysim/systems/DefaultSystemCollection1/cppsource/RigidBody.cpp',
+                         ['pysim/systems/defaultsystemcollection1/defaultsystemcollection1.pyx',
+                          'pysim/systems/defaultsystemcollection1/cppsource/Factory.cpp',
+                          'pysim/systems/defaultsystemcollection1/cppsource/MassSpringDamper.cpp',
+                          'pysim/systems/defaultsystemcollection1/cppsource/PredatorPrey.cpp',
+                          'pysim/systems/defaultsystemcollection1/cppsource/VanDerPolSystem.cpp',
+                          'pysim/systems/defaultsystemcollection1/cppsource/Adder3D.cpp',
+                          'pysim/systems/defaultsystemcollection1/cppsource/ScalarAdder.cpp',
+                          'pysim/systems/defaultsystemcollection1/cppsource/SquareWave.cpp',
+                          'pysim/systems/defaultsystemcollection1/cppsource/DiscretePID.cpp',
+                          'pysim/systems/defaultsystemcollection1/cppsource/ReadTextInput.cpp',
+                          'pysim/systems/defaultsystemcollection1/cppsource/RigidBody.cpp',
                           ],
                           language="c++",
                           extra_compile_args=extracompileargs,

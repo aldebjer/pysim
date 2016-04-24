@@ -136,7 +136,7 @@ void  CppSystem::store(char* name) {
         storeVectorMap[name] = p;
     } else {
         char errmsg[50];
-        _snprintf(errmsg,sizeof(errmsg), "Could not store: %s, no such variable", name);
+        snprintf(errmsg,sizeof(errmsg), "Could not store: %s, no such variable", name);
         throw std::invalid_argument(errmsg);
     }
 }
@@ -218,7 +218,7 @@ void CppSystem::fillWithTime(double* p) {
 void CppSystem::setInput(char* name, double value) {
     if (inputs.count(name) < 1) {
         char errmsg[50];
-        _snprintf(errmsg, 50, "Could not find: %s", name);
+        snprintf(errmsg, 50, "Could not find: %s", name);
         throw std::invalid_argument(errmsg);
     }
     *(inputs.at(name)) = value;
@@ -324,7 +324,7 @@ void CppSystem::setInputMatrix(char* name, std::vector<std::vector<double>> valu
         }
     }else{
         char errmsg[50];
-        _snprintf(errmsg, 50, "Could not find: %s", name);
+        snprintf(errmsg, 50, "Could not find: %s", name);
         throw std::invalid_argument(errmsg);
     }
 }
@@ -332,7 +332,7 @@ void CppSystem::setInputMatrix(char* name, std::vector<std::vector<double>> valu
 void CppSystem::setInputString(char* name, string value) {
     if (input_strings.count(name) < 1) {
         char errmsg[50];
-        _snprintf(errmsg, 50, "Could not find: %s", name);
+        snprintf(errmsg, 50, "Could not find: %s", name);
         throw std::invalid_argument(errmsg);
     }
     *(input_strings.at(name)) = value;
@@ -345,7 +345,7 @@ std::map<std::string, double> CppSystem::getInputMap(char* name) {
 void CppSystem::setInputMap(char* name, std::map<std::string, double> value) {
     if (input_maps.count(name) < 1) {
         char errmsg[50];
-        _snprintf(errmsg, 50, "Could not find: %s", name);
+        snprintf(errmsg, 50, "Could not find: %s", name);
         throw std::invalid_argument(errmsg);
     }
     *input_maps.at(name)= value;
@@ -386,7 +386,7 @@ std::vector<std::string> CppSystem::getStateVectorNames() {
 void CppSystem::setState(char* name, double value) {
     if (statemap.count(name) < 1) {
         char errmsg[50];
-        _snprintf(errmsg, 50, "Could not find: %s", name);
+        snprintf(errmsg, 50, "Could not find: %s", name);
         throw std::invalid_argument(errmsg);
     }
     *(statemap.at(name)) = value;
