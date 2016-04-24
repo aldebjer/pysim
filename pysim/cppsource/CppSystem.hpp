@@ -131,47 +131,67 @@ public:
     int getStoreSize();
     int getStoreColumns(char* name);
     void setStoreInterval(double interval);
+    std::vector<std::string> getStoreNames();
 
     //Input handling
+    //get names
     std::vector<std::string> getInputNames(){ return getMapKeyStrings(inputs); };
     std::vector<std::string> getInputVectorNames();
     std::vector<std::string> getInputMatrixNames();
     std::vector<std::string> getInputStringNames() { return getMapKeyStrings(input_strings); };
     std::vector<std::string> getInputMapNames() { return getMapKeyStrings(input_maps); };
+
+    //get values
     double getInput(char* name){ return getValue(name, inputs); };
     std::vector<double> getInputVector(char* name);
     std::vector<std::vector<double>> getInputMatrix(char* name);
     std::string getInputString(char* name) { return getValue(name, input_strings); };
     std::map<std::string, double> getInputMap(char* name);
+
+    //set
     void setInput(char* name, double value);
     void setInputVector(char* name, std::vector<double> value);
     void setInputMatrix(char* name, std::vector<std::vector<double>> value);
     void setInputString(char* name, std::string value);
     void setInputMap(char* name, std::map<std::string, double> value);
+
+    //descriptions
     std::map<std::string, std::string> getInputDescriptionMap(){ return input_descriptions; };
 
     //Output handling
+    //names
     std::vector<std::string> getOutputNames(){ return getMapKeyStrings(outputs); };
     std::vector<std::string> getOutputVectorNames();
+
+    //values
     double getOutput(char* name) { return getValue(name, outputs); };
     std::vector<double> getOutputVector(char* name);
+
+    //descriptions
     std::map<std::string, std::string> getOutputDescriptionMap(){ return output_descriptions; };
 
-    // State handling
-    /////////////////
+    //State handling
+    //get names
     std::vector<std::string> getStateNames(){ return getMapKeyStrings(statemap); };
     std::vector<std::string> getStateVectorNames();
+
+    //get values
     double getState(char* name){ return getValue(name, statemap); };
     std::vector<double> getStateVector(char* name);
+    std::vector<double*> getStateVector() { return states; };
+
+    //set
     void setState(char* statename, double value);
     void setStateVector(char* statename, std::vector<double> value);
+
+    //descriptions
     std::map<std::string, std::string> getStateDescriptionMap(){ return state_descriptions; };
 
     void connect(char* outputname, CppSystem* inputsys, char* inputname);
 
-    std::vector<std::string> getStoreNames();
 
-    std::vector<double*> getStateVector(){ return states; };
+
+
     std::vector<double*> getDerVector(){ return ders; };
 
     //Compare handling
