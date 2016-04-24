@@ -189,16 +189,16 @@ void CppSystem::fillWithStore(char* name, double* p, int rows, int columns) {
         auto mat = &(storeVectorMap[name]->storearray);
         int rowcounter = 0;
         for (auto row = mat->cbegin(); row != mat->cend(); ++row) {
-if (++rowcounter > rows) {
-    throw std::runtime_error("Internal Pysim Error, invalid number of rows");
-}
-int columncounter = 0;
-for (auto i = row->begin(); i != row->end(); ++i) {
-    if (++columncounter > columns) {
-        throw std::runtime_error("Internal Pysim Error, invalid number of columns");
-    }
-    *(ptemp++) = *i;
-}
+            if (++rowcounter > rows) {
+                throw std::runtime_error("Internal Pysim Error, invalid number of rows");
+            }
+            int columncounter = 0;
+            for (auto i = row->begin(); i != row->end(); ++i) {
+                if (++columncounter > columns) {
+                    throw std::runtime_error("Internal Pysim Error, invalid number of columns");
+                }
+                *(ptemp++) = *i;
+            }
         }
     }
 }
