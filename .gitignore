@@ -2,3 +2,4 @@ build/
 pysim/simulation.cpp
 pysim/cppsystem.cpp
 pysim/systems/defaultsystemcollection1/defaultsystemcollection1.cpp
+*.so
