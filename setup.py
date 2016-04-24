@@ -14,7 +14,6 @@ if sys.platform == "win32":
     config.add_include_dirs(["E:\\Dev\\boost_1_60_0",])
         
 elif sys.platform == "linux":
-    config.add_include_dirs(["E:\\Dev\\boost_1_60_0",])
     extracompileargs.append("-std=c++11")
 
 config.add_installed_library("cppsystemlib",
