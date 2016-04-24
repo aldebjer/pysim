@@ -1,3 +1,9 @@
+__pycache__/
+*.py[cod]
+*.lib
+*.exp
+*.ilk
+*.pdb
 build/
 pysim/simulation.cpp
 pysim/cppsystem.cpp
