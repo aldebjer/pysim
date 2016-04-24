@@ -1,0 +1,51 @@
+1.5.2
+=====
+ - bugfix for 1.5.1
+
+1.5.1
+=====
+ - map of doubles supported as input
+
+1.5
+===
+ - vectors can now be used as input, ouput and states.
+ - vectors can be stored.
+ - matrices can be used as input.
+ - the time interval for storing values can be set
+ - py.test framework supported
+
+1.4
+===
+ - Python 3.5 support
+
+1.3
+===
+ - Default values for all inputs are stored in dict sys.inputs_default
+ - Python 3.4 support
+ - Possible to store inputs and derivatives
+
+1.2
+===
+ - Functionality for breaking a simulation if an output or state exceeds a preset value
+ 
+1.1
+===
+ - Fixing bug that crashed pysim when displaying ouputs from a system
+ 
+1.0
+===
+ - Added addition diff-equation solvers with adaptive step-length
+ - New function add_system for adding system and naming them internally
+ - Added function for storing and loading a simulation configuration to file
+ - Input variables can now be strings
+ - Removing depreceated par/var from tests and examples. Now using input/output instead.
+ - Adding copyright SSPA Sweden AB to python files
+
+0.5
+===
+ - Adding time in results
+ - Adding new inputs and outputs (replaces old input/output and par/var)
+ - Adding possibility to continue simulation
+ - Docs: better description on how to build on windows
+
+

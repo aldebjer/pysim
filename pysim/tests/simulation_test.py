@@ -1,0 +1,176 @@
+﻿"""Tests various aspects of the Sim object that is not tested in other
+places
+"""
+import tempfile
+import json
+import numpy as np
+
+from pysim.simulation import Sim
+from pysim.systems import VanDerPol, MassSpringDamper, DiscretePID, RigidBody
+
+__copyright__ = 'Copyright (c) 2014 SSPA Sweden AB'
+
+
+def test_gettime():
+    """Test that the elapsed time is returned from the simulation"""
+    sys = VanDerPol()
+    sim = Sim()
+    sim.add_system(sys)
+    integrationlength = 2.0
+    assert sim.get_time() == 0.0
+    sim.simulate(integrationlength, 0.1)
+    assert sim.get_time() == integrationlength
+
+def test_store_config():
+    """Test that it is possible to store the simulation to a file.
+    In this test a temp file is used, it should be deleted automatically
+    after the test.
+    """
+    sys = VanDerPol()
+    sim = Sim()
+    sim.add_system(sys)
+    sys.inputs.a = 1.234
+
+    file = tempfile.NamedTemporaryFile(delete=False)
+    file.close()
+    sim.save_config(file.name)
+
+    file2 = open(file.name)
+    simdict = json.load(file2)
+    file2.close()
+    assert simdict["systems"]["vanderpol"]["inputs"]["a"] == 1.234
+
+def test_load_config():
+    """Tests the loading of a system configuration from file"""
+
+    configstring = """{
+    "systems": {
+        "vanderpol1": {
+            "inputs": {
+                "a": 1.234,
+                "b": 1.0
+            },
+            "module": "pysim.systems",
+            "type": "VanDerPol"
+        },
+       "vanderpol2": {
+            "inputs": {
+                "a": 1.0,
+                "b": 3.456
+            },
+            "module": "pysim.systems",
+            "type": "VanDerPol"
+        }
+    }
+}
+"""
+
+    sim = Sim()
+    file = tempfile.NamedTemporaryFile(delete=False, mode="w+")
+    file.write(configstring)
+    file.close()
+    sim.load_config(file.name)
+    assert sim.systems["vanderpol1"].inputs.a == 1.234
+    assert sim.systems["vanderpol2"].inputs.b == 3.456
+
+def test_connected_system():
+    """Check that the time for stored values in a discrete system is
+    reguraarly spaced"""
+
+    #Create Simulaton
+    sim = Sim()
+
+    #Create, setup and add system to simulation
+    sys = MassSpringDamper()
+    sys.store("x1")
+    sys.inputs.b = 50
+    sys.inputs.f = 0
+    sim.add_system(sys)
+
+    controlsys = DiscretePID()
+    controlsys.inputs.refsig = 1.0
+    controlsys.inputs.p = 1
+    controlsys.inputs.plim = 400.0
+    controlsys.inputs.i = 0
+    controlsys.inputs.stepsize = 0.3
+    controlsys.store("outsig")
+    sim.add_system(controlsys)
+
+    sys.connect("x1", controlsys, "insig")
+    sys.connect("x2", controlsys, "dsig")
+    controlsys.connect("outsig", sys, "f")
+    controlsys.inputs.d = 1
+
+    sim.simulate(5, 0.1)
+
+    assert np.max(np.abs(np.diff(controlsys.res.time))-0.1) < 1e-14
+    assert np.max(np.abs(np.diff(sys.res.time))-0.1) < 1e-14
+
+def test_multiple_simulationobject():
+    """Tests that it is possible to run multiple instances of the Sim object
+    and that the results stay the same."""
+    sim = Sim()
+    sys = MassSpringDamper()
+    sys.store("x1")
+    sys.inputs.b = 50
+    sys.inputs.f = 0
+    sim.add_system(sys)
+    sim.simulate(5, 0.1)
+    xref = sys.res.x1
+    for dummy in range(60):
+        #Create Simulaton
+        sim = Sim()
+        sys = MassSpringDamper()
+        sys.store("x1")
+        sys.inputs.b = 50
+        sys.inputs.f = 0
+        sim.add_system(sys)
+        sim.simulate(5, 0.1)
+        x = sys.res.x1
+        assert np.all(xref == x)
+
+def test_state_break_larger():
+    """Stop the simulation once the value of a state is 
+    larger than a preset value
+    """
+    sim = Sim()
+    sys = VanDerPol()
+    sys.add_break_greater("y",1.0)
+    sim.add_system(sys)
+    sim.simulate(20,0.01)
+
+    #If correct the simulation should break at time 0.79
+    assert sys.res.time[-1] == 0.79
+
+def test_state_break_smaller():
+    """Stop the simulation once the value of a state is 
+    larger than a preset value
+    """
+    sim = Sim()
+    sys = VanDerPol()
+    sys.add_break_smaller("x",-1.0)
+    sim.add_system(sys)
+    sim.simulate(20,0.01)
+
+    #If correct the simulation should break at time 2.52
+    assert sys.res.time[-1] == 2.52
+
+def test_boost_vector_states():
+    """Perform a basic simulation of a system with boost vector states"""
+    sim = Sim()
+    sys = RigidBody()
+
+    sys.store("position")
+
+    sys.inputs.force =  [1.0,0.0,0.0]
+    sys.inputs.mass = 1.0
+
+    sim.add_system(sys)
+    sim.simulate(20,0.01)
+
+    pos = sys.res.position
+    diff = np.abs(pos[-1,:]-[200,0,0])
+    assert np.max(diff) <= 1
+
+if __name__ == "__main__":
+    test_boost_vector_states()
