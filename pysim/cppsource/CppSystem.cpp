@@ -437,7 +437,7 @@ std::vector<double> CppSystem::getStateVector(char* name) {
 //
 ///////////////////////////////////////
 
-void CppSystem::state(double* state, char* stateName, const char* description) {
+void CppSystem::state(double* state, const char* stateName, const char* description) {
     string str(stateName);
     boost::algorithm::trim(str);
     states.push_back(state);
@@ -445,7 +445,7 @@ void CppSystem::state(double* state, char* stateName, const char* description) {
     state_descriptions[stateName] = string(description);
 }
 
-void CppSystem::state(vector<double>* state,char* stateName, const char* description) {
+void CppSystem::state(vector<double>* state, const char* stateName, const char* description) {
     string str(stateName);
     boost::algorithm::trim(str);
     statevectors.push_back(state);
@@ -453,7 +453,7 @@ void CppSystem::state(vector<double>* state,char* stateName, const char* descrip
     state_descriptions[stateName] = string(description);
 }
 
-void CppSystem::state(pysim::vector* state, char* stateName, const char* description) {
+void CppSystem::state(pysim::vector* state, const char* stateName, const char* description) {
     string str(stateName);
     boost::algorithm::trim(str);
     state_boost_vectors.push_back(state);
@@ -461,21 +461,21 @@ void CppSystem::state(pysim::vector* state, char* stateName, const char* descrip
     state_descriptions[stateName] = string(description);
 }
 
-void CppSystem::der(double* der, char* derName) {
+void CppSystem::der(double* der, const char* derName) {
     string str(derName);
     boost::algorithm::trim(str);
     ders.push_back(der);
     dermap[str] = der;
 }
 
-void CppSystem::der(std::vector<double>* der, char* name) {
+void CppSystem::der(std::vector<double>* der, const char* name) {
     string str(name);
     boost::algorithm::trim(str);
     dervectors.push_back(der);
     dervectorsmap[str] = der;
 }
 
-void CppSystem::der(pysim::vector* der, char* name) {
+void CppSystem::der(pysim::vector* der, const char* name) {
     string str(name);
     boost::algorithm::trim(str);
     der_boost_vectors.push_back(der);
@@ -531,21 +531,21 @@ void CppSystem::input(std::map<string, double>* var, const char* name, const cha
     input_descriptions[str] = string(description);
 }
 
-void CppSystem::output(double* var, char* name, char* description) {
+void CppSystem::output(double* var, const char* name, const char* description) {
     string str(name);
     boost::algorithm::trim(str);
     outputs[str] = var;
     output_descriptions[str] = string(description);
 }
 
-void CppSystem::output(vector<double>* var, char* name, char* description) {
+void CppSystem::output(vector<double>* var, const char* name, const char* description) {
     string str(name);
     boost::algorithm::trim(str);
     output_vectors[str] = var;
     output_descriptions[str] = string(description);
 }
 
-void CppSystem::output(boost::numeric::ublas::vector<double>* vars, char* name, char* description) {
+void CppSystem::output(boost::numeric::ublas::vector<double>* vars, const char* name, const char* description) {
     string str(name);
     boost::algorithm::trim(str);
     output_boost_vectors[str] = vars;

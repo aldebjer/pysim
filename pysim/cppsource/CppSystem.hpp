@@ -188,12 +188,12 @@ protected:
     //
     ///////////////////////////////////////
 
-    void state(double* state, char* stateName, const char* desc = "");
-    void state(std::vector<double>* state, char* stateName,const char* desc = "");
-    void state(pysim::vector* state, char* stateName,const char* desc = "");
-    void der(double* der,char* derName);
-    void der(std::vector<double>* der, char* derName);
-    void der(pysim::vector* der, char* derName);
+    void state(double* state, const char* stateName, const char* desc = "");
+    void state(std::vector<double>* state, const char* stateName, const char* desc = "");
+    void state(pysim::vector* state, const char* stateName, const char* desc = "");
+    void der(double* der, const char* derName);
+    void der(std::vector<double>* der, const char* derName);
+    void der(pysim::vector* der, const char* derName);
 
     void input(double* var, const char* name, const char* desc);
     void input(std::vector<double>* vars, const char* name, const char* desc);
@@ -203,9 +203,9 @@ protected:
     void input(std::string*, const char* name, const char* description);
     void input(std::map<std::string, double>*, const char* name, const char* description);
 
-    void output(double* var, char* name, char* desc);
-    void output(std::vector<double>* vars, char* name, char* desc);
-    void output(pysim::vector* vars, char* name, char* desc);
+    void output(double* var, const char* name, const char* desc);
+    void output(std::vector<double>* vars, const char* name, const char* desc);
+    void output(pysim::vector* vars, const char* name, const char* desc);
 
     void setNextUpdate(double t){ nextUpdateTime = t; };
     void setDiscrete(bool d = true) { isDiscrete = d; };
