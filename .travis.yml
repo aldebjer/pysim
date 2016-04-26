@@ -12,7 +12,6 @@ install:
     - sudo apt-get install $PYTHON-numpy
     - sudo easy_install$PYSUF pip
     - sudo pip-$PYVER install cython
-    - sudo $PYTHON setup.py develop
+    - sudo $PYTHON setup.py build_ext --inplace
 script:
-    - "cd cython_example_proj"
-    - "$PYTHON test/test_cython_examples.py""" 
+    - "nosetest"
