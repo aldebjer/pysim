@@ -10,7 +10,7 @@ install:
     - sudo apt-get install $PYTHON-dev
     - sudo apt-get install $PYTHON-setuptools
     - sudo apt-get install $PYTHON-numpy
-    - sudo pip install cython
+    - sudo apt-get install $PYTHON-pip
     - sudo $PYTHON setup.py build_ext --inplace
 script:
     - "nosetest"
