@@ -59,13 +59,13 @@ extensions = [Extension("pysim.cppsystem",
              
 setup(
     name="pysim",
-    version="1.5.3dev0",
+    version="2.0.dev0",
     author="Linus Aldebjer",
     author_email="linus.aldebjer@sspa.se",
     url="http://www.sspa.se",
     ext_modules=cythonize(extensions),
 
-    #todo: this is windows specific, would be better to fint the path to the built lib in some way
+    #todo: this is windows specific, would be better to find the path to the built lib in some way
     data_files=[('pysim/include',['pysim/cppsource/simulatablesystem.hpp',
                                                     'pysim/cppsource/cppsystem.hpp']),
                 ('pysim/lib',['build/temp.win32-{}/cppsystemlib.lib'.format(sys.version[:3])]),
@@ -74,7 +74,7 @@ setup(
     packages=['pysim', 'pysim.systems','pysim.tests'],
     install_requires = ['numpy>=1.8.1','cython>=0.20'],
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'Operating System :: Microsoft :: Windows',
@@ -82,8 +82,6 @@ setup(
         'Operating System :: Microsoft :: Windows :: Windows 8.1',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
