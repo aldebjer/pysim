@@ -1,3 +1,5 @@
+__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
+
 import setuptools
 from numpy.distutils.core import setup
 from numpy.distutils.misc_util import Configuration

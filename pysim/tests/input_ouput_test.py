@@ -1,5 +1,6 @@
 """This module contains tests for the setting and reading of inputs and outputs
 """
+__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 import re
 
 from nose.tools import raises

@@ -1,5 +1,6 @@
 """Test the system ReadTextInput
 """
+__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 import tempfile
 import numpy as np
 

@@ -1,5 +1,6 @@
 """This module contains tests for the integration function of PySim
 """
+__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
 from unittest import TestCase
 import numpy as np
