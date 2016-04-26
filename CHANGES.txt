@@ -8,7 +8,7 @@
 
 1.5
 ===
- - vectors can now be used as input, ouput and states.
+ - vectors can now be used as input, output and states.
  - vectors can be stored.
  - matrices can be used as input.
  - the time interval for storing values can be set
