@@ -13,7 +13,7 @@ create complex simulations based on individual components.
 
 Installing PySim
 ----------------
-PySim can be be installed from within SSPA by using pip. Simply type
+PySim will soon be installable using pip. Simply type
 
 .. code-block:: bash
 
