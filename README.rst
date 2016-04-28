@@ -35,5 +35,7 @@ added to plugin-packages.
 For more information on how to use it, build it and extend it please see the
 documentation at: 
 
+http://pysim.readthedocs.io/en/latest/
+
 Copyright (c) 2014-2016 SSPA Sweden AB
 
