@@ -10,7 +10,7 @@ PySim
     * - docs
       - |docs|
     * - tests
-      - | |travis| 
+      - | |travis| |appveyor|
 
 .. |docs| image:: https://readthedocs.org/projects/pysim/badge/?style=flat
     :target: https://readthedocs.org/projects/pysim
