@@ -1,4 +1,6 @@
 environment:
+  global:
+    BOOST_ROOT: "C:\\Libraries\\boost_1_59_0"
 
   matrix:
 
