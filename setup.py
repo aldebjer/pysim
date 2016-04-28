@@ -13,7 +13,7 @@ config.add_include_dirs(['pysim/cppsource', numpy.get_include()])
 
 extracompileargs = []
 if sys.platform == "win32":
-    config.add_include_dirs(["E:\\Dev\\boost_1_60_0",])
+    config.add_include_dirs(["E:\\Dev\\boost_1_60_0","C:\\Libraries\\boost_1_59_0"])
         
 elif sys.platform == "linux":
     extracompileargs.append("-std=c++11")
