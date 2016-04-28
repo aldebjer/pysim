@@ -5,6 +5,7 @@ __pycache__/
 *.ilk
 *.pdb
 build/
+pysim.egg-info/
 pysim/simulation.cpp
 pysim/cppsystem.cpp
 pysim/systems/defaultsystemcollection1/defaultsystemcollection1.cpp
