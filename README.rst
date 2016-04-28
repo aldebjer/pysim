@@ -2,6 +2,30 @@
 PySim
 =====
 
+.. start-badges
+
+.. list-table::
+    :stub-columns: 1
+
+    * - docs
+      - |docs|
+    * - tests
+      - | |travis| 
+
+.. |docs| image:: https://readthedocs.org/projects/pysim/badge/?style=flat
+    :target: https://readthedocs.org/projects/pysim
+    :alt: Documentation Status
+
+.. |travis| image:: https://travis-ci.org/aldebjer/pysim.svg?branch=master
+    :alt: Travis-CI Build Status
+    :target: https://travis-ci.org/aldebjer/pysim
+
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/aldebjer/pysim?branch=master&svg=true
+    :alt: AppVeyor Build Status
+    :target: https://ci.appveyor.com/project/aldebjer/pysim
+
+.. end-badges
+
 Under development, things will change!!!
 
 Pysim simulates systems that can be described by an ordinary differential
