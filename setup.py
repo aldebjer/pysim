@@ -60,7 +60,7 @@ extensions = [Extension("pysim.cppsystem",
              
 setup(
     name="pysim",
-    version="2.0.dev0",
+    version="2.0.dev2",
     author="Linus Aldebjer",
     author_email="aldebjer@gmail.com",
     url="https://github.com/aldebjer/pysim",

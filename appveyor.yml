@@ -1,9 +1,9 @@
 environment:
-  pip_password:
-    secure: 5/+VoitJX0FZVcCLi1xOHQ==
 
   global:
     BOOST_ROOT: "C:\\Libraries\\boost_1_59_0"
+    pip_password:
+      secure: 5/+VoitJX0FZVcCLi1xOHQ==
 
   matrix:
 
@@ -40,13 +40,8 @@ artifacts:
   # bdist_wheel puts your built wheel in the dist directory
   - path: dist\*
 
-on_success:
-#  You can use this step to upload your artifacts to a public website.
-#  See Appveyor's documentation for more details. Or you can simply
-#  access your wheels from the Appveyor "artifacts" tab for your build.
-
-deploy_script:
-     - "echo [pypi] > %USERPROFILE%\\.pypirc"
-     - "echo username: aldebjer >> %USERPROFILE%\\.pypirc"
-     - "echo password: %pip_password% >> %USERPROFILE%\\.pypirc"
-     - python setup.py bdist_wheel upload
+deply_script:
+  - "echo [pypi] > %USERPROFILE%\\.pypirc"
+  - "echo username: aldebjer >> %USERPROFILE%\\.pypirc"
+  - "echo password: %pip_password% >> %USERPROFILE%\\.pypirc"
+  - "%PYTHON%\\python.exe setup.py sdist bdist_wheel upload"
