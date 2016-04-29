@@ -2,7 +2,7 @@ environment:
 
   global:
     BOOST_ROOT: "C:\\Libraries\\boost_1_59_0"
-    pip_password:
+    PIP_PASSWORD:
       secure: 5/+VoitJX0FZVcCLi1xOHQ==
 
   matrix:
@@ -40,8 +40,9 @@ artifacts:
   # bdist_wheel puts your built wheel in the dist directory
   - path: dist\*
 
-deply_script:
-  - "echo [pypi] > %USERPROFILE%\\.pypirc"
-  - "echo username: aldebjer >> %USERPROFILE%\\.pypirc"
-  - "echo password: %pip_password% >> %USERPROFILE%\\.pypirc"
-  - "%PYTHON%\\python.exe setup.py sdist bdist_wheel upload"
+#Upload to pypi
+# on_success:
+# - "echo [pypi] > %USERPROFILE%\\.pypirc"
+# - "echo username = aldebjer >> %USERPROFILE%\\.pypirc"
+# - "echo password = %PIP_PASSWORD% >> %USERPROFILE%\\.pypirc"
+# - "%PYTHON%\\python.exe setup.py sdist bdist_wheel upload"
