@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\pysim\cppsource\CppSystem.hpp" />
+    <ClInclude Include="..\..\pysim\cppsource\SimulatableSystem.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{63A6122D-0888-4CE9-9BB8-5BB33C9846FD}</ProjectGuid>

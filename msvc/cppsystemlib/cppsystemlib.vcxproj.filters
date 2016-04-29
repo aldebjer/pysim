@@ -23,5 +23,8 @@
     <ClInclude Include="..\..\pysim\cppsource\CppSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\pysim\cppsource\SimulatableSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
