@@ -74,10 +74,12 @@ setup(
                 ],
     packages=['pysim', 'pysim.systems','pysim.tests'],
     install_requires = ['numpy>=1.8.1','cython>=0.20'],
+	description = "package for dynamical system modelling",
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
+		'License :: OSI Approved :: BSD License',
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
