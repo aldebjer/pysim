@@ -4,7 +4,10 @@ __pycache__/
 *.exp
 *.ilk
 *.pdb
+*.ipdb
+*.iobj
 build/
+dist/
 pysim.egg-info/
 pysim/simulation.cpp
 pysim/cppsystem.cpp
