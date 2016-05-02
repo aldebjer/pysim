@@ -16,7 +16,7 @@ extracompileargs = []
 if sys.platform == "win32":
     config.add_include_dirs([os.environ.get('BOOST_ROOT')])
         
-elif sys.platform == "linux":
+elif sys.platform in ("linux","darwin"):
     extracompileargs.append("-std=c++11")
 
 config.add_installed_library("cppsystemlib",
