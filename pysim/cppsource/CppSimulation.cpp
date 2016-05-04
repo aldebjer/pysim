@@ -105,7 +105,7 @@ void Simulation::prepare_first_sim() {
     }
 }
 
-bool myfn(System* i, System* j) {
+bool myfn(SimulatableSystem* i, SimulatableSystem* j) {
     return i->getNextUpdateTime() < j->getNextUpdateTime();
 }
 
@@ -201,7 +201,7 @@ void Simulation::setup_odeint(double endtime,
 }
 
 
-void Simulation::addSystem(System* system) {
+void Simulation::addSystem(SimulatableSystem* system) {
     if (system->getDiscrete()) {
         discreteSystems.push_back(system);
     } else {

@@ -76,7 +76,7 @@ T getValue(std::string name, std::map<std::string, T*> map){
 }
 
 class CppSystem :
-    public System
+    public SimulatableSystem
 {
 public:
     CppSystem();

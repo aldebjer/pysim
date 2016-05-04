@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
 
-class System
+class SimulatableSystem
 {
 public:
-    virtual ~System(void){};
+    virtual ~SimulatableSystem(void){};
 
     virtual void preSim(){};
     virtual void doStep(double time)=0;
