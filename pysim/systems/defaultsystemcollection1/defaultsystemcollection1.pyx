@@ -4,7 +4,7 @@ from libcpp.vector cimport vector
 cimport pysim.cppsystem
 import pysim.cppsystem
 
-cdef extern from "cppsource/Factory.hpp":
+cdef extern from "cppsource/factory.hpp":
     pysim.cppsystem.CppSystem* getCppSystem(char* name)
     vector[string] getCppSystemNames()
     string getCppSystemDocs(char* name)

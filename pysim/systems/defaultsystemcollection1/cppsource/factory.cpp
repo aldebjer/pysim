@@ -1,5 +1,7 @@
 #include "factory.hpp"
 
+#include <stdexcept>
+
 using namespace std;
 
 CppSystem* getCppSystem(char* name) {
@@ -26,7 +28,7 @@ void SystemFactory::RegisterMaker(const std::string& key, ISystemMaker* maker)
 {
     if (_makers.find(key) != _makers.end())
     {
-        throw new exception("Multiple makers for given key!");
+        throw new std::runtime_error("Multiple makers for given key!");
     }
     _makers[key] = maker;
 }
@@ -36,7 +38,7 @@ CppSystem* SystemFactory::Create(char* name) const
     string key(name);
     auto i = _makers.find(key);
     if (i == _makers.end()) {
-        throw new exception("Unrecognized object type!");
+        throw new runtime_error("Unrecognized object type!");
     }
     ISystemMaker* maker = i->second;
     return maker->Create();

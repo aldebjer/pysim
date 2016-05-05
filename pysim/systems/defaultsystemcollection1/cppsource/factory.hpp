@@ -9,22 +9,7 @@ std::vector<std::string> getCppSystemNames();
 
 #define REGISTER_SYSTEM(T) static SystemMaker<T> maker(#T);
 
-template<typename T>
-class SystemMaker : public ISystemMaker {
-public:
-    SystemMaker(const std::string& key) {
-        SystemFactory::Instance().RegisterMaker(key, this);
-    }
-    virtual CppSystem * Create() const {
-        return new T();
-    }
-};
-
-class ISystemMaker {
-public:
-    virtual CppSystem * Create() const = 0;
-    virtual ~ISystemMaker() {}
-};
+class ISystemMaker;
 
 class SystemFactory {
 public:
@@ -36,4 +21,22 @@ public:
 private:
     std::map<std::string, ISystemMaker*> _makers;
 };
+
+class ISystemMaker {
+public:
+    virtual CppSystem * Create() const = 0;
+    virtual ~ISystemMaker() {}
+};
+
+template<typename T>
+class SystemMaker : public ISystemMaker {
+public:
+    SystemMaker(const std::string& key) {
+        SystemFactory::Instance().RegisterMaker(key, this);
+    }
+    virtual CppSystem * Create() const {
+        return new T();
+    }
+};
+
 
