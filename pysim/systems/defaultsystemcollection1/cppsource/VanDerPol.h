@@ -1,11 +1,11 @@
 #pragma once
 #include "CppSystem.hpp"
 
-class VanDerPolSystem :
+class VanDerPol :
     public CppSystem
 {
 public:
-    VanDerPolSystem(void);
+    VanDerPol(void);
 
     static std::string getDocs();
 

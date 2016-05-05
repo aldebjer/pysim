@@ -1,8 +1,12 @@
-﻿#include "VanDerPolSystem.h"
+﻿#include "VanDerPol.h"
 
-using namespace std;
+#include "factory.hpp"
 
-string VanDerPolSystem::getDocs(){
+REGISTER_SYSTEM(VanDerPol);
+
+using  std::string;
+
+string VanDerPol::getDocs(){
     return string(
 "System representing the Van Der Pol oscillator\n\n"
 
@@ -17,7 +21,7 @@ string VanDerPolSystem::getDocs(){
 );
 }
 
-VanDerPolSystem::VanDerPolSystem(void)
+VanDerPol::VanDerPol(void)
 {
     INPUT(a, "Non-linear damping coefficient")
     INPUT(b,"Scaling coefficient")
@@ -31,7 +35,7 @@ VanDerPolSystem::VanDerPolSystem(void)
     b = 1;
 }
 
-void VanDerPolSystem::doStep(double time){
+void VanDerPol::doStep(double time){
     dy = x;
     dx=a*x*(b-y*y)-y;
 }

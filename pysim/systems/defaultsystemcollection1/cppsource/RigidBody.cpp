@@ -1,7 +1,8 @@
 ﻿#include "RigidBody.h"
 
+#include "factory.hpp"
+
 using std::string;
-//using pysim::vector;
 
 string RigidBody::getDocs(){
     return string(
@@ -82,3 +83,6 @@ void RigidBody::doStep(double time){
     d_velocity = acc;// -euler - coriolis - centrifugal;
     d_pos = to_global(velocity);
 }
+
+REGISTER_SYSTEM(RigidBody);
+

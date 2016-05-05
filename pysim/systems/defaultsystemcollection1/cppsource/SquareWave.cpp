@@ -1,5 +1,9 @@
 ﻿#include "SquareWave.h"
+
 #include <cmath>
+#include "factory.hpp"
+
+
 
 SquareWave::SquareWave(void)
 {
@@ -25,3 +29,5 @@ void SquareWave::doStep(double time){
         signal = 0;
     }
 }
+
+REGISTER_SYSTEM(SquareWave);

@@ -1,5 +1,7 @@
 #include "PredatorPrey.h"
 
+#include "factory.hpp"
+
 std::string PredatorPrey::getDocs(){
     return std::string(
         "System representing the Predator Prey equations for population dynamics\n\n"
@@ -42,3 +44,5 @@ void PredatorPrey::doStep(double time){
     dx = x*(alfa-beta*y);
     dy = -y*(gamma-delta*x);
 }
+
+REGISTER_SYSTEM(PredatorPrey);

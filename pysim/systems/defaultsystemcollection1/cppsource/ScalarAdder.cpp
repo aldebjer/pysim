@@ -1,6 +1,8 @@
 ﻿#include "ScalarAdder.h"
 
-using namespace std;
+#include "factory.hpp"
+
+using std::string;
 
 string ScalarAdder::getDocs() {
     return string(
@@ -27,3 +29,5 @@ void ScalarAdder::doStep(double time) {
         out += *iter;
     }
 }
+
+REGISTER_SYSTEM(ScalarAdder);

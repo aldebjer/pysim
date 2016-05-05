@@ -1,5 +1,7 @@
 #include "MassSpringDamper.h"
 
+#include "factory.hpp"
+
 
 MassSpringDamper::MassSpringDamper(void)
 {
@@ -24,3 +26,5 @@ void MassSpringDamper::doStep(double time){
     dx1 = x2;
     dx2 = -k/m*x1-b/m*x2+1/m*f;
 }
+
+REGISTER_SYSTEM(MassSpringDamper);

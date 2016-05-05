@@ -1,11 +1,12 @@
-﻿#pragma once
+﻿#include "ReadTextInput.h"
 
-#include "ReadTextInput.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
-using namespace std;
+#include "factory.hpp"
+
+using std::string;
 
 string ReadTextInput::getDocs(){
     return string(
@@ -40,17 +41,18 @@ ReadTextInput::ReadTextInput(void):
 //the time as first value on each line, followed by the values for each 
 //column.
 void ReadTextInput::preSim() {
-    ifstream file(filename);
+
+    std::ifstream file(filename);
     std::string line;
     int linenumber = 0;
 
     while (!file.eof()){
         string line;
-        vector<double> linevalues;
+        std::vector<double> linevalues;
         getline(file, line);
         linenumber++;
 
-        stringstream ss(line);
+        std::stringstream ss(line);
         double time;
         ss >> time;
         if (ss.fail()) {
@@ -78,9 +80,11 @@ void ReadTextInput::doStep(double time){
 
     //Iterate over the columns for the selected time and fill in 
     //the member variable.
-    vector<double> vv = i->second;
+    std::vector<double> vv = i->second;
     size_t currentColumn = 0;
     for (auto j = vv.begin(); j != vv.end();  j++) {
         columns[currentColumn++] = *j;
     }
 }
+
+REGISTER_SYSTEM(ReadTextInput);

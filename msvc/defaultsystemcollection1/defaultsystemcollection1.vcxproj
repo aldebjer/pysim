@@ -20,7 +20,7 @@
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\RigidBody.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ScalarAdder.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\SquareWave.cpp" />
-    <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\VanDerPolSystem.cpp" />
+    <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\VanDerPol.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\defaultsystemcollection1.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,7 +34,7 @@
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ScalarAdder.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\SpringDamper.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\SquareWave.h" />
-    <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\VanDerPolSystem.h" />
+    <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\VanDerPol.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\pysim\systems\defaultsystemcollection1\defaultsystemcollection1.pyx">

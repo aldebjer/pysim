@@ -1,8 +1,10 @@
 ﻿#include "DiscretePID.h"
+
 #include <cmath>
 #include <algorithm>
 
-using namespace std;
+#include "factory.hpp"
+
 
 DiscretePID::DiscretePID(void)
 {
@@ -61,3 +63,5 @@ void DiscretePID::doStep(double time){
 
     setNextUpdate(time + stepsize);
 }
+
+REGISTER_SYSTEM(DiscretePID);

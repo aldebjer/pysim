@@ -1,9 +1,10 @@
 ﻿#include "Adder3D.h"
 
-using namespace std;
+#include "factory.hpp"
 
-string Adder3D::getDocs(){
-    return string(
+
+std::string Adder3D::getDocs(){
+    return std::string(
 "System that simply adds two vectors together\n\n"
 );
 }
@@ -22,3 +23,5 @@ Adder3D::Adder3D(void) :
 void Adder3D::doStep(double time){
     output1 = input1 + input2;
 }
+
+REGISTER_SYSTEM(Adder3D);
