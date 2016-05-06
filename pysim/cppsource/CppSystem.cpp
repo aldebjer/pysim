@@ -155,6 +155,8 @@ int CppSystem::getStoreColumns(char* name) {
     } else if (storeVectorMap.count(name) > 0) {
         int columns = storeVectorMap[name]->storearray.back().size();
         return columns;
+    }else{
+        throw std::invalid_argument("Could not find column for stored value");
     }
 }
 

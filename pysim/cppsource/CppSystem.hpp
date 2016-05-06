@@ -279,8 +279,9 @@ private:
     double nextUpdateTime;
     bool isDiscrete;
 
-    double nextStoreTime;
     double storeInterval;
+    double nextStoreTime;
+
 
 
 
