@@ -1,10 +1,8 @@
 """This module contains tests for the setting and reading of inputs and outputs
 """
-__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 import re
 
 from nose.tools import raises
-from nose.plugins.skip import SkipTest
 import numpy as np
 
 from pysim.simulation import Sim
@@ -81,15 +79,6 @@ def test_input_array_change():
     sys = Adder3D()
     sys.inputs.input1 = (1.0, 2.0, 3.0)
     refarray = np.array((1.0, 2.0, 3.0))
-    x = sys.inputs.input1
-    assert np.array_equal(x, refarray)
-
-def test_input_vector_length():
-    """Check that it is possible to change the length of an input array"""
-    raise SkipTest('No system existing yet with variable length input. TODO: Add one')
-    sys = Adder3D()
-    sys.inputs.input1 = (1.0, 2.0)
-    refarray = np.array((1.0, 2.0))
     x = sys.inputs.input1
     assert np.array_equal(x, refarray)
 

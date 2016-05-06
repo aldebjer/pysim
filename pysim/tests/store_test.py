@@ -1,6 +1,5 @@
 ﻿"""This module contains tests for the store function of pysim
 """
-__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 import numpy as np
 
 from nose.tools import raises

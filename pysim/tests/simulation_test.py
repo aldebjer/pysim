@@ -1,7 +1,6 @@
 ﻿"""Tests various aspects of the Sim object that is not tested in other
 places
 """
-__copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 import tempfile
 import json
 import numpy as np
