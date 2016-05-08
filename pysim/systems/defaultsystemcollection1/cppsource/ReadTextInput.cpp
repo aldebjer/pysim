@@ -27,9 +27,9 @@ ReadTextInput::ReadTextInput(void):
 {
     INPUT(filename, "Name of the file containing the input data")
 
-    for (int i = 1; i <= NUMBER_OF_COLUMNS; i++) {
+    for (size_t i = 1; i <= NUMBER_OF_COLUMNS; i++) {
         char name[100];
-        sprintf(name, "column_%d", i);
+        sprintf(name, "column_%lu", i);
         output(&(columns[i-1]), name, "Output value read from column in file");
         columns[i - 1] = 0;
     }
@@ -58,7 +58,7 @@ void ReadTextInput::preSim() {
         if (ss.fail()) {
             continue;
         }
-        for (int i = 0; (i < NUMBER_OF_COLUMNS) && (!ss.fail()); i++) {
+        for (size_t i = 0; (i < NUMBER_OF_COLUMNS) && (!ss.fail()); i++) {
             double value;
             ss >> value;
             linevalues.push_back(value);

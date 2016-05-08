@@ -44,8 +44,6 @@ void DiscretePID::preSim(){
 }
 
 void DiscretePID::doStep(double time){
-    double tr = 1.0; //Reset time
-
     double err = refsig - insig;
     double v = p*err + iPart*i+dsig*d;
     if (v >= plim){
