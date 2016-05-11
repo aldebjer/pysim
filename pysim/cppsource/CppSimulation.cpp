@@ -132,12 +132,16 @@ void Simulation::simulate(double duration,
             }
             do {
                 (*si)->doStep(currentTime);
-                double*d = (*si)->getFirstDer();
-                for (double* s = (*si)->getFirstState();
-                     (s != nullptr) && (d != nullptr);
-                     s = (*si)->getNextState(), d = (*si)->getNextDer()) {
-                    *s = *d;
+                std::vector<double*> states = (*si)->getStatePointers();
+                std::vector<double*> ders = (*si)->getDerPointers();
+
+                //Copy states to der
+                auto state_iter = states.begin();
+                auto der_iter = ders.begin();
+                while (state_iter != states.end()) {
+                    **state_iter++ = **der_iter++;
                 }
+
                 (*si)->copystateoutputs();
                 (*si)->copyoutputs();
                 si = std::min_element(discreteSystems.begin(),
