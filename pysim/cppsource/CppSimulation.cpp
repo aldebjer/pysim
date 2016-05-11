@@ -131,13 +131,13 @@ void Simulation::simulate(double duration,
                              abs_err, rel_err, dense_output);
             }
             do {
+                (*si)->doStep(currentTime);
                 double*d = (*si)->getFirstDer();
                 for (double* s = (*si)->getFirstState();
                      (s != nullptr) && (d != nullptr);
                      s = (*si)->getNextState(), d = (*si)->getNextDer()) {
                     *s = *d;
                 }
-                (*si)->doStep(currentTime);
                 (*si)->copystateoutputs();
                 (*si)->copyoutputs();
                 si = std::min_element(discreteSystems.begin(),

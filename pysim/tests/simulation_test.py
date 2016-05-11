@@ -172,5 +172,24 @@ def test_boost_vector_states():
     diff = np.abs(pos[-1,:]-[200,0,0])
     assert np.max(diff) <= 1
 
+def test_discrete_system():
+    from pysim.systems import LogisticMap
+    lm = LogisticMap()
+    lm.inputs.r = 3.6
+    lm.states.x = 0.5
+    lm.store("x")
+    sim = Sim()
+    sim.add_system(lm)
+
+    sim.simulate(10,0.1)
+    x = [0.5]
+    r = 3.6
+    for dummy in range(9):
+        x.append(r*x[-1]*(1-x[-1]))
+
+    assert np.all(np.abs(lm.res.x[1::10]-x)<1e-18)
+
+
+
 if __name__ == "__main__":
     test_boost_vector_states()

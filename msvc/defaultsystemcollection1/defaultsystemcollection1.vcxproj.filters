@@ -51,6 +51,9 @@
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\VanDerPol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\LogisticMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Factory.hpp">
@@ -84,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\VanDerPol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\LogisticMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
