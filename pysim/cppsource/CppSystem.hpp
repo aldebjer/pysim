@@ -30,32 +30,6 @@ public:
     std::vector<T> storearray;
 };
 
-class PointerVectorIter
-{
-    public:
-    PointerVectorIter(std::vector<double*>* vec):
-    p(vec),
-    i(p->begin()){
-    };
-
-    double* getFirst(){
-        i = p->begin();
-        return getNext();
-    };
-
-
-    double* getNext(){
-        if(i==p->end() ){
-            return nullptr;
-        }
-        return *(i++);
-    }
-
-    protected:
-    std::vector<double*>* p;
-    std::vector<double*>::iterator i;
-};
-
 template<typename T>
 std::vector<std::string> getMapKeyStrings(const std::map<std::string, T>& map){
     std::vector<std::string> names;
@@ -107,12 +81,8 @@ public:
         }
     }
 
-    double* getFirstState(){return stateIter.getFirst();};
-    double* getNextState(){return stateIter.getNext();};
     std::vector<double*> getStatePointers();
     std::vector<double*> getDerPointers();
-    double* getFirstDer(){return dersIter.getFirst();};
-    double* getNextDer(){return dersIter.getNext();};
 
     double getNextUpdateTime(){ return nextUpdateTime;};
     bool getDiscrete() { return isDiscrete; };
@@ -237,7 +207,6 @@ private:
     std::vector<double*> states;
     std::vector<std::vector<double>*> statevectors;
     std::vector<pysim::vector*> state_boost_vectors;
-    PointerVectorIter stateIter;
     std::map<std::string,double*> statemap;
     std::map<std::string, std::vector<double>* > statevectorsmap;
     std::map<std::string, pysim::vector* > state_boost_vectorsmap;
@@ -249,7 +218,6 @@ private:
     std::map<std::string,double*> dermap;
     std::map<std::string, std::vector<double>* > dervectorsmap;
     std::map<std::string, pysim::vector* > der_boost_vectorsmap;
-    PointerVectorIter dersIter;
 
     std::map<std::string, double*> inputs;
     std::map<std::string, std::vector<double>* > input_vectors;

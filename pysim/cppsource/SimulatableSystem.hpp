@@ -15,12 +15,6 @@ public:
     virtual std::vector<double*> getStatePointers() = 0;
     virtual std::vector<double*> getDerPointers() = 0;
 
-    virtual double* getFirstState() = 0;
-    virtual double* getNextState() = 0;
-
-    virtual double* getFirstDer() = 0;
-    virtual double* getNextDer() = 0;
-
     virtual double getNextUpdateTime() = 0;
     virtual bool getDiscrete() = 0;
 

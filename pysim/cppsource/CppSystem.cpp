@@ -14,9 +14,7 @@ using std::shared_ptr;
 
 
 CppSystem::CppSystem()
-    :stateIter(&states),
-    dersIter(&ders),
-    nextUpdateTime(0.0),
+    :nextUpdateTime(0.0),
     isDiscrete(false),
     storeInterval(0.0),
     nextStoreTime(0.0){
