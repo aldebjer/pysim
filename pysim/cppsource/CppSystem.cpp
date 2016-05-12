@@ -377,10 +377,8 @@ std::vector<double> CppSystem::getOutputVector(char* name) {
 /////////////////
 
 std::vector<std::string> CppSystem::getStateVectorNames() {
-    std::vector<std::string> stdvectors = getMapKeyStrings(statevectorsmap);
     std::vector<std::string> boostvectors = getMapKeyStrings(state_boost_vectorsmap);
-    stdvectors.insert(stdvectors.end(), boostvectors.begin(), boostvectors.end());
-    return stdvectors;
+    return boostvectors;
 };
 
 void CppSystem::setState(char* name, double value) {
@@ -394,15 +392,7 @@ void CppSystem::setState(char* name, double value) {
 
 void CppSystem::setStateVector(char* name, std::vector<double> value) {
 
-    if (statevectorsmap.count(name) > 0) {
-        std::vector<double> *inputv = input_vectors[name];
-        if (inputv->size() != value.size()) {
-            std::string errstr = str(boost::format("Size of %1% is %2%") % name % inputv->size());
-            throw std::invalid_argument(errstr);
-        }
-        std::copy(value.begin(), value.end(), inputv->begin());
-
-    } else if (state_boost_vectorsmap.count(name) > 0) {
+    if (state_boost_vectorsmap.count(name) > 0) {
         auto bv = state_boost_vectorsmap[name];
         if (bv->size() != value.size()) {
             std::string errstr = str(boost::format("Size of %1% is %2%") % name % bv->size());
@@ -417,9 +407,7 @@ void CppSystem::setStateVector(char* name, std::vector<double> value) {
 }
 
 std::vector<double> CppSystem::getStateVector(char* name) {
-    if (statevectorsmap.count(name) > 0) {
-        return *statevectorsmap.at(name);
-    } else if (state_boost_vectorsmap.count(name) > 0) {
+    if (state_boost_vectorsmap.count(name) > 0) {
         pysim::vector* bv = state_boost_vectorsmap[name];
         std::vector<double> v(bv->size());
         std::copy(bv->begin(), bv->end(), v.begin());
@@ -445,14 +433,6 @@ void CppSystem::state(double* state, const char* stateName, const char* descript
     state_descriptions[stateName] = string(description);
 }
 
-void CppSystem::state(vector<double>* state, const char* stateName, const char* description) {
-    string str(stateName);
-    boost::algorithm::trim(str);
-    statevectors.push_back(state);
-    statevectorsmap[str] = state;
-    state_descriptions[stateName] = string(description);
-}
-
 void CppSystem::state(pysim::vector* state, const char* stateName, const char* description) {
     string str(stateName);
     boost::algorithm::trim(str);
@@ -466,13 +446,6 @@ void CppSystem::der(double* der, const char* derName) {
     boost::algorithm::trim(str);
     ders.push_back(der);
     dermap[str] = der;
-}
-
-void CppSystem::der(std::vector<double>* der, const char* name) {
-    string str(name);
-    boost::algorithm::trim(str);
-    dervectors.push_back(der);
-    dervectorsmap[str] = der;
 }
 
 void CppSystem::der(pysim::vector* der, const char* name) {

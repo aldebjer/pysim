@@ -179,10 +179,8 @@ protected:
     ///////////////////////////////////////
 
     void state(double* state, const char* stateName, const char* desc = "");
-    void state(std::vector<double>* state, const char* stateName, const char* desc = "");
     void state(pysim::vector* state, const char* stateName, const char* desc = "");
     void der(double* der, const char* derName);
-    void der(std::vector<double>* der, const char* derName);
     void der(pysim::vector* der, const char* derName);
 
     void input(double* var, const char* name, const char* desc);
@@ -205,18 +203,14 @@ protected:
 private:
 
     std::vector<double*> states;
-    std::vector<std::vector<double>*> statevectors;
     std::vector<pysim::vector*> state_boost_vectors;
     std::map<std::string,double*> statemap;
-    std::map<std::string, std::vector<double>* > statevectorsmap;
     std::map<std::string, pysim::vector* > state_boost_vectorsmap;
     std::map<std::string, std::string> state_descriptions;
 
     std::vector<double*> ders;
-    std::vector<std::vector<double>*> dervectors;
     std::vector<pysim::vector*> der_boost_vectors;
     std::map<std::string,double*> dermap;
-    std::map<std::string, std::vector<double>* > dervectorsmap;
     std::map<std::string, pysim::vector* > der_boost_vectorsmap;
 
     std::map<std::string, double*> inputs;
