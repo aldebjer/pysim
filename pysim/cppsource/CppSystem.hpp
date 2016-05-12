@@ -195,8 +195,6 @@ protected:
 
 
 private:
-
-    std::vector<double*> states;
     std::vector<pysim::vector*> state_boost_vectors;
     std::map<std::string,double*> statemap;
     std::map<std::string, pysim::vector* > state_boost_vectorsmap;

@@ -62,7 +62,9 @@ void CppSystem::doStoreStep(double time) {
 
 std::vector<double*> CppSystem::getStatePointers() {
     std::vector<double*> out;
-    std::copy(states.cbegin(), states.cend(), std::back_inserter(out));
+    for (auto const& p : statemap) {
+        out.push_back(p.second);
+     }
 
     for (auto iter = state_boost_vectors.begin(); iter != state_boost_vectors.end(); ++iter) {
         pysim::vector* v = *iter;
@@ -428,7 +430,6 @@ std::vector<double> CppSystem::getStateVector(char* name) {
 void CppSystem::state(double* state, const char* stateName, const char* description) {
     string str(stateName);
     boost::algorithm::trim(str);
-    states.push_back(state);
     statemap[str]=state;
     state_descriptions[stateName] = string(description);
 }
