@@ -148,7 +148,6 @@ public:
     //get values
     double getState(char* name){ return getValue(name, statemap); };
     std::vector<double> getStateVector(char* name);
-    std::vector<double*> getStateVector() { return states; };
 
     //set
     void setState(char* statename, double value);
@@ -158,11 +157,6 @@ public:
     std::map<std::string, std::string> getStateDescriptionMap(){ return state_descriptions; };
 
     void connect(char* outputname, CppSystem* inputsys, char* inputname);
-
-
-
-
-    std::vector<double*> getDerVector(){ return ders; };
 
     //Compare handling
     ////////////////////
