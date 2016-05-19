@@ -20,6 +20,13 @@ namespace pysim{
 };
 
 template <class T>
+struct StateType {
+    T stateValue;
+    T derValue;
+    std::string description;
+};
+
+template <class T>
 class StoreStruct {
 public:
     StoreStruct(T* p)
@@ -146,7 +153,7 @@ public:
     std::vector<std::string> getStateVectorNames();
 
     //get values
-    double getState(char* name){ return getValue(name, statemap); };
+    double getState(char* name);
     std::vector<double> getStateVector(char* name);
 
     //set
@@ -154,7 +161,7 @@ public:
     void setStateVector(char* statename, std::vector<double> value);
 
     //descriptions
-    std::map<std::string, std::string> getStateDescriptionMap(){ return state_descriptions; };
+    std::map<std::string, std::string> getStateDescriptionMap();
 
     void connect(char* outputname, CppSystem* inputsys, char* inputname);
 
@@ -172,10 +179,8 @@ protected:
     //
     ///////////////////////////////////////
 
-    void state(double* state, const char* stateName, const char* desc = "");
-    void state(pysim::vector* state, const char* stateName, const char* desc = "");
-    void der(double* der, const char* derName);
-    void der(pysim::vector* der, const char* derName);
+    void state(double* state, const char* stateName, double* der, const char* derName, const char* desc = "");
+    void state(pysim::vector* state, const char* stateName, pysim::vector* der, const char* derName, const char* desc = "");
 
     void input(double* var, const char* name, const char* desc);
     void input(std::vector<double>* vars, const char* name, const char* desc);
@@ -195,15 +200,11 @@ protected:
 
 
 private:
-    std::vector<pysim::vector*> state_boost_vectors;
-    std::map<std::string,double*> statemap;
-    std::map<std::string, pysim::vector* > state_boost_vectorsmap;
-    std::map<std::string, std::string> state_descriptions;
+    std::map<std::string, StateType<double*>> statemap;
+    std::map<std::string, StateType<pysim::vector*> > state_boost_vectorsmap;
 
-    std::vector<double*> ders;
-    std::vector<pysim::vector*> der_boost_vectors;
-    std::map<std::string,double*> dermap;
-    std::map<std::string, pysim::vector* > der_boost_vectorsmap;
+    std::map<std::string, StateType<double*>> dermap;
+    std::map<std::string, StateType<pysim::vector*> > der_boost_vectorsmap;
 
     std::map<std::string, double*> inputs;
     std::map<std::string, std::vector<double>* > input_vectors;
@@ -242,7 +243,7 @@ private:
 
 };
 
-#define STATE(x,dx,s) state(&x,#x,s);der(&dx,#dx);
+#define STATE(x,dx,s) state(&x,#x,&dx,#dx,s);
 
 #define INPUT(x,s) input(&x,#x,s);
 #define OUTPUT(x,s) output(&x,#x,s);

@@ -63,11 +63,11 @@ void CppSystem::doStoreStep(double time) {
 std::vector<double*> CppSystem::getStatePointers() {
     std::vector<double*> out;
     for (auto const& p : statemap) {
-        out.push_back(p.second);
+        out.push_back(p.second.stateValue);
      }
 
-    for (auto iter = state_boost_vectors.begin(); iter != state_boost_vectors.end(); ++iter) {
-        pysim::vector* v = *iter;
+    for (auto const&p: state_boost_vectorsmap) {
+        pysim::vector* v = p.second.stateValue;
         size_t size = v->size();
         for (size_t i = 0; i < size; ++i) {
             out.push_back(&(v->operator()(i)));
@@ -78,10 +78,12 @@ std::vector<double*> CppSystem::getStatePointers() {
 
 std::vector<double*> CppSystem::getDerPointers() {
     std::vector<double*> out;
-    std::copy(ders.cbegin(), ders.cend(), std::back_inserter(out));
+    for (auto const& p : statemap) {
+        out.push_back(p.second.derValue);
+    }
 
-    for (auto iter = der_boost_vectors.begin(); iter != der_boost_vectors.end(); ++iter) {
-        pysim::vector* v = *iter;
+    for (auto const&p : state_boost_vectorsmap) {
+        pysim::vector* v = p.second.derValue;
         size_t size = v->size();
         for (size_t i = 0; i < size; ++i) {
             out.push_back(&(v->operator()(i)));
@@ -110,10 +112,10 @@ void CppSystem::setStoreInterval(double interval) {
 //exception.
 void  CppSystem::store(char* name) {
     if (statemap.count(name) == 1) {
-        shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(statemap[name]));
+        shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(statemap[name].stateValue));
         storemap[name] = p;
     } else if (dermap.count(name) == 1) {
-        shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(dermap[name]));
+        shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(dermap[name].derValue));
         storemap[name] = p;
     } else if (inputs.count(name) == 1) {
         shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(inputs[name]));
@@ -123,10 +125,10 @@ void  CppSystem::store(char* name) {
         storemap[name] = p;
 
     } else if (state_boost_vectorsmap.count(name) == 1) {
-        shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(state_boost_vectorsmap[name]));
+        shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(state_boost_vectorsmap[name].stateValue));
         storeVectorMap[name] = p;
     } else if (der_boost_vectorsmap.count(name) == 1) {
-        shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(der_boost_vectorsmap[name]));
+        shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(der_boost_vectorsmap[name].derValue));
         storeVectorMap[name] = p;
     } else if (input_boost_vectors.count(name) == 1) {
         shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(input_boost_vectors[name]));
@@ -389,13 +391,13 @@ void CppSystem::setState(char* name, double value) {
         snprintf(errmsg, 50, "Could not find: %s", name);
         throw std::invalid_argument(errmsg);
     }
-    *(statemap.at(name)) = value;
+    *(statemap.at(name).stateValue) = value;
 }
 
 void CppSystem::setStateVector(char* name, std::vector<double> value) {
 
     if (state_boost_vectorsmap.count(name) > 0) {
-        auto bv = state_boost_vectorsmap[name];
+        auto bv = state_boost_vectorsmap[name].stateValue;
         if (bv->size() != value.size()) {
             std::string errstr = str(boost::format("Size of %1% is %2%") % name % bv->size());
             throw std::invalid_argument(errstr);
@@ -408,9 +410,29 @@ void CppSystem::setStateVector(char* name, std::vector<double> value) {
     }
 }
 
+std::map<std::string, std::string> CppSystem::getStateDescriptionMap() {
+    std::map<std::string, std::string> descMap;
+    for (auto &desc : statemap) {
+        descMap[desc.first] = desc.second.description;
+    }
+    for (auto &desc : state_boost_vectorsmap) {
+        descMap[desc.first] = desc.second.description;
+    }
+    return descMap;
+};
+
+double CppSystem::getState(char* name){
+    if (statemap.count(name) < 1) {
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+    return *(statemap.at(name).stateValue);
+}
+
+
 std::vector<double> CppSystem::getStateVector(char* name) {
     if (state_boost_vectorsmap.count(name) > 0) {
-        pysim::vector* bv = state_boost_vectorsmap[name];
+        pysim::vector* bv = state_boost_vectorsmap[name].stateValue;
         std::vector<double> v(bv->size());
         std::copy(bv->begin(), bv->end(), v.begin());
         return v;
@@ -427,33 +449,33 @@ std::vector<double> CppSystem::getStateVector(char* name) {
 //
 ///////////////////////////////////////
 
-void CppSystem::state(double* state, const char* stateName, const char* description) {
-    string str(stateName);
-    boost::algorithm::trim(str);
-    statemap[str]=state;
-    state_descriptions[stateName] = string(description);
+void CppSystem::state(double* state, const char* stateName, double* der, const char* derName,const char* description) {
+    string stateNameString(stateName);
+    boost::algorithm::trim(stateNameString);
+    StateType<double*> stateItem;
+    stateItem.stateValue = state;
+    stateItem.derValue = der;
+    stateItem.description = string(description);
+    statemap[stateNameString] = stateItem;
+    string derNameString(derName);
+    boost::algorithm::trim(derNameString);
+    dermap[derNameString] = stateItem;
+
 }
 
-void CppSystem::state(pysim::vector* state, const char* stateName, const char* description) {
-    string str(stateName);
-    boost::algorithm::trim(str);
-    state_boost_vectors.push_back(state);
-    state_boost_vectorsmap.insert(std::pair<std::string, pysim::vector*>(str, state));
-    state_descriptions[stateName] = string(description);
-}
+void CppSystem::state(pysim::vector* state, const char* stateName, pysim::vector* der, const char* derName, const char* description) {
+    StateType< pysim::vector*> stateItem;
+    stateItem.stateValue = state;
+    stateItem.derValue = der;
+    stateItem.description = string(description);
 
-void CppSystem::der(double* der, const char* derName) {
-    string str(derName);
-    boost::algorithm::trim(str);
-    ders.push_back(der);
-    dermap[str] = der;
-}
+    string stateNameString(stateName);
+    boost::algorithm::trim(stateNameString);
+    state_boost_vectorsmap[stateNameString] = stateItem;
 
-void CppSystem::der(pysim::vector* der, const char* name) {
-    string str(name);
-    boost::algorithm::trim(str);
-    der_boost_vectors.push_back(der);
-    der_boost_vectorsmap[str] = der;
+    string derNameString(derName);
+    boost::algorithm::trim(derNameString);
+    der_boost_vectorsmap[derNameString] = stateItem;
 }
 
 void CppSystem::input(double* var, const char* name, const char* description) {
@@ -536,7 +558,7 @@ void CppSystem::connect(char* outputname,
             auto p = make_pair(outputs[outputname], inputsys->inputs[inputname]);
             outputvector.push_back(p);
         } else if (statemap.count(outputname) == 1) {
-            auto p = make_pair(statemap[outputname], inputsys->inputs[inputname]);
+            auto p = make_pair(statemap[outputname].stateValue, inputsys->inputs[inputname]);
             stateOutputvector.push_back(p);
         } else {
             std::string errtxt("Could not find matching state or output to connect from");
@@ -547,7 +569,7 @@ void CppSystem::connect(char* outputname,
             auto p = make_pair(output_boost_vectors[outputname], inputsys->input_boost_vectors[inputname]);
             connectedBoostvectors.push_back(p);
         } else if (state_boost_vectorsmap.count(outputname) == 1) {
-            auto p = make_pair(state_boost_vectorsmap[outputname], inputsys->input_boost_vectors[inputname]);
+            auto p = make_pair(state_boost_vectorsmap[outputname].stateValue, inputsys->input_boost_vectors[inputname]);
             connectedBoostvectors.push_back(p);
         } else {
             std::string errtxt("Could not find matching state or output to connect from");
@@ -565,7 +587,7 @@ void CppSystem::add_compare_greater(char* comparename, double comparevalue) {
         auto p = make_pair(outputs[comparename], comparevalue);
         compare_greater_vector.push_back(p);
     } else if (statemap.count(comparename) == 1) {
-        auto p = make_pair(statemap[comparename], comparevalue);
+        auto p = make_pair(statemap[comparename].stateValue, comparevalue);
         compare_greater_vector.push_back(p);
     } else {
         std::string errtxt("Could not find state or output to use for comparison");
@@ -580,7 +602,7 @@ void CppSystem::add_compare_smaller(char* comparename, double comparevalue) {
         auto p = make_pair(outputs[comparename], comparevalue);
         compare_smaller_vector.push_back(p);
     } else if (statemap.count(comparename) == 1) {
-        auto p = make_pair(statemap[comparename], comparevalue);
+        auto p = make_pair(statemap[comparename].stateValue, comparevalue);
         compare_smaller_vector.push_back(p);
     } else {
         std::string errtxt("Could not find state or output to use for comparison");
