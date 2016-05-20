@@ -450,13 +450,15 @@ std::vector<double> CppSystem::getStateVector(char* name) {
 ///////////////////////////////////////
 
 void CppSystem::state(double* state, const char* stateName, double* der, const char* derName,const char* description) {
-    string stateNameString(stateName);
-    boost::algorithm::trim(stateNameString);
     StateType<double*> stateItem;
     stateItem.stateValue = state;
     stateItem.derValue = der;
     stateItem.description = string(description);
+
+    string stateNameString(stateName);
+    boost::algorithm::trim(stateNameString);
     statemap[stateNameString] = stateItem;
+
     string derNameString(derName);
     boost::algorithm::trim(derNameString);
     dermap[derNameString] = stateItem;
