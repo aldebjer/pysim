@@ -1,9 +1,17 @@
 #pragma once
 
 #include "CythonSystemImpl.hpp"
+#include "../cythonsystem_api.h"
 
+#include <iostream>
 
-void CythonSystemImpl::doStep(double time) {}
+CythonSystemImpl::CythonSystemImpl() {
+    import_pysim__cythonsystem();
+}
+
+void CythonSystemImpl::doStep(double time) {
+    step_callback(sysp,time);
+}
 void CythonSystemImpl::doStoreStep(double time) {}
 void CythonSystemImpl::copyoutputs() {}
 void CythonSystemImpl::copystateoutputs() {}

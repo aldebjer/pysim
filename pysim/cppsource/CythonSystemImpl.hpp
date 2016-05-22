@@ -7,6 +7,7 @@ class  CythonSystemImpl :
     public SimulatableSystem
 {
 public:
+    CythonSystemImpl();
     virtual ~CythonSystemImpl(void){};
 
     void preSim(){};
@@ -26,7 +27,7 @@ public:
     std::vector<double*> states;
     std::vector<double*> ders;
 
-    //void addStepCallback()
+    void* sysp;
 
 
 };
