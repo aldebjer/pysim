@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>9bdaff44-40e9-4471-8e06-14ef155a93f5</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>work.py</StartupFile>
+    <StartupFile>cython_system_simulation.py</StartupFile>
     <SearchPath>..\..\..\pysim</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -15,7 +15,7 @@
     <CommandLineArguments />
     <InterpreterPath />
     <InterpreterArguments />
-    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <EnableNativeCodeDebugging>True</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +30,9 @@
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="cython_system_simulation.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="work.py" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />

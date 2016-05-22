@@ -1,6 +1,8 @@
 from libcpp.vector cimport vector
 from libcpp cimport bool
 cimport cppsystem
+cimport cythonsystem
+cimport simulatablesystem
 import json
 import importlib
 import collections
@@ -8,7 +10,7 @@ import collections
 cdef extern from "CppSimulation.hpp":
     cdef cppclass Simulation:
         void simulate(double endtime, double dt, char* solvername,double abs_err, double rel_err, bool dense_output) except +
-        void addSystem(cppsystem.CppSystem* system)
+        void addSystem(simulatablesystem.SimulatableSystem* system)
         double getCurrentTime()
 
 class Runge_Kutta_4:
@@ -56,12 +58,6 @@ cdef class Sim:
     def __dealloc__(self):
         del self._c_sim
 
-    def addSys(self,cppsystem.Sys sys):
-        """Add a system that will participate in this simulation"""
-        print("Warning: This function is depreceated and will be removed soon")
-        self._c_sim.addSystem(sys._c_sys)
-        self.systems_list.append(sys)
-
     def add_system(self,sys, name = None):
         """Add a system that will participate in this simulation"""
         cdef cppsystem.Sys s
@@ -80,7 +76,17 @@ cdef class Sim:
                         name = newname
                         break
 
-        self._c_sim.addSystem(s._c_sys)
+        cdef simulatablesystem.SimulatableSystem* simsysp
+        simsysp = <simulatablesystem.SimulatableSystem*> (s._c_sys)
+        self._c_sim.addSystem(simsysp)
+        self.systems[name] = sys
+
+    def add_cython_system(self,sys, name):
+        cdef cythonsystem.Sys s
+        s = <cythonsystem.Sys> (sys)
+        cdef simulatablesystem.SimulatableSystem* simsysp
+        simsysp = <simulatablesystem.SimulatableSystem*> (s._c_sys)
+        self._c_sim.addSystem(simsysp)
         self.systems[name] = sys
 
     def get_time(self):
