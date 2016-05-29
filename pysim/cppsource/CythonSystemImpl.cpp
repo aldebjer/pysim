@@ -12,7 +12,9 @@ CythonSystemImpl::CythonSystemImpl() {
 void CythonSystemImpl::doStep(double time) {
     step_callback(sysp,time);
 }
-void CythonSystemImpl::doStoreStep(double time) {}
+void CythonSystemImpl::doStoreStep(double time) {
+    storestep_callback(sysp, time);
+}
 void CythonSystemImpl::copyoutputs() {}
 void CythonSystemImpl::copystateoutputs() {}
 

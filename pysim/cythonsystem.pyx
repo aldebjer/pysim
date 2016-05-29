@@ -14,6 +14,7 @@ cdef class Sys:
         self._c_sys.sysp = <void*> self
         self.statedict = {}
         self.derdict = {}
+        self.storedict = {}
 
 
     def add_state(self, statename, dername, dimensions):
@@ -32,10 +33,18 @@ cdef class Sys:
     def do_step(self,time):
         print("stepping {}".format(time))
 
+    def do_storestep(self,time):
+        print("storestepping {}".format(time))
+
 
 cdef api void step_callback(void* sys, double time):
     cdef Sys s
     s = <Sys> (sys)
     s.do_step(time)
+
+cdef api void storestep_callback(void* sys, double time):
+    cdef Sys s
+    s = <Sys> (sys)
+    s.do_storestep(time)
 
 
