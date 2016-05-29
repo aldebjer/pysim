@@ -3,6 +3,7 @@
 #pragma once
 
 #include "SimulatableSystem.hpp"
+#include "PysimTypes.hpp"
 
 #include <vector>
 #include <map>
@@ -12,29 +13,13 @@
 
 #include <boost/format.hpp>
 
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-namespace pysim{
-    typedef boost::numeric::ublas::vector<double> vector;
-    typedef boost::numeric::ublas::matrix<double> matrix;
-};
+class StoreHandler;
 
 template <class T>
 struct StateType {
     T stateValue;
     T derValue;
     std::string description;
-};
-
-template <class T>
-class StoreStruct {
-public:
-    StoreStruct(T* p)
-        : valueP(p) {
-    }
-
-    T* valueP;
-    std::vector<T> storearray;
 };
 
 template<typename T>
@@ -236,7 +221,7 @@ private:
 
     double storeInterval;
     double nextStoreTime;
-
+    std::auto_ptr<StoreHandler> storeHandlerP;
 
 
 

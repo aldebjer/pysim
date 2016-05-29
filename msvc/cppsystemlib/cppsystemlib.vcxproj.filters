@@ -18,12 +18,21 @@
     <ClCompile Include="..\..\pysim\cppsource\CppSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\pysim\cppsource\StoreHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\pysim\cppsource\CppSystem.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\pysim\cppsource\SimulatableSystem.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pysim\cppsource\StoreHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pysim\cppsource\PysimTypes.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
