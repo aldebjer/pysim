@@ -12,5 +12,3 @@ cdef extern from "CythonSystemImpl.hpp":
 
 cdef class Sys:
     cdef CythonSystemImpl * _c_sys
-    cdef double sp
-    cdef double dp

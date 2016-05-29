@@ -8,16 +8,26 @@ from cythonsystem cimport CythonSystemImpl
 np.import_array()
 
 
-
 cdef class Sys:
     def __cinit__(self):
-        self.sp = 5.0
-        self.dp = 0.0
         self._c_sys = new CythonSystemImpl()
         self._c_sys.sysp = <void*> self
-        print("created")
-        self._c_sys.states.push_back(&self.sp)
-        self._c_sys.ders.push_back(&self.dp)
+        self.statedict = {}
+        self.derdict = {}
+
+
+    def add_state(self, statename, dername, dimensions):
+        cdef np.ndarray[double,mode="c"] state_array =  np.zeros(dimensions)
+        self.statedict[statename] = state_array
+
+        cdef np.ndarray[double,mode="c"] der_array =  np.zeros(dimensions)
+        self.derdict[dername] = der_array
+
+        cdef int i
+        for i in range(dimensions):
+            self._c_sys.states.push_back(&state_array[i])
+            self._c_sys.ders.push_back(&der_array[i])
+
 
     def dostep(self,time):
         print("stepping {}".format(time))
