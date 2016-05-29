@@ -69,18 +69,19 @@ setup(
 
     #todo: this is windows specific, would be better to find the path to the built lib in some way
     data_files=[('pysim/include',['pysim/cppsource/simulatablesystem.hpp',
-                                                    'pysim/cppsource/cppsystem.hpp']),
+                                  'pysim/cppsource/cppsystem.hpp',
+                                  'pysim/cppsource/pysimtypes.hpp']),
                 ('pysim/lib',['build/temp.win32-{}/cppsystemlib.lib'.format(sys.version[:3])]),
                 ('pysim',['pysim/cppsystem.pxd']),
                 ],
     packages=['pysim', 'pysim.systems','pysim.tests'],
     install_requires = ['numpy>=1.8.1','cython>=0.20'],
-	description = "package for dynamical system modelling",
+    description = "package for dynamical system modelling",
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Natural Language :: English',
-		'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: BSD License',
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',

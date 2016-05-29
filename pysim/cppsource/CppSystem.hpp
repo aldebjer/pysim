@@ -3,6 +3,7 @@
 #pragma once
 
 #include "SimulatableSystem.hpp"
+#include "PysimTypes.hpp"
 
 #include <vector>
 #include <map>
@@ -12,12 +13,6 @@
 
 #include <boost/format.hpp>
 
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-namespace pysim{
-    typedef boost::numeric::ublas::vector<double> vector;
-    typedef boost::numeric::ublas::matrix<double> matrix;
-};
 
 template <class T>
 struct StateType {
