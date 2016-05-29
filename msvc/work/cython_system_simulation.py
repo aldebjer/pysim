@@ -1,5 +1,5 @@
 import sys
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 
 from pysim.simulation import Sim
@@ -11,7 +11,7 @@ class MySys(Sys):
     def __init__(self):
         self.add_state("x", "dx", 2)
 
-    def dostep(self,time):
+    def do_step(self,time):
         print("x {}".format(self.statedict['x']))
         self.derdict['dx'][0] = self.statedict['x'][1]
         self.derdict['dx'][1] = 1.0

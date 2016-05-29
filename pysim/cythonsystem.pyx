@@ -29,13 +29,13 @@ cdef class Sys:
             self._c_sys.ders.push_back(&der_array[i])
 
 
-    def dostep(self,time):
+    def do_step(self,time):
         print("stepping {}".format(time))
 
 
 cdef api void step_callback(void* sys, double time):
     cdef Sys s
     s = <Sys> (sys)
-    s.dostep(time)
+    s.do_step(time)
 
 
