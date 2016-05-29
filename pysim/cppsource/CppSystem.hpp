@@ -205,10 +205,6 @@ private:
     std::map<std::string, pysim::vector* > output_boost_vectors;
     std::map<std::string, std::string> output_descriptions;
 
-    std::map<std::string,std::shared_ptr<StoreStruct<double>>> storemap;
-    std::map<std::string, std::shared_ptr<StoreStruct<pysim::vector>>> storeVectorMap;
-    std::vector<double> storetimes;
-
     std::vector<std::pair<double*, double* > > outputvector;
     std::vector<std::pair<pysim::vector*, pysim::vector* > > connectedBoostvectors;
     std::vector<std::pair<double*, double* > > stateOutputvector;
