@@ -1,6 +1,7 @@
 #define _SCL_SECURE_NO_WARNINGS
 
 #include "CppSystem.hpp"
+#include "StoreHandler.hpp"
 #include <memory>
 #include <boost/algorithm/string.hpp>
 #include <vector>
@@ -13,11 +14,13 @@ using std::shared_ptr;
 
 
 
+
 CppSystem::CppSystem()
     :nextUpdateTime(0.0),
     isDiscrete(false),
     storeInterval(0.0),
-    nextStoreTime(0.0){
+    nextStoreTime(0.0),
+    storeHandlerP(new StoreHandler()){
 }
 
 CppSystem::~CppSystem() {
@@ -30,34 +33,7 @@ CppSystem::~CppSystem() {
 ////////////////////////////////////////
 
 void CppSystem::doStoreStep(double time) {
-
-    //Store interval funcionality, only if store interval > 0
-    if (storeInterval > 0.0) {
-        if (time < nextStoreTime) {
-            return;
-        }
-        nextStoreTime = time + storeInterval;
-    }
-
-
-
-    //Check that the time is not already stored. This can happen when 
-    //continuing simulations allready started.
-    if (!storetimes.empty()) {
-        if (storetimes.back() >= time) {
-            return;
-        }
-    }
-
-    storetimes.push_back(time);
-    for (auto i = storemap.cbegin(); i != storemap.cend(); ++i) {
-        double val = *(i->second->valueP);
-        i->second->storearray.push_back(val);
-    }
-    for (auto i = storeVectorMap.cbegin(); i != storeVectorMap.cend(); ++i) {
-        pysim::vector val = *(i->second->valueP);
-        i->second->storearray.push_back(val);
-    }
+    storeHandlerP->doStoreStep(time);
 }
 
 std::vector<double*> CppSystem::getStatePointers() {
@@ -104,7 +80,7 @@ std::vector<double*> CppSystem::getDerPointers() {
 
 //Set the store interval
 void CppSystem::setStoreInterval(double interval) {
-    storeInterval = interval;
+    storeHandlerP->setStoreInterval(interval);
 }
 
 //Put the state, der, input or output named "name" in the vector of pointers 
@@ -112,30 +88,21 @@ void CppSystem::setStoreInterval(double interval) {
 //exception.
 void  CppSystem::store(char* name) {
     if (statemap.count(name) == 1) {
-        shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(statemap[name].stateValue));
-        storemap[name] = p;
+        storeHandlerP->store_scalar(name, statemap[name].stateValue);
     } else if (dermap.count(name) == 1) {
-        shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(dermap[name].derValue));
-        storemap[name] = p;
+        storeHandlerP->store_scalar(name, dermap[name].derValue);
     } else if (inputs.count(name) == 1) {
-        shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(inputs[name]));
-        storemap[name] = p;
+        storeHandlerP->store_scalar(name, inputs[name]);
     } else if (outputs.count(name) == 1) {
-        shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(outputs[name]));
-        storemap[name] = p;
-
+        storeHandlerP->store_scalar(name, outputs[name]);
     } else if (state_boost_vectorsmap.count(name) == 1) {
-        shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(state_boost_vectorsmap[name].stateValue));
-        storeVectorMap[name] = p;
+        storeHandlerP->store_vector(name, state_boost_vectorsmap[name].stateValue);
     } else if (der_boost_vectorsmap.count(name) == 1) {
-        shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(der_boost_vectorsmap[name].derValue));
-        storeVectorMap[name] = p;
+        storeHandlerP->store_vector(name, der_boost_vectorsmap[name].derValue);
     } else if (input_boost_vectors.count(name) == 1) {
-        shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(input_boost_vectors[name]));
-        storeVectorMap[name] = p;
+        storeHandlerP->store_vector(name, input_boost_vectors[name]);
     } else if (output_boost_vectors.count(name) == 1) {
-        shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(output_boost_vectors[name]));
-        storeVectorMap[name] = p;
+        storeHandlerP->store_vector(name, output_boost_vectors[name]);
     } else {
         char errmsg[50];
         snprintf(errmsg,sizeof(errmsg), "Could not store: %s, no such variable", name);
@@ -144,75 +111,27 @@ void  CppSystem::store(char* name) {
 }
 
 const std::vector<double>& CppSystem::getStoreVector(char* name) {
-    return storemap[name]->storearray;
+    return storeHandlerP->getStoreVector(name);
 };
 
 int CppSystem::getStoreSize() {
-    return storetimes.size();
+    return storeHandlerP->getStoreSize();
 }
 
 int CppSystem::getStoreColumns(char* name) {
-    if (storemap.count(name) > 0) {
-        return 1;
-    } else if (storeVectorMap.count(name) > 0) {
-        int columns = storeVectorMap[name]->storearray.back().size();
-        return columns;
-    }else{
-        throw std::invalid_argument("Could not find column for stored value");
-    }
+    return storeHandlerP->getStoreColumns(name);
 }
 
 std::vector<string> CppSystem::getStoreNames() {
-    std::vector<string> out;
-    for (auto i = storemap.cbegin(); i != storemap.cend(); ++i) {
-        out.push_back(i->first);
-    }
-    for (auto i = storeVectorMap.cbegin(); i != storeVectorMap.cend(); ++i) {
-        out.push_back(i->first);
-    }
-
-    return out;
+    return storeHandlerP->getStoreNames();
 }
 
 void CppSystem::fillWithStore(char* name, double* p, int rows, int columns) {
-    double* ptemp = p;
-
-    if (storemap.count(name) > 0) {
-        if (columns != 1) {
-            throw std::runtime_error("Internal Pysim Error, invalid number of columns");
-        }
-        auto v = &(storemap[name]->storearray);
-        int rowcounter = 0;
-        for (auto i = v->cbegin(); i != v->cend(); ++i) {
-            if (++rowcounter > rows) {
-                throw std::runtime_error("Internal Pysim Error, invalid number of rows");
-            }
-            *(ptemp++) = *i;
-        }
-    } else if (storeVectorMap.count(name) > 0) {
-        auto mat = &(storeVectorMap[name]->storearray);
-        int rowcounter = 0;
-        for (auto row = mat->cbegin(); row != mat->cend(); ++row) {
-            if (++rowcounter > rows) {
-                throw std::runtime_error("Internal Pysim Error, invalid number of rows");
-            }
-            int columncounter = 0;
-            for (auto i = row->begin(); i != row->end(); ++i) {
-                if (++columncounter > columns) {
-                    throw std::runtime_error("Internal Pysim Error, invalid number of columns");
-                }
-                *(ptemp++) = *i;
-            }
-        }
-    }
+    storeHandlerP->fillWithStore(name, p, rows, columns);
 }
 
 void CppSystem::fillWithTime(double* p) {
-    double* ptemp = p;
-
-    for (auto i = storetimes.cbegin(); i != storetimes.cend(); ++i) {
-        *(ptemp++) = *i;
-    }
+    storeHandlerP->fillWithTime(p);
 }
 
 // Input handling

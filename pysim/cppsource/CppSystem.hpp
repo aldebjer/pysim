@@ -13,23 +13,13 @@
 
 #include <boost/format.hpp>
 
+class StoreHandler;
 
 template <class T>
 struct StateType {
     T stateValue;
     T derValue;
     std::string description;
-};
-
-template <class T>
-class StoreStruct {
-public:
-    StoreStruct(T* p)
-        : valueP(p) {
-    }
-
-    T* valueP;
-    std::vector<T> storearray;
 };
 
 template<typename T>
@@ -215,10 +205,6 @@ private:
     std::map<std::string, pysim::vector* > output_boost_vectors;
     std::map<std::string, std::string> output_descriptions;
 
-    std::map<std::string,std::shared_ptr<StoreStruct<double>>> storemap;
-    std::map<std::string, std::shared_ptr<StoreStruct<pysim::vector>>> storeVectorMap;
-    std::vector<double> storetimes;
-
     std::vector<std::pair<double*, double* > > outputvector;
     std::vector<std::pair<pysim::vector*, pysim::vector* > > connectedBoostvectors;
     std::vector<std::pair<double*, double* > > stateOutputvector;
@@ -231,7 +217,7 @@ private:
 
     double storeInterval;
     double nextStoreTime;
-
+    std::auto_ptr<StoreHandler> storeHandlerP;
 
 
 

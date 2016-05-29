@@ -21,7 +21,6 @@ public:
     void doStoreStep(double time);
 
     //Store handling
-    void store(char* name);
     const std::vector<double>& getStoreVector(char* name);
     void fillWithStore(char* name, double* p,int rows, int columns);
     void fillWithTime(double* p);
@@ -31,6 +30,7 @@ public:
     std::vector<std::string> getStoreNames();
     void store_scalar(char* name, double* pointer);
     void store_vector(char* name, pysim::vector* pointer);
+
 protected:
 
 private:
