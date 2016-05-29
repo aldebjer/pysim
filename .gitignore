@@ -6,10 +6,15 @@ __pycache__/
 *.pdb
 *.ipdb
 *.iobj
+*.so
 build/
 dist/
 pysim.egg-info/
+
+#cython generated files
 pysim/simulation.cpp
 pysim/cppsystem.cpp
+pysim/cythonsystem.cpp
+pysim/cythonsystem_api.h
 pysim/systems/defaultsystemcollection1/defaultsystemcollection1.cpp
-*.so
+
