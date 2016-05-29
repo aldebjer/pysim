@@ -13,23 +13,13 @@
 
 #include <boost/format.hpp>
 
+class StoreHandler;
 
 template <class T>
 struct StateType {
     T stateValue;
     T derValue;
     std::string description;
-};
-
-template <class T>
-class StoreStruct {
-public:
-    StoreStruct(T* p)
-        : valueP(p) {
-    }
-
-    T* valueP;
-    std::vector<T> storearray;
 };
 
 template<typename T>
@@ -231,7 +221,7 @@ private:
 
     double storeInterval;
     double nextStoreTime;
-
+    std::auto_ptr<StoreHandler> storeHandlerP;
 
 
 

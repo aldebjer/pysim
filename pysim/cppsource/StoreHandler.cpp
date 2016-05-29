@@ -44,11 +44,9 @@ StoreHandler::StoreHandler():
 StoreHandler::~StoreHandler() {
 };
 
-////////////////////////////////////////
-//
-//        Inherited from System
-//
-////////////////////////////////////////
+void StoreHandler::setStoreInterval(double interval) {
+    d_ptr->storeInterval = interval;
+}
 
 void StoreHandler::doStoreStep(double time) {
 
@@ -81,20 +79,17 @@ void StoreHandler::doStoreStep(double time) {
     }
 }
 
-//Set the store interval
-void StoreHandler::setStoreInterval(double interval) {
-    d_ptr->storeInterval = interval;
-}
-
 //Put the state, der, input or output named "name" in the vector of pointers 
 //to be stored. If none with "name" is found the function raises an invalid_argument
 //exception.
-void  StoreHandler::store_scalar(char* name, double* pointer) {
-    d_ptr->storemap[name]->valueP = pointer;
+void  StoreHandler::store_scalar(char* name, double* value_p) {
+    shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(value_p));
+    d_ptr->storemap[name] = p;
 }
 
-void  StoreHandler::store_vector(char* name, pysim::vector* pointer) {
-    d_ptr->storeVectorMap[name]->valueP = pointer;
+void  StoreHandler::store_vector(char* name, pysim::vector* value_p) {
+    shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(value_p));
+    d_ptr->storeVectorMap[name] = p;
 }
 
 const std::vector<double>& StoreHandler::getStoreVector(char* name) {

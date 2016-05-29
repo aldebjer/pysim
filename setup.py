@@ -20,7 +20,8 @@ elif sys.platform in ("linux","darwin"):
     extracompileargs.append("-std=c++11")
 
 config.add_installed_library("cppsystemlib",
-                    ['pysim/cppsource/CppSystem.cpp',],build_info = {
+                    ['pysim/cppsource/CppSystem.cpp',
+                     'pysim/cppsource/StoreHandler.cpp'],build_info = {
                     "extra_compiler_args":extracompileargs,
                     "language":"c++"},
                     install_dir = "pysim/lib",
