@@ -18,8 +18,6 @@ using std::shared_ptr;
 CppSystem::CppSystem()
     :nextUpdateTime(0.0),
     isDiscrete(false),
-    storeInterval(0.0),
-    nextStoreTime(0.0),
     storeHandlerP(new StoreHandler()){
 }
 

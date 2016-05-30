@@ -215,8 +215,6 @@ private:
     double nextUpdateTime;
     bool isDiscrete;
 
-    double storeInterval;
-    double nextStoreTime;
     std::auto_ptr<StoreHandler> storeHandlerP;
 
 
