@@ -7,6 +7,14 @@ from cythonsystem cimport CythonSystemImpl
 
 np.import_array()
 
+class Results:
+    def __init__(self,storedict):
+        self.storedict = storedict
+    def __dir__(self):
+        list(self.storedict.keys())
+    def __getattr__(self,name):
+        return np.array(self.storedict[name])
+
 
 cdef class Sys:
     def __cinit__(self):
@@ -15,6 +23,7 @@ cdef class Sys:
         self.statedict = {}
         self.derdict = {}
         self.storedict = {}
+        self.res = Results(self.storedict)
 
 
     def add_state(self, statename, dername, dimensions):
@@ -29,12 +38,16 @@ cdef class Sys:
             self._c_sys.states.push_back(&state_array[i])
             self._c_sys.ders.push_back(&der_array[i])
 
+    def store(self,name):
+        self.storedict[name] = []
+
 
     def do_step(self,time):
         print("stepping {}".format(time))
 
     def do_storestep(self,time):
-        print("storestepping {}".format(time))
+        for name in self.storedict:
+            self.storedict[name].append(self.statedict[name].copy())
 
 
 cdef api void step_callback(void* sys, double time):
