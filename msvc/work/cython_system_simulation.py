@@ -12,8 +12,7 @@ class VanDerPol(Sys):
         self.add_state("x", "dx", 2)
         self.a = 1.0
         self.b = 1.0
-        self.statedict['x'][0] = 1
-        self.statedict['x'][1] = 0
+        self.states.x = [1.0, 0.0]
 
     def do_step(self,time):
         a = self.a

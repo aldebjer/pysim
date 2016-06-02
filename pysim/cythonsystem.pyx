@@ -11,10 +11,19 @@ class Results:
     def __init__(self,storedict):
         self.storedict = storedict
     def __dir__(self):
-        list(self.storedict.keys())
+        return list(self.storedict.keys())
     def __getattr__(self,name):
         return np.array(self.storedict[name])
 
+class States:
+    def __init__(self,statedict):
+        self.__dict__["_statedict"] = statedict
+    def __dir__(self):
+        return list(self._statedict.keys())
+    def __getattr__(self,name):
+        return self._statedict[name]
+    def __setattr__(self,name,value):
+        np.copyto(self._statedict[name], value)
 
 cdef class Sys:
     def __cinit__(self):
@@ -24,6 +33,7 @@ cdef class Sys:
         self.derdict = {}
         self.storedict = {}
         self.res = Results(self.storedict)
+        self.states = States(self.statedict)
 
 
     def add_state(self, statename, dername, dimensions):
