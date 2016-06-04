@@ -29,19 +29,19 @@ cdef class Sys:
     def __cinit__(self):
         self._c_sys = new CythonSystemImpl()
         self._c_sys.sysp = <void*> self
-        self.statedict = {}
-        self.derdict = {}
+        self._statedict = {}
+        self._derdict = {}
         self.storedict = {}
         self.res = Results(self.storedict)
-        self.states = States(self.statedict)
+        self.states = States(self._statedict)
 
 
     def add_state(self, statename, dername, dimensions):
         cdef np.ndarray[double,mode="c"] state_array =  np.zeros(dimensions)
-        self.statedict[statename] = state_array
+        self._statedict[statename] = state_array
 
         cdef np.ndarray[double,mode="c"] der_array =  np.zeros(dimensions)
-        self.derdict[dername] = der_array
+        self._derdict[dername] = der_array
 
         cdef int i
         for i in range(dimensions):
@@ -57,7 +57,7 @@ cdef class Sys:
 
     def do_storestep(self,time):
         for name in self.storedict:
-            self.storedict[name].append(self.statedict[name].copy())
+            self.storedict[name].append(self._statedict[name].copy())
 
 
 cdef api void step_callback(void* sys, double time):

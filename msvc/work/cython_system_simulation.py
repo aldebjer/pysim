@@ -17,8 +17,8 @@ class VanDerPol(Sys):
     def do_step(self,time):
         a = self.a
         b = self.b
-        x = self.statedict['x'][0]
-        y = self.statedict['x'][1]
+        x = self.states.x[0]
+        y = self.states.x[1]
 
         self.derdict['dx'][0] = a*x*(b-y*y)-y
         self.derdict['dx'][1] = x
