@@ -1,26 +1,16 @@
 ---
 layout: page
-title: About the Jekyll Theme
-excerpt: "So Simple is a responsive Jekyll theme for your words and images."
-modified: 2014-08-08T19:44:38.564948-04:00
-image:
-  feature: so-simple-sample-image-4.jpg
-  credit: WeGraphics
-  creditlink: http://wegraphics.net/downloads/free-ultimate-blurred-background-pack/
+title: About Pysim
+excerpt: "Pysim lets you model and simulate and analyse dynamical systems"
+modified: 2016-06-05T14:31:00.0-01:00
 ---
+Pysim lets you model and simulate and analyse dynamical systems. Setting up a simulation is done in Python,
+as is the analysis afterwards. The simulations are however done in fast C++. This combination of Python
+flexibility and the speed of C++ is one of the core concepts of Pysim.
 
-Looking for a simple, responsive, theme for your Jekyll powered blog? Well look no further. Here be **So Simple Theme**, the follow up to [**Minimal Mistakes**](http://mmistakes.github.io/minimal-mistakes) --- by designer slash illustrator [Michael Rose](http://mademistakes.com).
+## Pysim is all about:
 
-## So Simple Theme is all about:
-
-* Responsive templates. Looking good on mobile, tablet, and desktop.
-* Gracefully degrading in older browsers. Compatible with Internet Explorer 9+ and all modern browsers.
-* Minimal embellishments and subtle animations.
-* Optional large feature images for posts and pages.
-* [Custom 404 page]({{ site.url }}/404.html) to get you started.
-* [Simple site search](https://github.com/christian-fei/Simple-Jekyll-Search)
-* Support for Disqus Comments
-
-<a markdown="0" href="{{ site.url }}/theme-setup" class="btn">Install So Simple Theme</a>
-
-[^1]: Example: *domain.com/category-name/post-title*
+* Standing on the shoulders of giants. Using tried and true open source libraries when possible
+* Adaptability. Enabling users to model simple systems, or connect multiple systems into a large system of systems.
+* Extendability. Letting the user model his own systems as separate packages, in C++ or Python
+* Fitting in with the rest of the scientific Python stack, using numpy, matplotlib, pandas and other well known packages
