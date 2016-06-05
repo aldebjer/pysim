@@ -5,8 +5,8 @@ locale: en_US
 description: Simulation of dynamical systems
 logo: site-logo.png
 search: true
-#url: http://localhost:4000
-url: http://aldebjer.github.io/pysim/
+url: http://localhost:4000
+#url: http://aldebjer.github.io/pysim/
 
 # Jekyll configuration
 
@@ -40,7 +40,7 @@ owner:
   name: Linus Aldebjer
   avatar: bio-photo.jpg
   email: aldebjer@gmail.com
-  disqus-shortname:
+  disqus-shortname: pysim
   twitter: #aldebjer
   facebook: #username
   github: #aldebjer
