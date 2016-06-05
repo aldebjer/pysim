@@ -10,6 +10,7 @@ share: true
 ---
 
 # Setting up an open source project
+
 My first encounter with differential equations in high school was decidedly underwhelming.
 I understood that there was numerous rules on how to solve them, and that one could devote
 their entire life to understand these rules, and even make up new ones for particular hard
@@ -19,6 +20,7 @@ tool for describing the world around us. Years later university and my experienc
 have proven him right. 
 
 # The background of Pysim
+
 The work with Pysim actually started some time ago, in 2010 to be exact. After four years
 of working with control algorithms for underwater vehicles at Saab I had a new job working
 with nautical simulations at SSPA. At SSPA there are very sophisticated models of ships.
@@ -30,6 +32,6 @@ driven by the need of the simulations at SSPA. But at the same time Pysim is a q
 tool, and could be used by others as well. So before my parental leave in 2016 I proposed to 
 management that we should take Pysim open source. This would hopefully benefit the open source
 society as a whole, and maybe also SSPA if there are external contributions to the project.
-Management agreed to my propposal, which I am forever grateful. So here I am, launching Pysim,
+Management agreed to my proposal, which I am forever grateful. So here I am, launching Pysim,
 a tool for simulation of dynamical systems as open source. I hope you will find it useful!
 
