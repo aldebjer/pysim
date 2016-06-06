@@ -3,8 +3,14 @@
 - title: About
   url: /about/
 
+- title: Use
+  url: /use/
+
 - title: Blog
   url: /blog/
+
+- title: Dev
+  url: /dev/
 
 - title: Search
   url: /search/

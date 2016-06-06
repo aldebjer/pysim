@@ -1,6 +1,6 @@
 # Site wide configuration
 
-title: pysim
+title: PySim
 locale: en_US
 description: Simulation of dynamical systems
 logo: pysim-logo.png
