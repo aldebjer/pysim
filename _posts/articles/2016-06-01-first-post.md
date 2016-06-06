@@ -3,9 +3,9 @@ layout: post
 title: First Post
 excerpt: "Some of the history behind Pysim, why it is released now, and how SSPA made it possible to do so."
 modified: 2016-06-01T14:17:25-04:00
-categories: articles
+categories: blog
 tags: [history]
-comments: true
+comments: false
 share: true
 ---
 
