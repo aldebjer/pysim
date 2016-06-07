@@ -41,5 +41,3 @@ or the documentation at:
 
 http://pysim.readthedocs.io/en/latest/
 
-Copyright (c) 2014-2016 SSPA Sweden AB
-
