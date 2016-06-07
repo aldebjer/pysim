@@ -7,7 +7,7 @@ cdef extern from "CythonSystemImpl.hpp":
     cdef cppclass CythonSystemImpl:
         vector[double*] states
         vector[double*] ders
-        void* sysp;
+        void* sysp
 
 
 cdef class Sys:
