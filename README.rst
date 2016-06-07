@@ -33,7 +33,11 @@ equation. There are a number of systems included, and more systems can be
 added to plugin-packages.
 
 For more information on how to use it, build it and extend it please see the
-documentation at: 
+homepage at:
+
+http://pys.im
+
+or the documentation at: 
 
 http://pysim.readthedocs.io/en/latest/
 
