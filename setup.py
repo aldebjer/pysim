@@ -65,7 +65,7 @@ setup(
     version="2.0.dev2",
     author="Linus Aldebjer",
     author_email="aldebjer@gmail.com",
-    url="https://github.com/aldebjer/pysim",
+    url="http://pys.im",
     ext_modules=cythonize(extensions),
 
     #todo: this is windows specific, would be better to find the path to the built lib in some way
