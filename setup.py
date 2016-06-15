@@ -41,6 +41,7 @@ extensions = [Extension("pysim.cppsystem",
                         ['pysim/cythonsystem.pyx','pysim/cppsource/CythonSystemImpl.cpp'],
                         language="c++",
                         extra_compile_args=extracompileargs,
+                        libraries=["cppsystemlib",]
                         ),
               Extension("pysim.simulation",
                         ['pysim/simulation.pyx', 'pysim/cppsource/CppSimulation.cpp'],
