@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <map>
+#include <memory>
 
 #include "SimulatableSystem.hpp"
 
@@ -20,7 +21,7 @@ public:
     std::map<std::string, std::string> getInputDescriptionMap();
 
 protected:
-    std::auto_ptr<CommonSystemImplPrivate> d_ptr;
+    std::unique_ptr<CommonSystemImplPrivate> d_ptr;
 
 };
 
