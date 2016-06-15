@@ -17,7 +17,6 @@ CommonSystemImpl::CommonSystemImpl() :
 }
 
 CommonSystemImpl::~CommonSystemImpl(){
-    delete d_ptr;
 }
 
 std::map<std::string, std::string> CommonSystemImpl::getInputDescriptionMap(){

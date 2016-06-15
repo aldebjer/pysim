@@ -20,7 +20,7 @@ public:
     std::map<std::string, std::string> getInputDescriptionMap();
 
 protected:
-    CommonSystemImplPrivate* d_ptr;
+    std::auto_ptr<CommonSystemImplPrivate> d_ptr;
 
 };
 
