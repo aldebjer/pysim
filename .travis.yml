@@ -17,7 +17,8 @@ install:
     - sudo apt-get install $PYTHON-setuptools
     - sudo apt-get install $PYTHON-numpy
     - sudo apt-get install $PYTHON-nose
-    - sudo apt-get install cython3
+    - sudo apt-get -y install $PYTHON-pip
+    - sudo pip$PYSUF install cython
     - sudo $PYTHON setup.py build_ext --inplace
 script:
     - nosetests3
