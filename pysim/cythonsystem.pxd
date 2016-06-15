@@ -16,7 +16,7 @@ cdef extern from "CythonSystemImpl.hpp":
         vector[double*] states
         vector[double*] ders
         void* sysp
-        void add_input_vector(string, size_t);
+        void add_input_vector(string, size_t)
 
 
 cdef class Sys:
