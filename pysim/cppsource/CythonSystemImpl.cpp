@@ -1,11 +1,18 @@
-#pragma once
+#include <map>
 
+#include "PysimTypes.hpp"
 #include "CythonSystemImpl.hpp"
 #include "../cythonsystem_api.h"
+#include "CommonSystemImpl_p.hpp"
 
 #include <iostream>
+#include <string>
 
-CythonSystemImpl::CythonSystemImpl() {
+using std::string;
+
+
+CythonSystemImpl::CythonSystemImpl()
+{
     import_pysim__cythonsystem();
 }
 
@@ -28,3 +35,9 @@ std::vector<double*> CythonSystemImpl::getDerPointers() {
 double CythonSystemImpl::getNextUpdateTime() { return 0; }
 bool CythonSystemImpl::getDiscrete() { return false; }
 bool CythonSystemImpl::do_comparison() { return false; }
+
+void CythonSystemImpl::add_input_vector(std::string name, size_t length){
+    d_ptr->input_vectors[name] = new pysim::vector(length);
+    d_ptr->input_descriptions[name] = std::string("No Description"); //TODO add descriptions in call
+}
+

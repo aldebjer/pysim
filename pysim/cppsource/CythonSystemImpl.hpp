@@ -1,14 +1,15 @@
 #pragma once
 #include <vector>
 
-#include "SimulatableSystem.hpp"
+#include "CommonSystemImpl.hpp"
+
 
 class  CythonSystemImpl :
-    public SimulatableSystem
+    public CommonSystemImpl
 {
 public:
     CythonSystemImpl();
-    virtual ~CythonSystemImpl(void){};
+    ~CythonSystemImpl(){};
 
     void preSim(){};
     void doStep(double time);
@@ -29,6 +30,8 @@ public:
 
     void* sysp;
 
+    //Python Interface
+    void add_input_vector(std::string name, size_t length);
 
 };
 

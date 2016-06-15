@@ -25,15 +25,59 @@ class States:
     def __setattr__(self,name,value):
         np.copyto(self._statedict[name], value)
 
+cdef class Inputs:
+    """Contains all the inputs for the system.
+    To list the inputs use input.list()
+    To search for a input that contains a specific word, or has a 
+    description that contains the word use input.search(word).
+    """
+    cdef CythonSystemImpl* _c_sys
+
+    @staticmethod
+    cdef _create(CythonSystemImpl* ptr):
+        p = Inputs()
+        p._c_sys = ptr
+        return p
+
+    def __dir__(self):
+        vectornames = self._c_sys.getInputVectorNames()
+        return vectornames
+    def __getattr__(self,name):
+        bs = bytes(name,'utf-8')
+        allvectornames =  list(self._c_sys.getInputVectorNames())
+        if bs in allvectornames:
+            return self._c_sys.getInputVector(bs)
+        else:
+            raise AttributeError("No input {} in system".format(name))
+
+    def __setattr__(self,name,value):
+        bs = bytes(name,'utf-8')
+        allvectornames =  list(self._c_sys.getInputVectorNames())
+        if bs in allvectornames:
+            try:
+                self._c_sys.setInputVector(bs,value)
+            except TypeError:
+                raise TypeError("Input '{}' is a vector".format(name))
+        else:
+            raise AttributeError("No input {} in system".format(name))
+
+
+    def get_description(self,varname):
+        return self._c_sys.getInputDescriptionMap()[varname]
+
 cdef class Sys:
+
     def __cinit__(self):
-        self._c_sys = new CythonSystemImpl()
+        cdef CythonSystemImpl* _c_sys_local
+        _c_sys_local = new CythonSystemImpl()
+        self._c_sys = _c_sys_local
         self._c_sys.sysp = <void*> self
         self._statedict = {}
         self._derdict = {}
         self.storedict = {}
         self.res = Results(self.storedict)
         self.states = States(self._statedict)
+        self.inputs = Inputs._create(_c_sys_local)
 
 
     def add_state(self, statename, dername, dimensions):
@@ -47,6 +91,10 @@ cdef class Sys:
         for i in range(dimensions):
             self._c_sys.states.push_back(&state_array[i])
             self._c_sys.ders.push_back(&der_array[i])
+
+    def add_input(self, name, size):
+        bs = bytes(name,'utf-8')
+        self._c_sys.add_input_vector(bs,size)
 
     def store(self,name):
         self.storedict[name] = []

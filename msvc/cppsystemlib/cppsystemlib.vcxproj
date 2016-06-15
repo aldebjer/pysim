@@ -11,10 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\pysim\cppsource\CommonSystemImpl.cpp" />
     <ClCompile Include="..\..\pysim\cppsource\CppSystem.cpp" />
     <ClCompile Include="..\..\pysim\cppsource\StoreHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl.hpp" />
+    <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl_p.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\CppSystem.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\PysimTypes.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\SimulatableSystem.hpp" />

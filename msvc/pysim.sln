@@ -22,6 +22,9 @@ EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "work", "work\work.pyproj", "{9BDAFF44-40E9-4471-8E06-14EF155A93F5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cythonsystem", "cythonsystem\cythonsystem.vcxproj", "{12E1F957-0931-4EE4-8AB0-15D2D839462A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
