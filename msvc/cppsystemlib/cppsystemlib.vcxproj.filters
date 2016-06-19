@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="cython">
+      <UniqueIdentifier>{a62f682c-2e18-4442-82ba-9e83a9ee9dca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\pysim\cppsource\CppSystem.cpp">
@@ -44,5 +47,10 @@
     <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl_p.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\pysim\commonsystem.pxd">
+      <Filter>cython</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -23,6 +23,9 @@
     <ClInclude Include="..\..\pysim\cppsource\SimulatableSystem.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\StoreHandler.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\pysim\commonsystem.pxd" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{63A6122D-0888-4CE9-9BB8-5BB33C9846FD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

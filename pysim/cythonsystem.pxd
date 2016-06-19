@@ -3,13 +3,7 @@ from libcpp.string cimport string
 from libcpp.map cimport map
 from libcpp cimport bool
 
-cdef extern from "CommonSystemImpl.hpp":
-    cdef cppclass CommonSystemImpl:
-        vector[string] getInputVectorNames()
-        vector[double] getInputVector(char* name)
-        void setInputVector(char*, vector[double])
-        map[string,string] getInputDescriptionMap()
-
+from commonsystem cimport CommonSystemImpl
 
 cdef extern from "CythonSystemImpl.hpp":
     cdef cppclass CythonSystemImpl(CommonSystemImpl):
