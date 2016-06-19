@@ -31,10 +31,10 @@ cdef class Inputs:
     To search for a input that contains a specific word, or has a 
     description that contains the word use input.search(word).
     """
-    cdef CythonSystemImpl* _c_sys
+    cdef CommonSystemImpl* _c_sys
 
-    @staticmethod
-    cdef _create(CythonSystemImpl* ptr):
+    @staticmethod 
+    cdef _create(CommonSystemImpl* ptr):
         p = Inputs()
         p._c_sys = ptr
         return p
