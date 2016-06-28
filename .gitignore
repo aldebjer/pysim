@@ -18,3 +18,4 @@ pysim/cythonsystem.cpp
 pysim/cythonsystem_api.h
 pysim/systems/defaultsystemcollection1/defaultsystemcollection1.cpp
 
+*.sdf
