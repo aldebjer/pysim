@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppsystem", "cppsystem\cppsystem.vcxproj", "{5E9A6A31-4D76-4927-A1DB-33254EAFADC6}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cythonsystem", "cythonsyste
 	ProjectSection(ProjectDependencies) = postProject
 		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commonsystem", "commonsystem\commonsystem.vcxproj", "{B3A85799-0C40-4905-849C-ED4DB0ED6688}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,6 +118,18 @@ Global
 		{12E1F957-0931-4EE4-8AB0-15D2D839462A}.Release|Win32.Build.0 = Release|Win32
 		{12E1F957-0931-4EE4-8AB0-15D2D839462A}.Release|x64.ActiveCfg = Release|x64
 		{12E1F957-0931-4EE4-8AB0-15D2D839462A}.Release|x64.Build.0 = Release|x64
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Debug|Win32.Build.0 = Debug|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Debug|x64.ActiveCfg = Debug|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Release|Any CPU.ActiveCfg = Release|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Release|Win32.ActiveCfg = Release|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Release|Win32.Build.0 = Release|Win32
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

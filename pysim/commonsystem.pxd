@@ -8,3 +8,8 @@ cdef extern from "CommonSystemImpl.hpp":
         vector[double] getInputVector(char* name)
         void setInputVector(char*, vector[double])
         map[string,string] getInputDescriptionMap()
+
+cdef class Inputs:
+    cdef CommonSystemImpl* _c_sys
+    @staticmethod
+    cdef _create(CommonSystemImpl* ptr)
