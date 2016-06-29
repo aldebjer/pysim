@@ -41,3 +41,8 @@ void CythonSystemImpl::add_input_vector(std::string name, size_t length){
     d_ptr->input_descriptions[name] = std::string("No Description"); //TODO add descriptions in call
 }
 
+void CythonSystemImpl::add_output_vector(std::string name, size_t length) {
+    d_ptr->output_vectors[name] = new pysim::vector(length);
+    d_ptr->output_descriptions[name] = std::string("No Description"); //TODO add descriptions in call
+}
+

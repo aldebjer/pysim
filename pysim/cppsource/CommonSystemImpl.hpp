@@ -14,11 +14,18 @@ public:
     CommonSystemImpl();
     virtual ~CommonSystemImpl();
 
-
+    //Input handling
     std::vector<std::string> getInputVectorNames();
     std::vector<double> getInputVector(char* name);
     void setInputVector(char* name, std::vector<double> value);
     std::map<std::string, std::string> getInputDescriptionMap();
+
+    //Output handling
+    std::vector<std::string> getOutputNames();
+    std::vector<std::string> getOutputVectorNames();
+    double getOutput(char* name);
+    std::vector<double> getOutputVector(char* name);
+    std::map<std::string, std::string> getOutputDescriptionMap();
 
 protected:
     std::unique_ptr<CommonSystemImplPrivate> d_ptr;

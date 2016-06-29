@@ -1,6 +1,7 @@
 import sys
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 from pysim.simulation import Sim
 from pysim.cythonsystem import Sys
@@ -11,6 +12,7 @@ class VanDerPol(Sys):
     def __init__(self):
         self.add_state("x", "dx", 2)
         self.add_input("k",2)
+        self.add_output("out",2)
         self.inputs.k = [1.0, 1.0]
         self.states.x = [1.0, 0.0]
 
@@ -34,7 +36,7 @@ def main():
     sim.simulate(20, 0.1)
     print("ending")
 
-    import matplotlib.pyplot as plt
+
     plt.plot(sys.res.x[:,0])
     plt.plot(sys.res.x[:,1])
     plt.show()

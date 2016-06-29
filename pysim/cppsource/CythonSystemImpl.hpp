@@ -32,6 +32,7 @@ public:
 
     //Python Interface
     void add_input_vector(std::string name, size_t length);
+    void add_output_vector(std::string name, size_t length);
 
 };
 

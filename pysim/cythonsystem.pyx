@@ -57,6 +57,11 @@ cdef class Sys:
         bs = bytes(name,'utf-8')
         self._c_sys.add_input_vector(bs,size)
 
+
+    def add_output(self, name, size):
+        bs = bytes(name,'utf-8')
+        self._c_sys.add_output_vector(bs,size)
+
     def store(self,name):
         self.storedict[name] = []
 

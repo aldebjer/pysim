@@ -57,3 +57,45 @@ std::vector<double> CommonSystemImpl::getInputVector(char* name) {
         throw std::invalid_argument(errstr);
     }
 }
+
+std::vector<std::string> CommonSystemImpl::getOutputNames() {
+    std::vector<std::string> names;
+    for (auto i = d_ptr->output_scalars.cbegin(); i != d_ptr->output_scalars.cend(); ++i) {
+        names.push_back(i->first);
+    }
+    return names;
+};
+
+std::vector<std::string> CommonSystemImpl::getOutputVectorNames() {
+    std::vector<std::string> names;
+    for (auto i = d_ptr->output_vectors.cbegin(); i != d_ptr->output_vectors.cend(); ++i) {
+        names.push_back(i->first);
+    }
+    return names;
+}
+
+double CommonSystemImpl::getOutput(char* name) {
+    if (d_ptr->output_scalars.count(name) < 1) {
+
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+    return *(d_ptr->output_scalars.at(name));
+};
+
+
+std::vector<double> CommonSystemImpl::getOutputVector(char* name) {
+    if (d_ptr->output_vectors.count(name) > 0) {
+        auto bv = d_ptr->output_vectors[name];
+        std::vector<double> v(bv->size());
+        std::copy(bv->begin(), bv->end(), v.begin());
+        return v;
+    } else {
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+}
+
+std::map<std::string, std::string> CommonSystemImpl::getOutputDescriptionMap() {
+    return  d_ptr->output_descriptions;
+}
