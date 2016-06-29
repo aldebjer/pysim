@@ -129,13 +129,21 @@ class IntegrationTest(TestCase):
         self.compare_to_analytical(1e-7)
 
 class PythonMassSpringDamper(pysim.cythonsystem.Sys):
+    """Simple class for testing the mass-spring-damper simulations with 
+    a cython system"""
+
     def __init__(self):
+        """Setup two states (one dimensional vectors for now). Initial 
+        conditions are simular to those in the build in c++ system"""
         self.add_state("x1", "dx1", 1)
         self.add_state("x2", "dx2", 1)
         self.states.x1 = [1]
         self.states.x2 = [0]
 
     def do_step(self,time):
+        """Perform a step using default constants, same as those in the 
+        cpp system"""
+
         m = 100.0;
         b = 1.0;
         k = 50.0;
