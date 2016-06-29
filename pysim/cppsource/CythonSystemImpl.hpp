@@ -14,8 +14,6 @@ public:
     void preSim(){};
     void doStep(double time);
     void doStoreStep(double time);
-    void copyoutputs();
-    void copystateoutputs();
 
     std::vector<double*> getStatePointers();
     std::vector<double*> getDerPointers();

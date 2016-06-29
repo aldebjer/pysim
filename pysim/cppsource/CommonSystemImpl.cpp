@@ -19,6 +19,12 @@ CommonSystemImpl::CommonSystemImpl() :
 CommonSystemImpl::~CommonSystemImpl(){
 }
 
+//////////////////////////////
+//
+//     Input handling
+//
+//////////////////////////////
+
 std::map<std::string, std::string> CommonSystemImpl::getInputDescriptionMap(){
     return d_ptr->input_descriptions;
 }
@@ -66,7 +72,10 @@ std::vector<double> CommonSystemImpl::getInputVector(char* name) {
     }
 }
 
+//////////////////////////////
+//
 //     Output handling
+//
 //////////////////////////////
 std::vector<std::string> CommonSystemImpl::getOutputNames() {
     std::vector<std::string> names;
@@ -123,7 +132,11 @@ std::map<std::string, std::string> CommonSystemImpl::getOutputDescriptionMap() {
     return  d_ptr->output_descriptions;
 }
 
-
+////////////////////////////////////
+//
+//       Connections
+//
+////////////////////////////////////
 void CommonSystemImpl::connect(char* outputname,
     CommonSystemImpl* inputsys,
     char* inputname) {
@@ -135,7 +148,7 @@ void CommonSystemImpl::connect(char* outputname,
             d_ptr->connected_scalars.push_back(p);
         } else if (d_ptr->state_scalars.count(outputname) == 1) {
             auto p = make_pair(d_ptr->state_scalars[outputname].stateValue, inputsys->d_ptr->input_scalars[inputname]);
-            d_ptr->connected_scalars.push_back(p);
+            d_ptr->connected_scalar_states_.push_back(p);
         } else {
             std::string errtxt("Could not find matching state or output to connect from");
             throw std::invalid_argument(errtxt);
@@ -146,7 +159,7 @@ void CommonSystemImpl::connect(char* outputname,
             d_ptr->connected_vectors.push_back(p);
         } else if (d_ptr->state_vectors.count(outputname) == 1) {
             auto p = make_pair(d_ptr->state_vectors[outputname].stateValue, inputsys->d_ptr->input_vectors[inputname]);
-            d_ptr->connected_vectors.push_back(p);
+            d_ptr->connected_vector_states.push_back(p);
         } else {
             std::string errtxt("Could not find matching state or output to connect from");
             throw std::invalid_argument(errtxt);
@@ -155,3 +168,25 @@ void CommonSystemImpl::connect(char* outputname,
         throw std::invalid_argument("Could not find input to connect to");
     }
 }
+
+
+void CommonSystemImpl::copyoutputs() {
+    for (auto vi = d_ptr->connected_scalars.cbegin(); vi != d_ptr->connected_scalars.cend(); ++vi) {
+        *(vi->second) = *(vi->first);
+    }
+
+    for (auto vi = d_ptr->connected_vectors.cbegin(); vi != d_ptr->connected_vectors.cend(); ++vi) {
+        *(vi->second) = *(vi->first);
+    }
+}
+
+void CommonSystemImpl::copystateoutputs() {
+    for (auto vi = d_ptr->connected_scalar_states_.cbegin(); vi != d_ptr->connected_scalar_states_.cend(); ++vi) {
+        *(vi->second) = *(vi->first);
+    }
+
+    for (auto vi = d_ptr->connected_vector_states.cbegin(); vi != d_ptr->connected_vector_states.cend(); ++vi) {
+        *(vi->second) = *(vi->first);
+    }
+}
+

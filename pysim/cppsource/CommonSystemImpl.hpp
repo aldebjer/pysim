@@ -14,6 +14,9 @@ public:
     CommonSystemImpl();
     virtual ~CommonSystemImpl();
 
+    void copyoutputs();
+    void copystateoutputs();
+
     //Input handling
     std::vector<std::string> getScalarInputNames();
     std::vector<std::string> getInputVectorNames();

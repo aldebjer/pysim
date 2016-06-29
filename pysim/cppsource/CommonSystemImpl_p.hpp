@@ -30,6 +30,9 @@ struct CommonSystemImplPrivate {
 
     std::vector<std::pair<double*, double* > > connected_scalars;
     std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vectors;
+
+    std::vector<std::pair<double*, double* > > connected_scalar_states_;
+    std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vector_states;
 };
 
 
