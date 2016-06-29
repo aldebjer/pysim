@@ -23,6 +23,14 @@ std::map<std::string, std::string> CommonSystemImpl::getInputDescriptionMap(){
     return d_ptr->input_descriptions;
 }
 
+std::vector<std::string> CommonSystemImpl::getScalarInputNames() {
+    std::vector<std::string> names;
+    for (auto i = d_ptr->input_scalars.cbegin(); i != d_ptr->input_scalars.cend(); ++i) {
+        names.push_back(i->first);
+    }
+    return names;
+}
+
 std::vector<std::string>  CommonSystemImpl::getInputVectorNames() {
     std::vector<std::string> names;
     for (auto i = d_ptr->input_vectors.cbegin(); i != d_ptr->input_vectors.cend(); ++i) {

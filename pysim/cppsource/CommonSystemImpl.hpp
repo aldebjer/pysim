@@ -15,6 +15,7 @@ public:
     virtual ~CommonSystemImpl();
 
     //Input handling
+    std::vector<std::string> getScalarInputNames();
     std::vector<std::string> getInputVectorNames();
     std::vector<double> getInputVector(char* name);
     void setInputVector(char* name, std::vector<double> value);

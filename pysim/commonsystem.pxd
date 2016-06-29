@@ -11,7 +11,6 @@ cdef extern from "CommonSystemImpl.hpp":
 
         vector[string] getOutputVectorNames()
         vector[double] getOutputVector(char* name)
-        void setOutputVector(char*, vector[double])
         map[string,string] getOutputDescriptionMap()
 
 cdef class Inputs:
