@@ -374,3 +374,7 @@ void  CommonSystemImpl::store(char* name) {
     }
 }
 
+StoreHandler* CommonSystemImpl::getStoreHandlerP(){
+    return &(d_ptr->storeHandler);
+}
+

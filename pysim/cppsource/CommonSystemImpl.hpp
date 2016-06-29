@@ -3,6 +3,8 @@
 #include <map>
 #include <memory>
 
+#include "StoreHandler.hpp"
+
 #include "SimulatableSystem.hpp"
 
 struct CommonSystemImplPrivate;
@@ -22,6 +24,7 @@ public:
 
     void doStoreStep(double time);
     void store(char* name);
+    StoreHandler* getStoreHandlerP();
 
     //Input handling
     std::vector<std::string> getScalarInputNames();

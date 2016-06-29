@@ -29,8 +29,19 @@ cdef extern from "CommonSystemImpl.hpp":
         map[string,string] getDerDescriptionMap()
 
         void store(char* name)
+        StoreHandler* getStoreHandlerP()
 
         void connect(char*, CommonSystemImpl*, char* );
+
+cdef extern from "StoreHandler.hpp":
+    cdef cppclass StoreHandler:
+        int getStoreSize()  except +
+        int getStoreColumns(char* name) except +
+        void fillWithStore(char* name, double* p, int rows, int columns) except +
+        void fillWithTime(double* p) except +
+        vector[string] getStoreNames()
+        void setStoreInterval(double interval)
+
 
 cdef class CommonSystem:
     cdef CommonSystemImpl * _c_s
@@ -57,5 +68,11 @@ cdef class Ders:
 
 cdef class Connections:
     cdef CommonSystemImpl* _c_sys
+    @staticmethod
+    cdef _create(CommonSystemImpl* ptr)
+
+cdef class Results:
+    cdef CommonSystemImpl* _c_sys
+    cdef StoreHandler* shp
     @staticmethod
     cdef _create(CommonSystemImpl* ptr)

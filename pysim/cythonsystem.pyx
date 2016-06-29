@@ -8,6 +8,7 @@ from commonsystem cimport Inputs
 from commonsystem cimport Outputs
 from commonsystem cimport States
 from commonsystem cimport Ders
+from commonsystem cimport Results
 
 from commonsystem cimport Connections
 
@@ -27,7 +28,7 @@ cdef class Sys:
         self.states = States._create(_c_sys_local)
         self.ders = Ders._create(_c_sys_local)
         self.connections = Connections._create(_c_sys_local)
-
+        self.res = Results._create(_c_sys_local)
 
     def add_state(self, statename, dername, dimensions):
         statename_bytes = bytes(statename,'utf-8')

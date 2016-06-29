@@ -2,9 +2,7 @@
 #include <vector>
 #include <map>
 
-
 #include "PysimTypes.hpp"
-#include "StoreHandler.hpp"
 
 template <class T>
 struct StateType {

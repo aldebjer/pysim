@@ -12,22 +12,40 @@ cdef class CommonSystem:
         bs = bytes(name,'utf-8')
         self._c_s.store(bs)
 
-class Results:
+cdef class Results:
 
     @staticmethod 
     cdef _create(CommonSystemImpl* ptr):
-        p = Inputs()
+        p = Results()
         p._c_sys = ptr
+        p.shp = p._c_sys.getStoreHandlerP()
         return p
 
     def __dir__(self):
-        return ["time"]+self._c_sys._getStoreNames()
+        names = self.shp.getStoreNames()
+        unicodenames = [s.decode('utf-8') for s in names]
+        return ["time"]+unicodenames
 
     def __getattr__(self,name):
+        cdef np.ndarray[np.double_t,ndim=1, mode='c'] a
+        cdef np.ndarray[np.double_t,ndim=2, mode='c'] a_mat
+        names = self.shp.getStoreNames()
+        unicodenames = [s.decode('utf-8') for s in names]
         if name == "time":
-            return self._c_sys._getTime()
-        elif name in self._c_sys._getStoreNames():
-            return self._c_sys._getStore(name)
+            size = self.shp.getStoreSize()
+            a = np.zeros(size, dtype=np.float64) 
+            self.shp.fillWithTime(&a[0])
+            return a
+        elif name in unicodenames:
+            bs = bytes(name,'utf-8')
+            size = self.shp.getStoreSize()
+            columns = self.shp.getStoreColumns(bs)
+            a_mat = np.zeros([size,columns],dtype=np.float64)
+            self.shp.fillWithStore(bs,&a_mat[0,0],size,columns)
+            if columns == 1:
+                return a_mat[:,0]
+            else:
+                return a_mat
         else:
             raise AttributeError("No stored {} in system".format(name))
 
