@@ -26,7 +26,10 @@ public:
     std::vector<std::string> getOutputVectorNames();
     double getOutput(char* name);
     std::vector<double> getOutputVector(char* name);
+    void setOutputVector(char* name, std::vector<double> value);
     std::map<std::string, std::string> getOutputDescriptionMap();
+
+    void connect(char* outputname, CommonSystemImpl* inputsys, char* inputname);
 
 protected:
     std::unique_ptr<CommonSystemImplPrivate> d_ptr;

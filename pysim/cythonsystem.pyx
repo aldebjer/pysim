@@ -5,6 +5,8 @@ import numpy as np
 cimport numpy as np
 from cythonsystem cimport CythonSystemImpl
 from commonsystem cimport Inputs
+from commonsystem cimport Outputs
+from commonsystem cimport Connections
 
 np.import_array()
 
@@ -32,6 +34,7 @@ cdef class Sys:
         cdef CythonSystemImpl* _c_sys_local
         _c_sys_local = new CythonSystemImpl()
         self._c_sys = _c_sys_local
+        self._c_s = <CommonSystemImpl*> _c_sys_local
         self._c_sys.sysp = <void*> self
         self._statedict = {}
         self._derdict = {}
@@ -39,6 +42,8 @@ cdef class Sys:
         self.res = Results(self.storedict)
         self.states = States(self._statedict)
         self.inputs = Inputs._create(_c_sys_local)
+        self.outputs = Outputs._create(_c_sys_local)
+        self.connections = Connections._create(_c_sys_local)
 
 
     def add_state(self, statename, dername, dimensions):

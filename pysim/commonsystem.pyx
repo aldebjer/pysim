@@ -7,6 +7,9 @@ from commonsystem cimport CommonSystemImpl
 
 np.import_array()
 
+cdef class CommonSystem:
+    pass
+
 cdef class Inputs:
     """Contains all the inputs for the system.
     To list the inputs use input.list()
@@ -70,7 +73,33 @@ cdef class Outputs:
         else:
             raise AttributeError("No output {} in system".format(name))
 
+    def __setattr__(self,name,value):
+        bs = bytes(name,'utf-8')
+        allvectornames =  list(self._c_sys.getOutputVectorNames())
+        if bs in allvectornames:
+            try:
+                self._c_sys.setOutputVector(bs,value)
+            except TypeError:
+                raise TypeError("Output '{}' is a vector".format(name))
+        else:
+            raise AttributeError("No output {} in system".format(name))
+
     def get_description(self,varname):
         return self._c_sys.getOutputDescriptionMap()[varname]
 
+cdef class Connections:
+    """The connections of the system.
+    The connections are either from an output or a state of a system.
+    """
 
+    @staticmethod 
+    cdef _create(CommonSystemImpl* ptr):
+        p = Connections()
+        p._c_sys = ptr
+        return p
+
+    def connect(self,outputname,CommonSystem inputsys,inputname):
+         bsout =  bytes(outputname,'utf-8')
+         bsin =  bytes(inputname,'utf-8')
+         print("connecting")
+         self._c_sys.connect(bsout,inputsys._c_s,bsin)
