@@ -22,9 +22,9 @@ class VanDerPol(Sys):
         x = self.states.x[0]
         y = self.states.x[1]
 
-        self._derdict['dx'][0] = a*x*(b-y*y)-y
-        self._derdict['dx'][1] = x
-
+        x1 = a*x*(b-y*y)-y
+        x2 = x
+        self.ders.dx = [x1,x2]
 
 def main():
     """Test that the elapsed time is returned from the simulation"""
@@ -34,8 +34,6 @@ def main():
 
     sim.add_cython_system(sys,"Cython1")
     sim.simulate(20, 0.1)
-    print("ending")
-
 
     plt.plot(sys.res.x[:,0])
     plt.plot(sys.res.x[:,1])
