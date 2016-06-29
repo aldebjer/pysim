@@ -13,6 +13,7 @@ cdef extern from "CythonSystemImpl.hpp":
         void* sysp
         void add_input_vector(string, size_t)
         void add_output_vector(string, size_t)
+        void add_state_vector(string, string , size_t)
 
 
 cdef class Sys(CommonSystem):

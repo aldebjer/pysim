@@ -4,6 +4,7 @@
 
 
 #include "PysimTypes.hpp"
+#include "StoreHandler.hpp"
 
 template <class T>
 struct StateType {
@@ -20,6 +21,9 @@ struct CommonSystemImplPrivate {
     std::map<std::string, StateType<double* >> der_scalars;
     std::map<std::string, StateType<pysim::vector* > > der_vectors;
 
+    std::map<std::string, std::string> state_descriptions;
+    std::map<std::string, std::string> der_descriptions;
+
     std::map<std::string, double* > input_scalars;
     std::map<std::string, pysim::vector* > input_vectors;
     std::map<std::string, std::string> input_descriptions;
@@ -33,6 +37,8 @@ struct CommonSystemImplPrivate {
 
     std::vector<std::pair<double*, double* > > connected_scalar_states_;
     std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vector_states;
+
+    StoreHandler storeHandler;
 };
 
 

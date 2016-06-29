@@ -14,6 +14,22 @@ cdef extern from "CommonSystemImpl.hpp":
         void setOutputVector(char*, vector[double])
         map[string,string] getOutputDescriptionMap()
 
+        vector[string] getScalarStatetNames()
+        vector[string] getStateVectorNames()
+        double getState(char* name)
+        vector[double] getStateVector(char* name)
+        void setStateVector(char*, vector[double])
+        map[string,string] getStateDescriptionMap()
+
+        vector[string] getScalarDerNames()
+        vector[string] getDerVectorNames()
+        double getDer(char* name)
+        vector[double] getDerVector(char* name)
+        void setDerVector(char*, vector[double])
+        map[string,string] getDerDescriptionMap()
+
+        void store(char* name)
+
         void connect(char*, CommonSystemImpl*, char* );
 
 cdef class CommonSystem:
@@ -25,6 +41,16 @@ cdef class Inputs:
     cdef _create(CommonSystemImpl* ptr)
 
 cdef class Outputs:
+    cdef CommonSystemImpl* _c_sys
+    @staticmethod
+    cdef _create(CommonSystemImpl* ptr)
+
+cdef class States:
+    cdef CommonSystemImpl* _c_sys
+    @staticmethod
+    cdef _create(CommonSystemImpl* ptr)
+
+cdef class Ders:
     cdef CommonSystemImpl* _c_sys
     @staticmethod
     cdef _create(CommonSystemImpl* ptr)
