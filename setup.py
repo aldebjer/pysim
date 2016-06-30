@@ -21,7 +21,10 @@ elif sys.platform in ("linux","darwin"):
 
 config.add_installed_library("cppsystemlib",
                     ['pysim/cppsource/CppSystem.cpp',
-                     'pysim/cppsource/StoreHandler.cpp'],build_info = {
+                     'pysim/cppsource/StoreHandler.cpp',
+                     'pysim/cppsource/CommonSystemImpl.cpp',
+                    ],
+                    build_info = {
                     "extra_compiler_args":extracompileargs,
                     "language":"c++"},
                     install_dir = "pysim/lib",
@@ -30,6 +33,18 @@ config.add_installed_library("cppsystemlib",
                                 
 extensions = [Extension("pysim.cppsystem",
                         ['pysim/cppsystem.pyx',],
+                        language="c++",
+                        extra_compile_args=extracompileargs,
+                        libraries=["cppsystemlib",]
+                        ),
+              Extension("pysim.cythonsystem",
+                        ['pysim/cythonsystem.pyx','pysim/cppsource/CythonSystemImpl.cpp'],
+                        language="c++",
+                        extra_compile_args=extracompileargs,
+                        libraries=["cppsystemlib",]
+                        ),
+              Extension("pysim.commonsystem",
+                        ['pysim/commonsystem.pyx'],
                         language="c++",
                         extra_compile_args=extracompileargs,
                         libraries=["cppsystemlib",]
@@ -76,7 +91,7 @@ setup(
                 ('pysim',['pysim/cppsystem.pxd']),
                 ],
     packages=['pysim', 'pysim.systems','pysim.tests'],
-    install_requires = ['numpy>=1.8.1','cython>=0.20'],
+    install_requires = ['numpy>=1.8.1','cython>=0.21'],
     description = "package for dynamical system modelling",
     classifiers=[
         'Development Status :: 3 - Alpha',

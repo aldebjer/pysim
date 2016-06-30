@@ -13,36 +13,31 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="cython">
+      <UniqueIdentifier>{3c10fc1f-6c91-41de-ac72-752dcc4b396e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\pysim\cppsource\CppSystem.cpp">
+    <ClCompile Include="..\..\pysim\cppsource\CythonSystemImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\pysim\cppsource\StoreHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\pysim\cppsource\CommonSystemImpl.cpp">
+    <ClCompile Include="..\..\pysim\cythonsystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\pysim\cppsource\CppSystem.hpp">
+    <ClInclude Include="..\..\pysim\cppsource\CythonSystemImpl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\pysim\cppsource\SimulatableSystem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\pysim\cppsource\StoreHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\pysim\cppsource\PysimTypes.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl_p.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\pysim\cythonsystem.pyx">
+      <Filter>cython</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\pysim\cythonsystem.pxd">
+      <Filter>cython</Filter>
+    </None>
   </ItemGroup>
 </Project>

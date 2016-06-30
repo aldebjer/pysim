@@ -6,7 +6,11 @@ import json
 import numpy as np
 
 from pysim.simulation import Sim
-from pysim.systems import VanDerPol, MassSpringDamper, DiscretePID, RigidBody
+from pysim.systems import VanDerPol
+from pysim.systems import MassSpringDamper
+from pysim.systems import DiscretePID
+from pysim.systems import RigidBody
+from pysim.systems import LogisticMap
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
@@ -173,7 +177,11 @@ def test_boost_vector_states():
     assert np.max(diff) <= 1
 
 def test_discrete_system():
-    from pysim.systems import LogisticMap
+    """Test a discrete system to make sure the results
+    are correct. The system tested is a logistical map
+    system and it is compared to a function created in 
+    this test which also gives the solution.
+    """
     lm = LogisticMap()
     lm.inputs.r = 3.6
     lm.states.x = 0.5

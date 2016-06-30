@@ -5,6 +5,8 @@ from unittest import TestCase
 import numpy as np
 from numpy import cos, sin, sqrt
 
+import pysim.cythonsystem
+
 from pysim.simulation import Sim
 from pysim.simulation import Runge_Kutta_4
 from pysim.simulation import Cash_Karp
@@ -126,3 +128,41 @@ class IntegrationTest(TestCase):
         self.sim.simulate(self.integrationlength, self.timestep, solver)
         self.compare_to_analytical(1e-7)
 
+class PythonMassSpringDamper(pysim.cythonsystem.Sys):
+    """Simple class for testing the mass-spring-damper simulations with 
+    a cython system"""
+
+    def __init__(self):
+        """Setup two states (one dimensional vectors for now). Initial 
+        conditions are simular to those in the build in c++ system"""
+        self.add_state("x1", "dx1", 1)
+        self.add_state("x2", "dx2", 1)
+        self.states.x1 = [1]
+        self.states.x2 = [0]
+
+    def do_step(self,dummy):
+        """Perform a step using default constants, same as those in the 
+        cpp system"""
+
+        m = 100.0
+        b = 1.0
+        k = 50.0
+        f = 0.0
+        x1 = self.states.x1[0]
+        x2 = self.states.x2[0]
+        self.ders.dx1=[x2]
+        self.ders.dx2 =[-k/m*x1-b/m*x2+1/m*f]
+
+
+class CythonIntegrationTest(IntegrationTest):
+    """Use a Cython System to simulate. The results are compared with the
+    analytical results.
+    """
+
+    def setUp(self):
+        self.sim = Sim()
+        self.sys = PythonMassSpringDamper()
+        self.sys.store("x1")
+        self.sim.add_system(self.sys)
+        self.integrationlength = 50
+        self.timestep = 0.1
