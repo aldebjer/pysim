@@ -140,14 +140,14 @@ class PythonMassSpringDamper(pysim.cythonsystem.Sys):
         self.states.x1 = [1]
         self.states.x2 = [0]
 
-    def do_step(self,time):
+    def do_step(self,dummy):
         """Perform a step using default constants, same as those in the 
         cpp system"""
 
-        m = 100.0;
-        b = 1.0;
-        k = 50.0;
-        f = 0.0;
+        m = 100.0
+        b = 1.0
+        k = 50.0
+        f = 0.0
         x1 = self.states.x1[0]
         x2 = self.states.x2[0]
         self.ders.dx1=[x2]
@@ -155,9 +155,8 @@ class PythonMassSpringDamper(pysim.cythonsystem.Sys):
 
 
 class CythonIntegrationTest(IntegrationTest):
-    """Tests the integration function of a under dampened mass-spring-damper
-    system. The differential equation is solved analytically for the system
-    and this solution is then compared to the PySim solution.
+    """Use a Cython System to simulate. The results are compared with the
+    analytical results.
     """
 
     def setUp(self):
