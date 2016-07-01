@@ -5,27 +5,27 @@ from libcpp.map cimport map
 cdef extern from "CommonSystemImpl.hpp":
     cdef cppclass CommonSystemImpl:
         vector[string] getInputVectorNames()
-        vector[double] getInputVector(char* name)
-        void setInputVector(char*, vector[double])
+        vector[double] getInputVector(char* name) except +
+        void setInputVector(char*, vector[double]) except +
         map[string,string] getInputDescriptionMap()
 
         vector[string] getOutputVectorNames()
-        vector[double] getOutputVector(char* name)
-        void setOutputVector(char*, vector[double])
+        vector[double] getOutputVector(char* name) except +
+        void setOutputVector(char*, vector[double]) except +
         map[string,string] getOutputDescriptionMap()
 
         vector[string] getScalarStatetNames()
         vector[string] getStateVectorNames()
         double getState(char* name)
-        vector[double] getStateVector(char* name)
-        void setStateVector(char*, vector[double])
+        vector[double] getStateVector(char* name) except +
+        void setStateVector(char*, vector[double]) except +
         map[string,string] getStateDescriptionMap()
 
         vector[string] getScalarDerNames()
         vector[string] getDerVectorNames()
         double getDer(char* name)
-        vector[double] getDerVector(char* name)
-        void setDerVector(char*, vector[double])
+        vector[double] getDerVector(char* name) except +
+        void setDerVector(char*, vector[double]) except +
         map[string,string] getDerDescriptionMap()
 
         void store(char* name)
