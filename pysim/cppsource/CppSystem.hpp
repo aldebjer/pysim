@@ -215,7 +215,7 @@ private:
     double nextUpdateTime;
     bool isDiscrete;
 
-    std::auto_ptr<StoreHandler> storeHandlerP;
+    std::unique_ptr<StoreHandler> storeHandlerP;
 
 
 
