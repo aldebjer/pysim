@@ -7,45 +7,62 @@ import numpy as np
 
 from pysim.simulation import Sim
 
+import pysim.cythonsystem
+
 from pysim.systems import Adder3D
 from pysim.systems import VanDerPol
 from pysim.systems import ReadTextInput
 from pysim.systems import DiscretePID
-from pysim.systems import RigidBody
+
+class PythonAdder3D(pysim.cythonsystem.Sys):
+    """Class used in testing, equivalent to the c++ Adder3D"""
+
+    def __init__(self):
+        self.add_input("input1",3)
+        self.add_input("input2",3)
+        self.inputs.input1 = [0.0, 0.0, 0.0]
+        self.inputs.input2 = [0.0, 0.0, 0.0]
+        self.add_output("output1",3)
+        self.outputs.output1 = [0.0 ,0.0 ,0.0]
+
+    def do_step(self,dummy):
+        i1 = np.array(self.inputs.input1)
+        i2 = np.array(self.inputs.input2)
+        self.outputs.output1 = i1+i2
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
-def test_invalid_inputname():
+@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
+def test_invalid_inputname(sys):
     """Test that an AttributeError is thrown if asking for a parameter that
     does not exist
     """
-    sys = Adder3D()
     with pytest.raises(AttributeError):
         dummy = sys.inputs.xyxyxy
 
-def test_invalid_outputname():
+@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
+def test_invalid_outputname(sys):
     """Test that an AttributeError is thrown if asking for a variable that
     does not exist
     """
-    sys = Adder3D()
     with pytest.raises(AttributeError):
         dummy = sys.inputs.xyxyxy
 
-def test_invalid_input_dimension():
+@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
+def test_invalid_input_dimension(sys):
     """Test that an ValueError is thrown if the number of elements in the
     parameter vector does not correspond with the number of values in the
     vector that it is being set to.
     """
-    sys = RigidBody()
     array2d = np.array((0.0, 0.0))
     with pytest.raises(ValueError):
-        sys.inputs.force = array2d
+        sys.inputs.input1 = array2d
 
-def test_invalid_vectorinput_type():
+@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
+def test_invalid_vectorinput_type(sys):
     """Test that an TypeError is thrown when trying to set a vector parameter
     to a scalar.
     """
-    sys = Adder3D()
     with pytest.raises(TypeError):
         sys.inputs.input1 = 1
 
@@ -58,9 +75,10 @@ def test_invalid_input_type():
     with pytest.raises(TypeError):
         sys.inputs.a = array2d
 
-def test_par_init():
+
+@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
+def test_par_init(sys):
     """Tests that the par arrays are accessible and equal to 0"""
-    sys = Adder3D()
     x = sys.inputs.input1
     refarray = np.array((0.0, 0.0, 0.0))
     assert np.array_equal(x, refarray)
@@ -74,9 +92,9 @@ def test_input_scalar_default():
     sys.inputs.a = 2.0
     assert a == a_def1
 
-def test_input_array_change():
+@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
+def test_input_array_change(sys):
     """Tests that it is possible to change input array"""
-    sys = Adder3D()
     sys.inputs.input1 = (1.0, 2.0, 3.0)
     refarray = np.array((1.0, 2.0, 3.0))
     x = sys.inputs.input1
@@ -113,9 +131,9 @@ def test_getinputdoc():
     found = re.search(comparestr,s,re.MULTILINE)
     assert found
 
-def test_output_vector_init():
+@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
+def test_output_vector_init(sys):
     """Tests that the output arrays are accessible and equal to 0"""
-    sys = Adder3D()
     x = sys.outputs.output1
     refarray = np.array((0.0, 0.0, 0.0))
     assert np.array_equal(x, refarray)
@@ -126,13 +144,13 @@ def test_output_scalar_init():
     x = sys.outputs.outsig
     assert np.array_equal(x, 0)
 
-def test_output_change():
+@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
+def test_output_change(sys):
     """Tests that it is possible to change input array.
     To make sure that the input is actually used in the simulation
     this is done by setting a input, run a simulation and
     see that the output value has changed.
     """
-    sys = Adder3D()
     refarray1 = np.array((0.0, 0.0, 0.0))
     inputarray = (1.0, 2.0, 3.0)
     sys.inputs.input1 = inputarray
