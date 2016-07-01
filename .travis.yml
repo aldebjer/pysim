@@ -4,21 +4,14 @@
 
 notifications:
   email: false
+  
 language: c
-sudo: required
-dist: trusty
-env:
-    - PYTHON=python3 PYSUF='3' PYVER=3.4
-install:
-    - sudo apt-get update
-    - sudo apt-get install -y libboost-all-dev
-    - sudo apt-get install $PYTHON-dev
-    - sudo apt-get install $PYTHON-pkg-resources
-    - sudo apt-get install $PYTHON-setuptools
-    - sudo apt-get install $PYTHON-numpy
-    - sudo apt-get install $PYTHON-nose
-    - sudo apt-get -y install $PYTHON-pip
-    - sudo pip$PYSUF install -r requirements.txt
-    - sudo $PYTHON setup.py install
+
+services:
+ - docker
+
+before_install:
+ - docker pull aldebjer/pysim-build
+
 script:
-    - $PYTHON -m pytest pysim/tests
+ - docker run -v $PWD:/pysim -w /pysim aldebjer/pysim-build /bin/bash -c "pip3 install -r requirements.txt; python3 setup.py pytest"
