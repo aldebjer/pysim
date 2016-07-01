@@ -2,21 +2,21 @@
 """
 import numpy as np
 
-from nose.tools import raises
+import pytest
 
 from pysim.simulation import Sim
 from pysim.systems import VanDerPol, SquareWave, RigidBody
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
-@raises(ValueError)
 def test_storetwice():
     """Test that it is not possible to store a variable twice. If that
     happens a ValueErrorshould be raised.
     """
     sys = VanDerPol()
     sys.store("x")
-    sys.store("x")
+    with pytest.raises(ValueError):
+        sys.store("x")
 
 def test_store_state():
     """Test that it is possible to store a state"""

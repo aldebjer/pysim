@@ -2,7 +2,7 @@
 """
 import re
 
-from nose.tools import raises
+import pytest
 import numpy as np
 
 from pysim.simulation import Sim
@@ -15,23 +15,22 @@ from pysim.systems import RigidBody
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
-@raises(AttributeError)
 def test_invalid_inputname():
     """Test that an AttributeError is thrown if asking for a parameter that
     does not exist
     """
     sys = Adder3D()
-    dummy = sys.inputs.xyxyxy
+    with pytest.raises(AttributeError):
+        dummy = sys.inputs.xyxyxy
 
-@raises(AttributeError)
 def test_invalid_outputname():
     """Test that an AttributeError is thrown if asking for a variable that
     does not exist
     """
     sys = Adder3D()
-    dummy = sys.inputs.xyxyxy
+    with pytest.raises(AttributeError):
+        dummy = sys.inputs.xyxyxy
 
-@raises(ValueError)
 def test_invalid_input_dimension():
     """Test that an ValueError is thrown if the number of elements in the
     parameter vector does not correspond with the number of values in the
@@ -39,24 +38,25 @@ def test_invalid_input_dimension():
     """
     sys = RigidBody()
     array2d = np.array((0.0, 0.0))
-    sys.inputs.force = array2d
+    with pytest.raises(ValueError):
+        sys.inputs.force = array2d
 
-@raises(TypeError)
 def test_invalid_vectorinput_type():
     """Test that an TypeError is thrown when trying to set a vector parameter
     to a scalar.
     """
     sys = Adder3D()
-    sys.inputs.input1 = 1
+    with pytest.raises(TypeError):
+        sys.inputs.input1 = 1
 
-@raises(TypeError)
 def test_invalid_input_type():
     """Test that an TypeError is thrown when trying to set a scalar parameter
     to a vector value.
     """
     sys = VanDerPol()
     array2d = np.array((0.0, 0.0))
-    sys.inputs.a = array2d
+    with pytest.raises(TypeError):
+        sys.inputs.a = array2d
 
 def test_par_init():
     """Tests that the par arrays are accessible and equal to 0"""
