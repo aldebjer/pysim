@@ -7,18 +7,9 @@ __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
 def test():
     """Runs all the tests for pysim"""
-    import os
-    import nose
+    import pytest
 
-    # find the directory where the test package lives
-    from . import tests
-    directory = os.path.dirname(tests.__file__)
-
-    # get the name of the test package
-    argv = ['nosetests', '--exe', directory]
-
-    # run nose
     try:
-        return nose.main(argv=argv)
+        return pytest.main("--pyargs pysim")
     except SystemExit as e:
         return e.code
