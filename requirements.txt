@@ -1,5 +1,4 @@
 numpy
 cython
-nose
 pytest
 pytest-runner
