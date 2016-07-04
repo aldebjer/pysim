@@ -45,6 +45,15 @@ std::vector<std::string>  CommonSystemImpl::getInputVectorNames() {
     return names;
 };
 
+void CommonSystemImpl::setScalarInput(char* name, double value) {
+    if (d_ptr->input_scalars.count(name) < 1) {
+        char errmsg[50];
+        snprintf(errmsg, 50, "Could not find: %s", name);
+        throw std::invalid_argument(errmsg);
+    }
+    *(d_ptr->input_scalars.at(name)) = value;
+}
+
 void CommonSystemImpl::setInputVector(char* name, std::vector<double> value) {
     if (d_ptr->input_vectors.count(name) > 0) {
         auto bv = d_ptr->input_vectors[name];
@@ -59,6 +68,14 @@ void CommonSystemImpl::setInputVector(char* name, std::vector<double> value) {
     }
 
 }
+
+double CommonSystemImpl::getScalarInput(char* name) {
+    if (d_ptr->input_scalars.count(name) < 1) {
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+    return *(d_ptr->input_scalars.at(name));
+};
 
 std::vector<double> CommonSystemImpl::getInputVector(char* name) {
     if (d_ptr->input_vectors.count(name) > 0) {
@@ -77,7 +94,7 @@ std::vector<double> CommonSystemImpl::getInputVector(char* name) {
 //     Output handling
 //
 //////////////////////////////
-std::vector<std::string> CommonSystemImpl::getOutputNames() {
+std::vector<std::string> CommonSystemImpl::getScalarOutputNames() {
     std::vector<std::string> names;
     for (auto i = d_ptr->output_scalars.cbegin(); i != d_ptr->output_scalars.cend(); ++i) {
         names.push_back(i->first);
@@ -93,7 +110,7 @@ std::vector<std::string> CommonSystemImpl::getOutputVectorNames() {
     return names;
 }
 
-double CommonSystemImpl::getOutput(char* name) {
+double CommonSystemImpl::getScalarOutput(char* name) {
     if (d_ptr->output_scalars.count(name) < 1) {
 
         std::string errstr = str(boost::format("Could not find: %1%") % name);
@@ -112,6 +129,15 @@ std::vector<double> CommonSystemImpl::getOutputVector(char* name) {
         std::string errstr = str(boost::format("Could not find: %1%") % name);
         throw std::invalid_argument(errstr);
     }
+}
+
+void CommonSystemImpl::setScalarOutput(char* name, double value) {
+    if (d_ptr->output_scalars.count(name) < 1) {
+        char errmsg[50];
+        snprintf(errmsg, 50, "Could not find: %s", name);
+        throw std::invalid_argument(errmsg);
+    }
+    *(d_ptr->output_scalars.at(name)) = value;
 }
 
 void CommonSystemImpl::setOutputVector(char* name, std::vector<double> value) {

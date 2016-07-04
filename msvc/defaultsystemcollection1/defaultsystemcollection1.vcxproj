@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Adder.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Adder3D.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\DiscretePID.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Factory.cpp" />
@@ -25,6 +26,7 @@
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\defaultsystemcollection1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Adder.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Adder3D.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\DiscretePID.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Factory.hpp" />

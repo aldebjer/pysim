@@ -25,13 +25,21 @@ bool CythonSystemImpl::getDiscrete() { return false; }
 bool CythonSystemImpl::do_comparison() { return false; }
 
 void CythonSystemImpl::add_input_vector(std::string name, size_t length){
-    d_ptr->input_vectors[name] = new pysim::vector(length);
-    d_ptr->input_descriptions[name] = std::string("No Description"); //TODO add descriptions in call
+    if (length == 1) {
+        d_ptr->input_scalars[name] = new double(0);
+    } else {
+        d_ptr->input_vectors[name] = new pysim::vector(length,0.0);
+        d_ptr->input_descriptions[name] = std::string("No Description"); //TODO add descriptions in call
+    }
 }
 
 void CythonSystemImpl::add_output_vector(std::string name, size_t length) {
-    d_ptr->output_vectors[name] = new pysim::vector(length);
-    d_ptr->output_descriptions[name] = std::string("No Description"); //TODO add descriptions in call
+    if (length == 1) {
+        d_ptr->output_scalars[name] = new double(0);
+    } else {
+        d_ptr->output_vectors[name] = new pysim::vector(length);
+        d_ptr->output_descriptions[name] = std::string("No Description"); //TODO add descriptions in call
+    }
 }
 
 void CythonSystemImpl::add_state_vector(std::string statename, std::string dername, size_t length) {

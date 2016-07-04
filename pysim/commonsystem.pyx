@@ -63,24 +63,37 @@ cdef class Inputs:
         return p
 
     def __dir__(self):
+        scalarnames = self._c_sys.getScalarInputNames()
+        scalarnames_uc = [s.decode('utf-8') for s in scalarnames]
         vectornames = self._c_sys.getInputVectorNames()
-        return vectornames
+        vectornames_uc = [s.decode('utf-8') for s in vectornames]
+        return scalarnames_uc+vectornames_uc
+
     def __getattr__(self,name):
         bs = bytes(name,'utf-8')
         allvectornames =  list(self._c_sys.getInputVectorNames())
+        allscalarnames =  list(self._c_sys.getScalarInputNames())
         if bs in allvectornames:
             return self._c_sys.getInputVector(bs)
+        elif bs in allscalarnames:
+            return self._c_sys.getScalarInput(bs)
         else:
             raise AttributeError("No input {} in system".format(name))
 
     def __setattr__(self,name,value):
         bs = bytes(name,'utf-8')
         allvectornames =  list(self._c_sys.getInputVectorNames())
+        allscalarnames =  list(self._c_sys.getScalarInputNames())
         if bs in allvectornames:
             try:
                 self._c_sys.setInputVector(bs,value)
             except TypeError:
                 raise TypeError("Input '{}' is a vector".format(name))
+        elif bs in allscalarnames:
+            try:
+                self._c_sys.setScalarInput(bs,value)
+            except TypeError:
+                raise TypeError("Input '{}' is a scalar".format(name))
         else:
             raise AttributeError("No input {} in system".format(name))
 
@@ -101,25 +114,37 @@ cdef class Outputs:
         return p
 
     def __dir__(self):
+        scalarnames = self._c_sys.getScalarOutputNames()
+        scalarnames_uc = [s.decode('utf-8') for s in scalarnames]
         vectornames = self._c_sys.getOutputVectorNames()
-        return vectornames
+        vectornames_uc = [s.decode('utf-8') for s in vectornames]
+        return scalarnames_uc+vectornames_uc
 
     def __getattr__(self,name):
         bs = bytes(name,'utf-8')
         allvectornames =  list(self._c_sys.getOutputVectorNames())
+        allscalarnames =  list(self._c_sys.getScalarOutputNames())
         if bs in allvectornames:
             return self._c_sys.getOutputVector(bs)
+        elif bs in allscalarnames:
+            return self._c_sys.getScalarOutput(bs)
         else:
             raise AttributeError("No output {} in system".format(name))
 
     def __setattr__(self,name,value):
         bs = bytes(name,'utf-8')
         allvectornames =  list(self._c_sys.getOutputVectorNames())
+        allscalarnames =  list(self._c_sys.getScalarOutputNames())
         if bs in allvectornames:
             try:
                 self._c_sys.setOutputVector(bs,value)
             except TypeError:
                 raise TypeError("Output '{}' is a vector".format(name))
+        elif bs in allscalarnames:
+            try:
+                self._c_sys.setScalarOutput(bs,value)
+            except TypeError:
+                raise TypeError("Output '{}' is a scalar".format(name))
         else:
             raise AttributeError("No output {} in system".format(name))
 

@@ -29,15 +29,18 @@ public:
     //Input handling
     std::vector<std::string> getScalarInputNames();
     std::vector<std::string> getInputVectorNames();
-    std::vector<double> getInputVector(char* name);
+    void setScalarInput(char* name, double value);
     void setInputVector(char* name, std::vector<double> value);
+    double getScalarInput(char* name);
+    std::vector<double> getInputVector(char* name);
     std::map<std::string, std::string> getInputDescriptionMap();
 
     //Output handling
-    std::vector<std::string> getOutputNames();
+    std::vector<std::string> getScalarOutputNames();
     std::vector<std::string> getOutputVectorNames();
-    double getOutput(char* name);
+    double getScalarOutput(char* name);
     std::vector<double> getOutputVector(char* name);
+    void setScalarOutput(char* name, double value);
     void setOutputVector(char* name, std::vector<double> value);
     std::map<std::string, std::string> getOutputDescriptionMap();
 

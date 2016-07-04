@@ -35,11 +35,11 @@ cdef class Sys:
         dername_bytes = bytes(dername,'utf-8')
         self._c_sys.add_state_vector(statename_bytes,dername_bytes,dimensions)
 
-    def add_input(self, name, size):
+    def add_input(self, name, size = 1):
         bs = bytes(name,'utf-8')
         self._c_sys.add_input_vector(bs,size)
 
-    def add_output(self, name, size):
+    def add_output(self, name, size = 1):
         bs = bytes(name,'utf-8')
         self._c_sys.add_output_vector(bs,size)
 

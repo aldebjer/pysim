@@ -7,11 +7,17 @@ cdef extern from "CommonSystemImpl.hpp":
         vector[string] getInputVectorNames()
         vector[double] getInputVector(char* name) except +
         void setInputVector(char*, vector[double]) except +
+        vector[string] getScalarInputNames()
+        void setScalarInput(char*, double) except +
+        double getScalarInput(char*) except +
         map[string,string] getInputDescriptionMap()
 
         vector[string] getOutputVectorNames()
         vector[double] getOutputVector(char* name) except +
         void setOutputVector(char*, vector[double]) except +
+        vector[string] getScalarOutputNames()
+        void setScalarOutput(char*, double) except +
+        double getScalarOutput(char*) except +
         map[string,string] getOutputDescriptionMap()
 
         vector[string] getScalarStatetNames()
