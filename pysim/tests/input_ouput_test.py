@@ -32,37 +32,41 @@ class PythonAdder3D(pysim.cythonsystem.Sys):
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
-@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
-def test_invalid_inputname(sys):
+@pytest.mark.parametrize("AdderClass",[Adder3D,PythonAdder3D])
+def test_invalid_inputname(AdderClass):
     """Test that an AttributeError is thrown if asking for a parameter that
     does not exist
     """
+    sys = AdderClass()
     with pytest.raises(AttributeError):
         dummy = sys.inputs.xyxyxy
 
-@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
-def test_invalid_outputname(sys):
+@pytest.mark.parametrize("AdderClass",[Adder3D,PythonAdder3D])
+def test_invalid_outputname(AdderClass):
     """Test that an AttributeError is thrown if asking for a variable that
     does not exist
     """
+    sys = AdderClass()
     with pytest.raises(AttributeError):
         dummy = sys.inputs.xyxyxy
 
-@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
-def test_invalid_input_dimension(sys):
+@pytest.mark.parametrize("AdderClass",[Adder3D,PythonAdder3D])
+def test_invalid_input_dimension(AdderClass):
     """Test that an ValueError is thrown if the number of elements in the
     parameter vector does not correspond with the number of values in the
     vector that it is being set to.
     """
+    sys = AdderClass()
     array2d = np.array((0.0, 0.0))
     with pytest.raises(ValueError):
         sys.inputs.input1 = array2d
 
-@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
-def test_invalid_vectorinput_type(sys):
+@pytest.mark.parametrize("AdderClass",[Adder3D,PythonAdder3D])
+def test_invalid_vectorinput_type(AdderClass):
     """Test that an TypeError is thrown when trying to set a vector parameter
     to a scalar.
     """
+    sys = AdderClass()
     with pytest.raises(TypeError):
         sys.inputs.input1 = 1
 
@@ -76,9 +80,10 @@ def test_invalid_input_type():
         sys.inputs.a = array2d
 
 
-@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
-def test_par_init(sys):
+@pytest.mark.parametrize("AdderClass",[Adder3D,PythonAdder3D])
+def test_par_init(AdderClass):
     """Tests that the par arrays are accessible and equal to 0"""
+    sys = AdderClass()
     x = sys.inputs.input1
     refarray = np.array((0.0, 0.0, 0.0))
     assert np.array_equal(x, refarray)
@@ -92,9 +97,10 @@ def test_input_scalar_default():
     sys.inputs.a = 2.0
     assert a == a_def1
 
-@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
-def test_input_array_change(sys):
+@pytest.mark.parametrize("AdderClass",[Adder3D,PythonAdder3D])
+def test_input_array_change(AdderClass):
     """Tests that it is possible to change input array"""
+    sys = AdderClass()
     sys.inputs.input1 = (1.0, 2.0, 3.0)
     refarray = np.array((1.0, 2.0, 3.0))
     x = sys.inputs.input1
@@ -131,9 +137,10 @@ def test_getinputdoc():
     found = re.search(comparestr,s,re.MULTILINE)
     assert found
 
-@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
-def test_output_vector_init(sys):
+@pytest.mark.parametrize("AdderClass",[Adder3D,PythonAdder3D])
+def test_output_vector_init(AdderClass):
     """Tests that the output arrays are accessible and equal to 0"""
+    sys = AdderClass()
     x = sys.outputs.output1
     refarray = np.array((0.0, 0.0, 0.0))
     assert np.array_equal(x, refarray)
@@ -144,13 +151,14 @@ def test_output_scalar_init():
     x = sys.outputs.outsig
     assert np.array_equal(x, 0)
 
-@pytest.mark.parametrize("sys",[Adder3D(),PythonAdder3D()])
-def test_output_change(sys):
+@pytest.mark.parametrize("AdderClass",[Adder3D,PythonAdder3D])
+def test_output_change(AdderClass):
     """Tests that it is possible to change input array.
     To make sure that the input is actually used in the simulation
     this is done by setting a input, run a simulation and
     see that the output value has changed.
     """
+    sys = AdderClass()
     refarray1 = np.array((0.0, 0.0, 0.0))
     inputarray = (1.0, 2.0, 3.0)
     sys.inputs.input1 = inputarray
