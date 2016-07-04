@@ -170,13 +170,31 @@ def test_output_change(AdderClass):
     x2 = sys.outputs.output1
     assert np.array_equal(x2, inputarray)
 
-def test_connected_system():
+def test_oldcpp_connected_system():
     """Check that it is possible to connect systems to each other 
     with boost vector outputs/inputs"""
     sys1 = Adder3D()
     sys2 = Adder3D()
     sys1.inputs.input1 = [1,2,3]
     sys1.connect("output1",sys2,"input1")
+    sim = Sim()
+    sim.add_system(sys1)
+    sim.add_system(sys2)
+    assert np.all(sys2.outputs.output1 == [0.0, 0.0, 0.0])
+    sim.simulate(1,0.1)
+    assert np.all(sys2.outputs.output1 == [1.0, 2.0, 3.0])
+
+@pytest.mark.parametrize("AdderClass1,AdderClass2",
+                         [#(Adder3D,Adder3D),
+                          (PythonAdder3D,PythonAdder3D)
+                         ])
+def test_connected_system(AdderClass1,AdderClass2):
+    """Check that it is possible to connect systems to each other 
+    with boost vector outputs/inputs"""
+    sys1 = AdderClass1()
+    sys2 = AdderClass2()
+    sys1.inputs.input1 = [1,2,3]
+    sys1.connections.connect("output1",sys2,"input1")
     sim = Sim()
     sim.add_system(sys1)
     sim.add_system(sys2)
