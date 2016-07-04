@@ -10,6 +10,7 @@ __pycache__/
 build/
 dist/
 pysim.egg-info/
+.cache/
 
 #cython generated files
 pysim/simulation.cpp
