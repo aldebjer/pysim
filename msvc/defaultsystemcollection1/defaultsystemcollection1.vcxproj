@@ -36,7 +36,6 @@
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ReadTextInput.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\RigidBody.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ScalarAdder.h" />
-    <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\SpringDamper.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\SquareWave.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\VanDerPol.h" />
   </ItemGroup>

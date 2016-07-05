@@ -68,9 +68,6 @@
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\PredatorPrey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\SpringDamper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\SquareWave.h">
       <Filter>Header Files</Filter>
     </ClInclude>
