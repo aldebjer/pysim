@@ -56,11 +56,6 @@ def test_store_output():
     sys = SquareWave()
     sys.store("signal")
 
-    #It should be ok to access internal in tests only
-    # pylint: disable=protected-access
-    storenamelist = sys._getStoreNames()
-
-    assert storenamelist == ['signal']
     sim.add_system(sys)
     sim.simulate(10, 0.1)
     res = sys.res.signal
@@ -135,6 +130,3 @@ def test_interval_store(test_class):
     reftime = np.linspace(0,2,11)
     simtime = sys.res.time
     assert np.all(np.abs(simtime-reftime) <= np.finfo(float).eps)
-
-if __name__ == "__main__":
-    test_store_input()

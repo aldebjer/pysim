@@ -4,6 +4,8 @@
 from pysim.cythonsystem import Sys
 
 class VanDerPol(Sys):
+    """Simple example of a class representing a VanDerPol oscillator.
+    """
     def __init__(self):
         self.add_state("x", "dx",1)
         self.add_state("y", "dy",1)
@@ -14,7 +16,9 @@ class VanDerPol(Sys):
         self.states.x = 1.0
         self.states.y = 0.0
 
-    def do_step(self,time):
+    def do_step(self,dummy):
+        """Perform a timestep by implmenting the VanDerPol equations"""
+        
         a = self.inputs.a
         b = self.inputs.b
         x = self.states.x

@@ -5,8 +5,6 @@ from unittest import TestCase
 import numpy as np
 from numpy import cos, sin, sqrt
 
-import pysim.cythonsystem
-
 from pysim.simulation import Sim
 from pysim.simulation import Runge_Kutta_4
 from pysim.simulation import Cash_Karp
@@ -14,7 +12,7 @@ from pysim.simulation import Dormand_Prince_5
 
 from pysim.systems import MassSpringDamper
 
-from pysim.systems.python_systems import MassSpringDamper as PythonMassSpringDamper
+from pysim.systems.python_systems import MassSpringDamper as PyMassSpringDamper
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
@@ -140,7 +138,7 @@ class CythonIntegrationTest(IntegrationTest):
 
     def setUp(self):
         self.sim = Sim()
-        self.sys = PythonMassSpringDamper()
+        self.sys = PyMassSpringDamper()
         self.sys.store("x1")
         self.sim.add_system(self.sys)
         self.integrationlength = 50
