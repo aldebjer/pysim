@@ -10,15 +10,6 @@ from pysim.systems.python_systems import VanDerPol as PythonVanDerPol
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
-def test_storetwice():
-    """Test that it is not possible to store a variable twice. If that
-    happens a ValueErrorshould be raised.
-    """
-    sys = VanDerPol()
-    sys.store("x")
-    with pytest.raises(ValueError):
-        sys.store("x")
-
 @pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
 def test_store_state(test_class):
     """Test that it is possible to store a state"""
@@ -32,34 +23,26 @@ def test_store_state(test_class):
     assert isinstance(xres, np.ndarray)
     assert xres.size == 101
 
-def test_store_der():
-    """Test that it is possible to store a state"""
+@pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
+def test_store_der(test_class):
+    """Test that it is possible to store a der"""
     sim = Sim()
-    sys = VanDerPol()
+    sys = test_class()
     sys.store("dx")
 
-    #It should be ok to access internal in tests only
-    # pylint: disable=protected-access
-    storenamelist = sys._getStoreNames()
-
-    assert storenamelist == ['dx']
     sim.add_system(sys)
     sim.simulate(10, 0.1)
     dxres = sys.res.dx
     assert isinstance(dxres, np.ndarray)
     assert dxres.size == 101
 
-def test_store_input():
-    """Test that it is possible to store a state"""
+@pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
+def test_store_input(test_class):
+    """Test that it is possible to store an input"""
     sim = Sim()
-    sys = VanDerPol()
+    sys = test_class()
     sys.store("a")
 
-    #It should be ok to access internal in tests only
-    # pylint: disable=protected-access
-    storenamelist = sys._getStoreNames()
-
-    assert storenamelist == ['a']
     sim.add_system(sys)
     sim.simulate(10, 0.1)
     ares = sys.res.a
@@ -95,27 +78,26 @@ def test_store_vector():
     diff = sys.res.position[-1,:]-sys.states.position
     assert np.all(diff == np.array([0.0, 0.0, 0.0]))
 
-def test_store_after_added_system():
+@pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
+def test_store_after_added_system(test_class):
     """Tests that it is possible to first add a system to a simulation and
     then store parameters.
     """
     sim = Sim()
-    sys = VanDerPol()
+    sys = test_class()
     sim.add_system(sys)
     sys.store("x")
 
-    #It should be ok to access internal in tests only
-    # pylint: disable=protected-access
-    assert sys._getStoreNames() == ['x']
     sim.simulate(10, 0.1)
     ressize = sys.res.x.size
     assert ressize == 101
 
-def test_time_store():
+@pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
+def test_time_store(test_class):
     """Check that the time is stored, and that the stored values includes
     both the beginning and the end of the simulation"""
     sim = Sim()
-    sys = VanDerPol()
+    sys = test_class()
     sim.add_system(sys)
 
     sim.simulate(2, 0.1)
@@ -123,12 +105,13 @@ def test_time_store():
     simtime = sys.res.time
     assert np.all(np.abs(simtime-reftime) <= np.finfo(float).eps)
 
-def test_continue_store():
+@pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
+def test_continue_store(test_class):
     """Test that it is possible to continue a simulation without storing
     values twice.
     """
     sim = Sim()
-    sys = VanDerPol()
+    sys = test_class()
     sim.add_system(sys)
 
     sys.store("x")
@@ -138,12 +121,13 @@ def test_continue_store():
     simtime = sys.res.time
     assert np.all(np.abs(simtime-reftime) <= np.finfo(float).eps)
 
-def test_interval_store():
+@pytest.mark.parametrize("test_class",[VanDerPol])
+def test_interval_store(test_class):
     """Check that it is possible to change the interval between stored
     values.
     """
     sim = Sim()
-    sys = VanDerPol()
+    sys = test_class()
     sys.set_store_interval(0.2)
     sim.add_system(sys)
 
