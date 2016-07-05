@@ -116,7 +116,7 @@ def test_continue_store(test_class):
     simtime = sys.res.time
     assert np.all(np.abs(simtime-reftime) <= np.finfo(float).eps)
 
-@pytest.mark.parametrize("test_class",[VanDerPol])
+@pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
 def test_interval_store(test_class):
     """Check that it is possible to change the interval between stored
     values.

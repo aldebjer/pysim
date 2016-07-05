@@ -12,6 +12,9 @@ cdef class CommonSystem:
         bs = bytes(name,'utf-8')
         self._c_s.store(bs)
 
+    def set_store_interval(self, interval):
+        self._c_s.getStoreHandlerP().setStoreInterval(interval)
+
 cdef class Results:
 
     @staticmethod 
