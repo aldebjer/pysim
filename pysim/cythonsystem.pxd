@@ -8,8 +8,6 @@ from commonsystem cimport CommonSystem
 
 cdef extern from "CythonSystemImpl.hpp":
     cdef cppclass CythonSystemImpl(CommonSystemImpl):
-        vector[double*] states
-        vector[double*] ders
         void* sysp
         void add_input_vector(string, size_t)
         void add_output_vector(string, size_t)
