@@ -65,24 +65,46 @@ cdef class Parameters:
     def __dir__(self):
         parstringnames = self._c_sys.getParStringNames()
         parstringnames_uc = [s.decode('utf-8') for s in parstringnames]
+        parmapnames = self._c_sys.getParMapNames()
+        parmapnames_uc = [s.decode('utf-8') for s in parmapnames]
+        parmatrixnames = self._c_sys.getParMatrixNames()
+        parmatrixnames_uc = [s.decode('utf-8') for s in parmatrixnames]
         return parstringnames_uc
 
     def __getattr__(self,name):
         bs = bytes(name,'utf-8')
-        allparstringnames =  list(self._c_sys.getParStringNames())
-        if bs in allparstringnames:
+        parstringnames =  list(self._c_sys.getParStringNames())
+        parmapnames = list(self._c_sys.getParMapNames())
+        parmatrixnames = list(self._c_sys.getParMatrixNames())
+        if bs in parstringnames:
             return self._c_sys.getParString(bs)
+        elif bs in parmapnames:
+            return self._c_sys.getParMap(bs)
+        elif bs in parmatrixnames:
+            return self._c_sys.getParMatrix(bs)
         else:
             raise AttributeError("No parameter {} in system".format(name))
 
     def __setattr__(self,name,value):
         bs = bytes(name,'utf-8')
         parstringnames =  list(self._c_sys.getParStringNames())
+        parmapnames = list(self._c_sys.getParMapNames())
+        parmatrixnames = list(self._c_sys.getParMatrixNames())
         if bs in parstringnames:
             try:
                 self._c_sys.setParString(bs,value)
             except TypeError:
-                raise TypeError("Input '{}' is a vector".format(name))
+                raise TypeError("Parameter '{}' is a string".format(name))
+        elif bs in parmapnames:
+            try:
+                self._c_sys.setParMap(bs,value)
+            except TypeError:
+                raise TypeError("Parameter '{}' is a map".format(name))
+        elif bs in parmatrixnames:
+            try:
+                self._c_sys.setParMatrix(bs,value)
+            except TypeError:
+                raise TypeError("Parameter '{}' is a matrix".format(name))
         else:
             raise AttributeError("No input {} in system".format(name))
 

@@ -28,8 +28,15 @@ public:
 
     //Parameter handling
     std::vector<std::string> getParStringNames();
+    std::vector<std::string> getParMatrixNames();
+    std::vector<std::string> getParMapNames();
     std::string getParString(char* name);
     void setParString(char* name, std::string value);
+    std::vector<std::vector<double>> getParMatrix(char* name);
+    void setParMatrix(char* name, std::vector<std::vector<double>> value);
+    std::map<std::string, double> getParMap(char* name);
+    void setParMap(char* name, std::map<std::string, double> value);
+
     std::map<std::string, std::string> getParDescriptionMap();
 
     //Input handling

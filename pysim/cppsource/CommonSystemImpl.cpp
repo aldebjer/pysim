@@ -31,6 +31,27 @@ std::vector<std::string> CommonSystemImpl::getParStringNames() {
     }
     return names;
 }
+
+std::vector<std::string> CommonSystemImpl::getParMatrixNames() {
+    std::vector<std::string> names;
+    for (auto i = d_ptr->par_matrices.cbegin(); i != d_ptr->par_matrices.cend(); ++i) {
+        names.push_back(i->first);
+    }
+    for (auto i = d_ptr->par_boost_matrices.cbegin(); i != d_ptr->par_boost_matrices.cend(); ++i) {
+        names.push_back(i->first);
+    }
+    return names;
+}
+
+std::vector<std::string> CommonSystemImpl::getParMapNames() {
+    std::vector<std::string> names;
+    for (auto i = d_ptr->par_maps.cbegin(); i != d_ptr->par_maps.cend(); ++i) {
+        names.push_back(i->first);
+    }
+    return names;
+}
+
+
 std::string CommonSystemImpl::getParString(char* name) {
     if (d_ptr->par_strings.count(name) < 1) {
         std::string errstr = str(boost::format("Could not find: %1%") % name);
@@ -46,6 +67,78 @@ void CommonSystemImpl::setParString(char* name, std::string value) {
         throw std::invalid_argument(errmsg);
     }
     *(d_ptr->par_strings.at(name)) = value;
+}
+
+std::vector<std::vector<double>> CommonSystemImpl::getParMatrix(char* name) {
+    std::vector<std::vector<double>> out;
+    if (d_ptr->par_matrices.count(name) > 0) {
+        out = *d_ptr->par_matrices.at(name);
+    } else if (d_ptr->par_boost_matrices.count(name) > 0) {
+        using  boost::numeric::ublas::matrix;
+        matrix<double>* mat = d_ptr->par_boost_matrices[name];
+
+        size_t columns = mat->size2();
+        for (matrix<double>::const_iterator1 rowiter = mat->begin1(); rowiter != mat->end1(); rowiter++) {
+            std::vector<double> row(columns);
+            std::copy(rowiter.begin(), rowiter.end(), row.begin());
+            out.push_back(row);
+        }
+    } else {
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+    return out;
+}
+void CommonSystemImpl::setParMatrix(char* name, std::vector<std::vector<double>> value) {
+    using namespace boost::numeric::ublas;
+
+    if (d_ptr->par_matrices.count(name) > 0) {
+        *d_ptr->par_matrices.at(name) = value;
+    } else if (d_ptr->par_boost_matrices.count(name) > 0) {
+        matrix<double> *inputm = d_ptr->par_boost_matrices.at(name);
+
+        //Check number of rows
+        if (value.size() != inputm->size1()) {
+            std::string errstr = str(boost::format("Error: %1% shall contain %2% rows") % name % inputm->size1());
+            throw std::invalid_argument(errstr);
+        }
+
+        //Check number of columns (for each row)
+        size_t columns = inputm->size2();
+        for (auto rowiter = value.cbegin(); rowiter != value.cend(); rowiter++) {
+            if (rowiter->size() != columns) {
+                std::string errstr = str(boost::format("Error: %1% shall contain %2% columns") % name % columns);
+                throw std::invalid_argument(errstr);
+            }
+        }
+
+        auto m1iter = inputm->begin1();
+        for (auto rowiter = value.cbegin(); rowiter != value.cend(); rowiter++) {
+            std::copy(rowiter->begin(), rowiter->end(), m1iter.begin());
+            m1iter++;
+        }
+    } else {
+        char errmsg[50];
+        snprintf(errmsg, 50, "Could not find: %s", name);
+        throw std::invalid_argument(errmsg);
+    }
+}
+
+std::map<std::string, double> CommonSystemImpl::getParMap(char* name) {
+    if (d_ptr->par_maps.count(name) < 1) {
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+    return *(d_ptr->par_maps.at(name));
+}
+
+void CommonSystemImpl::setParMap(char* name, std::map<std::string, double> value) {
+    if (d_ptr->par_maps.count(name) < 1) {
+        char errmsg[50];
+        snprintf(errmsg, 50, "Could not find: %s", name);
+        throw std::invalid_argument(errmsg);
+    }
+    *d_ptr->par_maps.at(name) = value;
 }
 
 std::map<std::string, std::string> CommonSystemImpl::getParDescriptionMap() {

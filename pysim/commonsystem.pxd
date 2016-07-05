@@ -6,9 +6,15 @@ cdef extern from "CommonSystemImpl.hpp":
     cdef cppclass CommonSystemImpl:
 
         vector[string] getParStringNames()
+        vector[string] getParMatrixNames()
+        vector[string] getParMapNames()
         void setParString(char*, string) except +
         string getParString(char*) except +
-        map[string,string] getParDescriptionMap()
+        vector[vector[double]] getParMatrix(char* name) except +
+        void setParMatrix(char* name, vector[vector[double]] value) except +
+        map[string,double] getParMap(char* name) except +
+        void setParMap(char* name, map[string,double] value) except +
+        map[string,string] getParDescriptionMap() except +
 
         vector[string] getInputVectorNames()
         vector[double] getInputVector(char* name) except +
