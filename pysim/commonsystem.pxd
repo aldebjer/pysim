@@ -4,6 +4,12 @@ from libcpp.map cimport map
 
 cdef extern from "CommonSystemImpl.hpp":
     cdef cppclass CommonSystemImpl:
+
+        vector[string] getParStringNames()
+        void setParString(char*, string) except +
+        string getParString(char*) except +
+        map[string,string] getParDescriptionMap()
+
         vector[string] getInputVectorNames()
         vector[double] getInputVector(char* name) except +
         void setInputVector(char*, vector[double]) except +
@@ -53,6 +59,11 @@ cdef extern from "StoreHandler.hpp":
 
 cdef class CommonSystem:
     cdef CommonSystemImpl * _c_s
+
+cdef class Parameters:
+    cdef CommonSystemImpl* _c_sys
+    @staticmethod
+    cdef _create(CommonSystemImpl* ptr)
 
 cdef class Inputs:
     cdef CommonSystemImpl* _c_sys

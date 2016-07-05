@@ -22,6 +22,9 @@ struct CommonSystemImplPrivate {
     std::map<std::string, std::string> state_descriptions;
     std::map<std::string, std::string> der_descriptions;
 
+    std::map<std::string, std::string*> par_strings;
+    std::map<std::string, std::string> par_descriptions;
+
     std::map<std::string, double* > input_scalars;
     std::map<std::string, pysim::vector* > input_vectors;
     std::map<std::string, std::string> input_descriptions;

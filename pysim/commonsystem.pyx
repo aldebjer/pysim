@@ -52,6 +52,43 @@ cdef class Results:
         else:
             raise AttributeError("No stored {} in system".format(name))
 
+cdef class Parameters:
+    """Contains all the parameters for the system.
+    """
+
+    @staticmethod 
+    cdef _create(CommonSystemImpl* ptr):
+        p = Parameters()
+        p._c_sys = ptr
+        return p
+
+    def __dir__(self):
+        parstringnames = self._c_sys.getParStringNames()
+        parstringnames_uc = [s.decode('utf-8') for s in parstringnames]
+        return parstringnames_uc
+
+    def __getattr__(self,name):
+        bs = bytes(name,'utf-8')
+        allparstringnames =  list(self._c_sys.getParStringNames())
+        if bs in allparstringnames:
+            return self._c_sys.getParString(bs)
+        else:
+            raise AttributeError("No parameter {} in system".format(name))
+
+    def __setattr__(self,name,value):
+        bs = bytes(name,'utf-8')
+        parstringnames =  list(self._c_sys.getParStringNames())
+        if bs in parstringnames:
+            try:
+                self._c_sys.setParString(bs,value)
+            except TypeError:
+                raise TypeError("Input '{}' is a vector".format(name))
+        else:
+            raise AttributeError("No input {} in system".format(name))
+
+    def get_description(self,varname):
+        return self._c_sys.getParDescriptionMap()[varname]
+
 cdef class Inputs:
     """Contains all the inputs for the system.
     To list the inputs use input.list()

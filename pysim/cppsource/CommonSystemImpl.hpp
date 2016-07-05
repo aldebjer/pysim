@@ -26,6 +26,12 @@ public:
     void store(char* name);
     StoreHandler* getStoreHandlerP();
 
+    //Parameter handling
+    std::vector<std::string> getParStringNames();
+    std::string getParString(char* name);
+    void setParString(char* name, std::string value);
+    std::map<std::string, std::string> getParDescriptionMap();
+
     //Input handling
     std::vector<std::string> getScalarInputNames();
     std::vector<std::string> getInputVectorNames();

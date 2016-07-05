@@ -21,6 +21,39 @@ CommonSystemImpl::~CommonSystemImpl(){
 
 //////////////////////////////
 //
+//     Parameter handling
+//
+//////////////////////////////
+std::vector<std::string> CommonSystemImpl::getParStringNames() {
+    std::vector<std::string> names;
+    for (auto i = d_ptr->par_strings.cbegin(); i != d_ptr->par_strings.cend(); ++i) {
+        names.push_back(i->first);
+    }
+    return names;
+}
+std::string CommonSystemImpl::getParString(char* name) {
+    if (d_ptr->par_strings.count(name) < 1) {
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+    std::string s(*d_ptr->par_strings.at(name));
+    return s;
+}
+void CommonSystemImpl::setParString(char* name, std::string value) {
+    if (d_ptr->par_strings.count(name) < 1) {
+        char errmsg[50];
+        snprintf(errmsg, 50, "Could not find: %s", name);
+        throw std::invalid_argument(errmsg);
+    }
+    *(d_ptr->par_strings.at(name)) = value;
+}
+
+std::map<std::string, std::string> CommonSystemImpl::getParDescriptionMap() {
+    return d_ptr->par_descriptions;
+}
+
+//////////////////////////////
+//
 //     Input handling
 //
 //////////////////////////////
