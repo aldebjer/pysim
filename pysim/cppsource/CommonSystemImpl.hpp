@@ -45,19 +45,22 @@ public:
     std::map<std::string, std::string> getOutputDescriptionMap();
 
     //State handling
-    std::vector<std::string> getScalarStatetNames();
+    std::vector<std::string> getScalarStateNames();
     std::vector<std::string> getStateVectorNames();
-    double getState(char* name);
+    double getScalarState(char* name);
     std::vector<double> getStateVector(char* name);
     void setStateVector(char* name, std::vector<double> value);
+    void setScalarState(char* name, double value);
+
     std::map<std::string, std::string> getStateDescriptionMap();
 
     //Der handling
     std::vector<std::string> getScalarDerNames();
     std::vector<std::string> getDerVectorNames();
-    double getDer(char* name);
+    double getScalarDer(char* name);
     std::vector<double> getDerVector(char* name);
     void setDerVector(char* name, std::vector<double> value);
+    void setScalarDer(char* name, double value);
     std::map<std::string, std::string> getDerDescriptionMap();
 
     void connect(char* outputname, CommonSystemImpl* inputsys, char* inputname);

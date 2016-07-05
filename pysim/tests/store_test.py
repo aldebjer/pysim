@@ -6,6 +6,7 @@ import pytest
 
 from pysim.simulation import Sim
 from pysim.systems import VanDerPol, SquareWave, RigidBody
+from pysim.systems.python_systems import VanDerPol as PythonVanDerPol
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
@@ -18,17 +19,13 @@ def test_storetwice():
     with pytest.raises(ValueError):
         sys.store("x")
 
-def test_store_state():
+@pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
+def test_store_state(test_class):
     """Test that it is possible to store a state"""
     sim = Sim()
-    sys = VanDerPol()
+    sys = test_class()
     sys.store("x")
 
-    #It should be ok to access internal in tests only
-    # pylint: disable=protected-access
-    storenamelist = sys._getStoreNames()
-
-    assert storenamelist == ['x']
     sim.add_system(sys)
     sim.simulate(10, 0.1)
     xres = sys.res.x

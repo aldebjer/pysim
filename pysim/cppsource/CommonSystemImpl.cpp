@@ -163,7 +163,7 @@ std::map<std::string, std::string> CommonSystemImpl::getOutputDescriptionMap() {
 //     State handling
 //
 //////////////////////////////
-std::vector<std::string> CommonSystemImpl::getScalarStatetNames() {
+std::vector<std::string> CommonSystemImpl::getScalarStateNames() {
     std::vector<std::string> names;
     for (auto i = d_ptr->state_scalars.cbegin(); i != d_ptr->state_scalars.cend(); ++i) {
         names.push_back(i->first);
@@ -179,7 +179,7 @@ std::vector<std::string> CommonSystemImpl::getStateVectorNames() {
     return names;
 }
 
-double CommonSystemImpl::getState(char* name) {
+double CommonSystemImpl::getScalarState(char* name) {
     if (d_ptr->state_scalars.count(name) < 1) {
 
         std::string errstr = str(boost::format("Could not find: %1%") % name);
@@ -214,6 +214,15 @@ void CommonSystemImpl::setStateVector(char* name, std::vector<double> value) {
     }
 }
 
+void CommonSystemImpl::setScalarState(char* name, double value) {
+    if (d_ptr->state_scalars.count(name) < 1) {
+        char errmsg[50];
+        snprintf(errmsg, 50, "Could not find: %s", name);
+        throw std::invalid_argument(errmsg);
+    }
+    *(d_ptr->state_scalars.at(name).stateValue) = value;
+}
+
 std::map<std::string, std::string> CommonSystemImpl::getStateDescriptionMap() {
     return  d_ptr->state_descriptions;
 }
@@ -239,7 +248,7 @@ std::vector<std::string> CommonSystemImpl::getDerVectorNames() {
     return names;
 }
 
-double CommonSystemImpl::getDer(char* name) {
+double CommonSystemImpl::getScalarDer(char* name) {
     if (d_ptr->der_scalars.count(name) < 1) {
 
         std::string errstr = str(boost::format("Could not find: %1%") % name);
@@ -272,6 +281,15 @@ void CommonSystemImpl::setDerVector(char* name, std::vector<double> value) {
         std::string errstr = str(boost::format("Could not find: %1%") % name);
         throw std::invalid_argument(errstr);
     }
+}
+
+void CommonSystemImpl::setScalarDer(char* name, double value) {
+    if (d_ptr->der_scalars.count(name) < 1) {
+        char errmsg[50];
+        snprintf(errmsg, 50, "Could not find: %s", name);
+        throw std::invalid_argument(errmsg);
+    }
+    *(d_ptr->der_scalars.at(name).derValue) = value;
 }
 
 std::map<std::string, std::string> CommonSystemImpl::getDerDescriptionMap() {

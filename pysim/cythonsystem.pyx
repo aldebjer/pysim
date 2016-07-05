@@ -30,10 +30,10 @@ cdef class Sys:
         self.connections = Connections._create(_c_sys_local)
         self.res = Results._create(_c_sys_local)
 
-    def add_state(self, statename, dername, dimensions):
+    def add_state(self, statename, dername, size = 1):
         statename_bytes = bytes(statename,'utf-8')
         dername_bytes = bytes(dername,'utf-8')
-        self._c_sys.add_state_vector(statename_bytes,dername_bytes,dimensions)
+        self._c_sys.add_state_vector(statename_bytes,dername_bytes,size)
 
     def add_input(self, name, size = 1):
         bs = bytes(name,'utf-8')

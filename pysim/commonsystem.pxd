@@ -20,18 +20,20 @@ cdef extern from "CommonSystemImpl.hpp":
         double getScalarOutput(char*) except +
         map[string,string] getOutputDescriptionMap()
 
-        vector[string] getScalarStatetNames()
         vector[string] getStateVectorNames()
-        double getState(char* name)
         vector[double] getStateVector(char* name) except +
         void setStateVector(char*, vector[double]) except +
+        vector[string] getScalarStateNames()
+        void setScalarState(char*, double) except +
+        double getScalarState(char* name)
         map[string,string] getStateDescriptionMap()
 
-        vector[string] getScalarDerNames()
         vector[string] getDerVectorNames()
-        double getDer(char* name)
         vector[double] getDerVector(char* name) except +
         void setDerVector(char*, vector[double]) except +
+        vector[string] getScalarDerNames()
+        void setScalarDer(char* name, double) except +
+        double getScalarDer(char* name)
         map[string,string] getDerDescriptionMap()
 
         void store(char* name)

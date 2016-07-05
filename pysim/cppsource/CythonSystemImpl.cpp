@@ -43,11 +43,19 @@ void CythonSystemImpl::add_output_vector(std::string name, size_t length) {
 }
 
 void CythonSystemImpl::add_state_vector(std::string statename, std::string dername, size_t length) {
-    StateType<pysim::vector* > state;
-    state.stateValue = new pysim::vector(length);
-    state.derValue = new pysim::vector(length);
-    d_ptr->state_vectors[statename] = state;
-    d_ptr->der_vectors[dername] = state;
+    if (length == 1) {
+        StateType<double* > state;
+        state.stateValue = new double(0.0);
+        state.derValue = new double(0.0);
+        d_ptr->state_scalars[statename] = state;
+        d_ptr->der_scalars[dername] = state;
+    } else {
+        StateType<pysim::vector* > state;
+        state.stateValue = new pysim::vector(length);
+        state.derValue = new pysim::vector(length);
+        d_ptr->state_vectors[statename] = state;
+        d_ptr->der_vectors[dername] = state;
+    }
     d_ptr->output_descriptions[statename] = std::string("No Description"); //TODO add descriptions in call
 }
 

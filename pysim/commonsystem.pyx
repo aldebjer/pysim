@@ -165,27 +165,39 @@ cdef class States:
         return p
 
     def __dir__(self):
+        scalarnames = self._c_sys.getScalarStateNames()
+        scalarnames_uc = [s.decode('utf-8') for s in scalarnames]
         vectornames = self._c_sys.getStateVectorNames()
-        return vectornames
+        vectornames_uc = [s.decode('utf-8') for s in vectornames]
+        return scalarnames_uc+vectornames_uc
 
     def __getattr__(self,name):
         bs = bytes(name,'utf-8')
         allvectornames =  list(self._c_sys.getStateVectorNames())
+        allscalarnames =  list(self._c_sys.getScalarStateNames())
         if bs in allvectornames:
             return self._c_sys.getStateVector(bs)
+        elif bs in allscalarnames:
+            return self._c_sys.getScalarState(bs)
         else:
-            raise AttributeError("No state {} in system".format(name))
+            raise AttributeError("No State {} in system".format(name))
 
     def __setattr__(self,name,value):
         bs = bytes(name,'utf-8')
         allvectornames =  list(self._c_sys.getStateVectorNames())
+        allscalarnames =  list(self._c_sys.getScalarStateNames())
         if bs in allvectornames:
             try:
                 self._c_sys.setStateVector(bs,value)
             except TypeError:
                 raise TypeError("State '{}' is a vector".format(name))
+        elif bs in allscalarnames:
+            try:
+                self._c_sys.setScalarState(bs,value)
+            except TypeError:
+                raise TypeError("State '{}' is a scalar".format(name))
         else:
-            raise AttributeError("No state {} in system".format(name))
+            raise AttributeError("No State {} in system".format(name))
 
     def get_description(self,varname):
         return self._c_sys.getStateDescriptionMap()[varname]
@@ -204,27 +216,39 @@ cdef class Ders:
         return p
 
     def __dir__(self):
+        scalarnames = self._c_sys.getScalarDerNames()
+        scalarnames_uc = [s.decode('utf-8') for s in scalarnames]
         vectornames = self._c_sys.getDerVectorNames()
-        return vectornames
+        vectornames_uc = [s.decode('utf-8') for s in vectornames]
+        return scalarnames_uc+vectornames_uc
 
     def __getattr__(self,name):
         bs = bytes(name,'utf-8')
         allvectornames =  list(self._c_sys.getDerVectorNames())
+        allscalarnames =  list(self._c_sys.getScalarDerNames())
         if bs in allvectornames:
             return self._c_sys.getDerVector(bs)
+        elif bs in allscalarnames:
+            return self._c_sys.getScalarDer(bs)
         else:
-            raise AttributeError("No der {} in system".format(name))
+            raise AttributeError("No Der {} in system".format(name))
 
     def __setattr__(self,name,value):
         bs = bytes(name,'utf-8')
         allvectornames =  list(self._c_sys.getDerVectorNames())
+        allscalarnames =  list(self._c_sys.getScalarDerNames())
         if bs in allvectornames:
             try:
                 self._c_sys.setDerVector(bs,value)
             except TypeError:
                 raise TypeError("Der '{}' is a vector".format(name))
+        elif bs in allscalarnames:
+            try:
+                self._c_sys.setScalarDer(bs,value)
+            except TypeError:
+                raise TypeError("Der '{}' is a scalar".format(name))
         else:
-            raise AttributeError("No der {} in system".format(name))
+            raise AttributeError("No Der {} in system".format(name))
 
     def get_description(self,varname):
         return self._c_sys.getDerDescriptionMap()[varname]
