@@ -34,19 +34,21 @@ protected:
     //
     ///////////////////////////////////////
 
-    void state(double* state, const char* stateName, double* der, const char* derName, const char* desc = "");
-    void state(pysim::vector* state, const char* stateName, pysim::vector* der, const char* derName, const char* desc = "");
-
-    void input(double* var, const char* name, const char* desc);
+    //To be pars
     void input(std::vector<double>* vars, const char* name, const char* desc);
     void input(std::vector<std::vector<double>>* vars, const char* name, const char* desc);
-    void input(pysim::vector* vars, const char* name, const char* description);
     void input(pysim::matrix* vars, const char* name, const char* description);
     void input(std::string*, const char* name, const char* description);
     void input(std::map<std::string, double>*, const char* name, const char* description);
 
+    void input(double* var, const char* name, const char* desc);
+    void input(pysim::vector* vars, const char* name, const char* description);
+
     void output(double* var, const char* name, const char* desc);
     void output(pysim::vector* vars, const char* name, const char* desc);
+
+    void state(double* state, const char* stateName, double* der, const char* derName, const char* desc = "");
+    void state(pysim::vector* state, const char* stateName, pysim::vector* der, const char* derName, const char* desc = "");
 
     void setNextUpdate(double t){ nextUpdateTime = t; };
     void setDiscrete(bool d = true) { isDiscrete = d; };
