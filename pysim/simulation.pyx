@@ -1,7 +1,6 @@
 from libcpp.vector cimport vector
 from libcpp cimport bool
-cimport cppsystem
-cimport cythonsystem
+from commonsystem cimport CommonSystem
 cimport simulatablesystem
 import json
 import importlib
@@ -60,8 +59,8 @@ cdef class Sim:
 
     def add_system(self,sys, name = None):
         """Add a system that will participate in this simulation"""
-        cdef cppsystem.Sys s
-        s = <cppsystem.Sys> (sys)
+        cdef CommonSystem s
+        s = <CommonSystem> (sys)
 
         #If no name is given give the system instance a name as per:
         #classname, classname_2, classname_3, etc.
@@ -77,17 +76,10 @@ cdef class Sim:
                         break
 
         cdef simulatablesystem.SimulatableSystem* simsysp
-        simsysp = <simulatablesystem.SimulatableSystem*> (s._c_sys)
+        simsysp = <simulatablesystem.SimulatableSystem*> (s._c_s)
         self._c_sim.addSystem(simsysp)
         self.systems[name] = sys
 
-    def add_cython_system(self,sys, name):
-        cdef cythonsystem.Sys s
-        s = <cythonsystem.Sys> (sys)
-        cdef simulatablesystem.SimulatableSystem* simsysp
-        simsysp = <simulatablesystem.SimulatableSystem*> (s._c_sys)
-        self._c_sim.addSystem(simsysp)
-        self.systems[name] = sys
 
     def get_time(self):
         """Get the current time of the simulation.

@@ -24,7 +24,7 @@ def test_read_inputfile():
 
     read_sys = ReadTextInput()
     read_sys.store("column_1")
-    read_sys.inputs.filename = file.name
+    read_sys.pars.filename = file.name
     sim = Sim()
     sim.add_system(read_sys, "InputSystem")
 

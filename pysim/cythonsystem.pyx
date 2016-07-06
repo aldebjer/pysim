@@ -30,6 +30,9 @@ cdef class Sys:
         self.connections = Connections._create(_c_sys_local)
         self.res = Results._create(_c_sys_local)
 
+    def __dealloc__(self):
+        del self._c_sys
+
     def add_state(self, statename, dername, size = 1):
         statename_bytes = bytes(statename,'utf-8')
         dername_bytes = bytes(dername,'utf-8')

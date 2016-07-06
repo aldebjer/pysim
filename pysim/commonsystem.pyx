@@ -7,6 +7,15 @@ from commonsystem cimport CommonSystemImpl
 
 np.import_array()
 
+def dictToUtf8(inputDict):
+    outputdict = {}
+    for a,b in inputDict.items():
+        key = a.decode('utf-8')
+        value = b.decode('utf-8')
+        outputdict[key]=value
+    return outputdict
+
+
 cdef class CommonSystem:
     def store(self,name):
         bs = bytes(name,'utf-8')
@@ -77,7 +86,7 @@ cdef class Parameters:
         parmapnames = list(self._c_sys.getParMapNames())
         parmatrixnames = list(self._c_sys.getParMatrixNames())
         if bs in parstringnames:
-            return self._c_sys.getParString(bs)
+            return self._c_sys.getParString(bs).decode("utf-8")
         elif bs in parmapnames:
             return self._c_sys.getParMap(bs)
         elif bs in parmatrixnames:
@@ -92,7 +101,7 @@ cdef class Parameters:
         parmatrixnames = list(self._c_sys.getParMatrixNames())
         if bs in parstringnames:
             try:
-                self._c_sys.setParString(bs,value)
+                self._c_sys.setParString(bs,bytes(value,'utf-8'))
             except TypeError:
                 raise TypeError("Parameter '{}' is a string".format(name))
         elif bs in parmapnames:
@@ -159,8 +168,41 @@ cdef class Inputs:
         else:
             raise AttributeError("No input {} in system".format(name))
 
+    def __repr__(self):
+        d = self._getInputDescriptionMap()
+        formatstring = "{:>10}  {:>8.3}  {}"
+        s = [formatstring.format("name","value","description")]
+        s.append("----------  --------  -------------")
+        for name,desc in d.items():
+            value = self.__getattr__(name)
+            printvalues = []
+            if type(value)==float:
+                printvalues = [value]
+            elif type(value[0]) == float:
+                printvalues = value
+            else:
+                printvalues = ["---"]
+            shortdesc = desc.partition('\n')[0]
+            s.append(formatstring.format(name,printvalues[0],shortdesc))
+            for v in printvalues[1:]:
+                s.append(formatstring.format("",v,""))
+        sout = "\n".join(s)
+        return sout
+
+    def find(self,word):
+        d = self._sys._getInputDescriptionMap()
+        found = False
+        for name,desc in d.items():
+            if (name.find(word) > -1) or (desc.find(word) > -1):
+                found = True
+                print("{}\t{}".format(name,desc))
+
     def get_description(self,varname):
-        return self._c_sys.getInputDescriptionMap()[varname]
+        return self._getInputDescriptionMap[varname]
+
+    def _getInputDescriptionMap(self):
+        dutf8 = dictToUtf8(self._c_sys.getInputDescriptionMap())
+        return dutf8
 
 cdef class Outputs:
     """Contains all the outputs for the system.
@@ -261,8 +303,41 @@ cdef class States:
         else:
             raise AttributeError("No State {} in system".format(name))
 
+    def __repr__(self):
+        d = self._getStateDescriptionMap()
+        formatstring = "{:>10}  {:>8.3}  {}"
+        s = [formatstring.format("name","value","description")]
+        s.append("----------  --------  -------------")
+        for name,desc in d.items():
+            value = self.__getattr__(name)
+            printvalues = []
+            if type(value)==float:
+                printvalues = [value]
+            elif type(value[0]) == float:
+                printvalues = value
+            else:
+                printvalues = ["---"]
+            shortdesc = desc.partition('\n')[0]
+            s.append(formatstring.format(name,printvalues[0],shortdesc))
+            for v in printvalues[1:]:
+                s.append(formatstring.format("",v,""))
+        sout = "\n".join(s)
+        return sout
+
+    def find(self,word):
+        d = self._sys._getStateDescriptionMap()
+        found = False
+        for name,desc in d.items():
+            if (name.find(word) > -1) or (desc.find(word) > -1):
+                found = True
+                print("{}\t{}".format(name,desc))
+
     def get_description(self,varname):
-        return self._c_sys.getStateDescriptionMap()[varname]
+        return self._getStateDescriptionMap[varname]
+
+    def _getStateDescriptionMap(self):
+        dutf8 = dictToUtf8(self._c_sys.getStateDescriptionMap())
+        return dutf8
 
 cdef class Ders:
     """Contains all the Derivates for the system.
