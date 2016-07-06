@@ -109,15 +109,6 @@ def test_par_init(adder_class):
     refarray = np.array((0.0, 0.0, 0.0))
     assert np.array_equal(x, refarray)
 
-def test_input_scalar_default():
-    """Test that the default value of an input is accessible"""
-    sys = Adder()
-    a = sys.inputs.input1
-    a_def1 = sys.inputs_default['input1']
-    assert a == a_def1
-    sys.inputs.input1 = 2.0
-    assert a == a_def1
-
 @pytest.mark.parametrize("adder_class",[Adder3D,PythonAdder3D])
 def test_input_array_change(adder_class):
     """Tests that it is possible to change input array"""
@@ -140,15 +131,9 @@ def test_input_string_change():
     """Tests that it is possible to change a text input"""
     sys = ReadTextInput()
     testvalue = "hej.txt"
-    sys.inputs.filename = testvalue
-    x = sys.inputs.filename
+    sys.pars.filename = testvalue
+    x = sys.pars.filename
     assert x == testvalue
-
-def test_input_string_default():
-    """Tests the default value for text input"""
-    sys = ReadTextInput()
-    x = sys.inputs.filename
-    assert x == "default.txt"
 
 def test_getinputdoc():
     """Tests that the documentation of an input is returned."""
@@ -193,23 +178,9 @@ def test_output_change(adder_class):
     x2 = sys.outputs.output1
     assert np.array_equal(x2, inputarray)
 
-def test_oldcpp_connected_system():
-    """Check that it is possible to connect systems to each other 
-    with boost vector outputs/inputs"""
-    sys1 = Adder3D()
-    sys2 = Adder3D()
-    sys1.inputs.input1 = [1,2,3]
-    sys1.connect("output1",sys2,"input1")
-    sim = Sim()
-    sim.add_system(sys1)
-    sim.add_system(sys2)
-    assert np.all(sys2.outputs.output1 == [0.0, 0.0, 0.0])
-    sim.simulate(1,0.1)
-    assert np.all(sys2.outputs.output1 == [1.0, 2.0, 3.0])
-
 @pytest.mark.parametrize("adder_class1,adder_class2",
-                         [#(Adder3D,Adder3D),
-                             (PythonAdder3D,PythonAdder3D)
+                         [(Adder3D,Adder3D),
+                          (PythonAdder3D,PythonAdder3D)
                          ])
 def test_connected_system(adder_class1,adder_class2):
     """Check that it is possible to connect systems to each other 
