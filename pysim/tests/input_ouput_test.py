@@ -180,7 +180,9 @@ def test_output_change(adder_class):
 
 @pytest.mark.parametrize("adder_class1,adder_class2",
                          [(Adder3D,Adder3D),
-                          (PythonAdder3D,PythonAdder3D)
+                          (PythonAdder3D,PythonAdder3D),
+                          (Adder3D,PythonAdder3D),
+                          (PythonAdder3D,Adder3D),
                          ])
 def test_connected_system(adder_class1,adder_class2):
     """Check that it is possible to connect systems to each other 

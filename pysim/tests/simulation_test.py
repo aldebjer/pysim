@@ -4,6 +4,7 @@ places
 import tempfile
 import json
 import numpy as np
+import pytest
 
 from pysim.simulation import Sim
 from pysim.systems import VanDerPol
@@ -11,13 +12,14 @@ from pysim.systems import MassSpringDamper
 from pysim.systems import DiscretePID
 from pysim.systems import RigidBody
 from pysim.systems import LogisticMap
+from pysim.systems.python_systems import VanDerPol as PyVanDerPol
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
-
-def test_gettime():
+@pytest.mark.parametrize("test_class",[VanDerPol,PyVanDerPol])
+def test_gettime(test_class):
     """Test that the elapsed time is returned from the simulation"""
-    sys = VanDerPol()
+    sys = test_class()
     sim = Sim()
     sim.add_system(sys)
     integrationlength = 2.0
@@ -25,12 +27,13 @@ def test_gettime():
     sim.simulate(integrationlength, 0.1)
     assert sim.get_time() == integrationlength
 
-def test_store_config():
+@pytest.mark.parametrize("test_class",[VanDerPol,PyVanDerPol])
+def test_store_config(test_class):
     """Test that it is possible to store the simulation to a file.
     In this test a temp file is used, it should be deleted automatically
     after the test.
     """
-    sys = VanDerPol()
+    sys = test_class()
     sim = Sim()
     sim.add_system(sys)
     sys.inputs.a = 1.234
@@ -62,7 +65,7 @@ def test_load_config():
                 "a": 1.0,
                 "b": 3.456
             },
-            "module": "pysim.systems",
+            "module": "pysim.systems.python_systems",
             "type": "VanDerPol"
         }
     }
@@ -79,7 +82,7 @@ def test_load_config():
 
 def test_connected_system():
     """Check that the time for stored values in a discrete system is
-    reguraarly spaced"""
+    regurarly spaced"""
 
     #Create Simulaton
     sim = Sim()
