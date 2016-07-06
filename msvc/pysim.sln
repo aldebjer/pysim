@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppsystem", "cppsystem\cppsystem.vcxproj", "{5E9A6A31-4D76-4927-A1DB-33254EAFADC6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688} = {B3A85799-0C40-4905-849C-ED4DB0ED6688}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppsystemlib", "cppsystemlib\cppsystemlib.vcxproj", "{63A6122D-0888-4CE9-9BB8-5BB33C9846FD}"
@@ -13,9 +14,15 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "defaultsystemcollection1", "defaultsystemcollection1\defaultsystemcollection1.vcxproj", "{16F0A7F7-8AE6-4F5A-BC67-2B63CE324FD3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
+		{5E9A6A31-4D76-4927-A1DB-33254EAFADC6} = {5E9A6A31-4D76-4927-A1DB-33254EAFADC6}
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688} = {B3A85799-0C40-4905-849C-ED4DB0ED6688}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulation", "simulation\simulation.vcxproj", "{7B715157-F3FB-4FFA-904D-54D75467A0A9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{12E1F957-0931-4EE4-8AB0-15D2D839462A} = {12E1F957-0931-4EE4-8AB0-15D2D839462A}
+		{16F0A7F7-8AE6-4F5A-BC67-2B63CE324FD3} = {16F0A7F7-8AE6-4F5A-BC67-2B63CE324FD3}
+	EndProjectSection
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "tests", "tests\tests.pyproj", "{AAEB434D-245C-4308-BB3D-3E1CFDDCA3B7}"
 EndProject
@@ -24,9 +31,13 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cythonsystem", "cythonsystem\cythonsystem.vcxproj", "{12E1F957-0931-4EE4-8AB0-15D2D839462A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688} = {B3A85799-0C40-4905-849C-ED4DB0ED6688}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commonsystem", "commonsystem\commonsystem.vcxproj", "{B3A85799-0C40-4905-849C-ED4DB0ED6688}"
+	ProjectSection(ProjectDependencies) = postProject
+		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
