@@ -126,14 +126,6 @@ void CppSystem::output(double* var, const char* name, const char* description) {
     d_ptr->output_descriptions[str] = string(description);
 }
 
-void CppSystem::output(vector<double>* var, const char* name, const char* description) {
-    std::cout << "depreciated function, std::vector output" << std::endl;
-    //string str(name);
-    //boost::algorithm::trim(str);
-    //output_vectors[str] = var;
-    //output_descriptions[str] = string(description);
-}
-
 void CppSystem::output(boost::numeric::ublas::vector<double>* vars, const char* name, const char* description) {
     string str(name);
     boost::algorithm::trim(str);

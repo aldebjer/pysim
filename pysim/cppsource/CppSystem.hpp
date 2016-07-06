@@ -20,25 +20,13 @@ public:
     CppSystem();
     virtual ~CppSystem();
 
-    ////////////////////////////////////////
-    //
-    //        Inherited from System
-    //
-    ////////////////////////////////////////
+    //  Inherited from System
     virtual void preSim(){};
     virtual void doStep(double time)=0;
-
     double getNextUpdateTime();
     bool getDiscrete();
 
-    ///////////////////////////////////////
-    //
-    //      Python Interface
-    //
-    ///////////////////////////////////////
-
-    //Compare handling
-    ////////////////////
+    // Python Interface
     void add_compare_greater(char* comparename, double comparevalue);
     void add_compare_smaller(char* comparename, double comparevalue);
     bool do_comparison();
@@ -63,7 +51,6 @@ protected:
     void input(std::map<std::string, double>*, const char* name, const char* description);
 
     void output(double* var, const char* name, const char* desc);
-    void output(std::vector<double>* vars, const char* name, const char* desc);
     void output(pysim::vector* vars, const char* name, const char* desc);
 
     void setNextUpdate(double t){ nextUpdateTime = t; };
