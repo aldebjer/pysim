@@ -131,15 +131,15 @@ class IntegrationTest(TestCase):
 
 
 
-#class CythonIntegrationTest(IntegrationTest):
-#    """Use a Cython System to simulate. The results are compared with the
-#    analytical results.
-#    """
+class CythonIntegrationTest(IntegrationTest):
+    """Use a Cython System to simulate. The results are compared with the
+    analytical results.
+    """
 
-#    def setUp(self):
-#        self.sim = Sim()
-#        self.sys = PyMassSpringDamper()
-#        self.sys.store("x1")
-#        self.sim.add_system(self.sys)
-#        self.integrationlength = 50
-#        self.timestep = 0.1
+    def setUp(self):
+        self.sim = Sim()
+        self.sys = PyMassSpringDamper()
+        self.sys.store("x1")
+        self.sim.add_system(self.sys)
+        self.integrationlength = 50
+        self.timestep = 0.1

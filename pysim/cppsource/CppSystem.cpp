@@ -34,31 +34,37 @@ void CppSystem::state(double* state, const char* stateName, double* der, const c
     StateType<double*> stateItem;
     stateItem.stateValue = state;
     stateItem.derValue = der;
-    stateItem.description = string(description);
-
+    string desc_string(description);
+    stateItem.description = desc_string;
     string stateNameString(stateName);
     boost::algorithm::trim(stateNameString);
     d_ptr->state_scalars[stateNameString] = stateItem;
+    d_ptr->state_descriptions[stateName] = desc_string;
 
     string derNameString(derName);
     boost::algorithm::trim(derNameString);
     d_ptr->der_scalars[derNameString] = stateItem;
+    d_ptr->der_descriptions[derNameString] = desc_string;
 
 }
 
 void CppSystem::state(pysim::vector* state, const char* stateName, pysim::vector* der, const char* derName, const char* description) {
     StateType< pysim::vector*> stateItem;
+    string desc_string(description);
+
     stateItem.stateValue = state;
     stateItem.derValue = der;
-    stateItem.description = string(description);
+    stateItem.description = desc_string;
 
     string stateNameString(stateName);
     boost::algorithm::trim(stateNameString);
     d_ptr->state_vectors[stateNameString] = stateItem;
+    d_ptr->state_descriptions[stateName] = desc_string;
 
     string derNameString(derName);
     boost::algorithm::trim(derNameString);
     d_ptr->der_vectors[derNameString] = stateItem;
+    d_ptr->der_descriptions[derNameString] = desc_string;
 }
 
 void CppSystem::input(double* var, const char* name, const char* description) {

@@ -56,6 +56,6 @@ void CythonSystemImpl::add_state_vector(std::string statename, std::string derna
         d_ptr->state_vectors[statename] = state;
         d_ptr->der_vectors[dername] = state;
     }
-    d_ptr->output_descriptions[statename] = std::string("No Description"); //TODO add descriptions in call
+    d_ptr->state_descriptions[statename] = std::string("No Description"); //TODO add descriptions in call
 }
 
