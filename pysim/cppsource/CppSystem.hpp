@@ -6,12 +6,7 @@
 
 #include <vector>
 #include <map>
-#include <utility>
 #include <string>
-#include <memory>
-
-#include <boost/format.hpp>
-
 
 class CppSystem :
     public CommonSystemImpl

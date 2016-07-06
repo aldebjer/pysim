@@ -1,6 +1,7 @@
 ﻿#include "ScalarAdder.h"
 
 #include "factory.hpp"
+#include <boost/format.hpp>
 
 using std::string;
 
