@@ -18,13 +18,6 @@ public:
     //  Inherited from System
     virtual void preSim(){};
     virtual void doStep(double time)=0;
-    double getNextUpdateTime();
-    bool getDiscrete();
-
-    // Python Interface
-    void add_compare_greater(char* comparename, double comparevalue);
-    void add_compare_smaller(char* comparename, double comparevalue);
-    bool do_comparison();
 
 protected:
 
@@ -50,16 +43,9 @@ protected:
     void state(double* state, const char* stateName, double* der, const char* derName, const char* desc = "");
     void state(pysim::vector* state, const char* stateName, pysim::vector* der, const char* derName, const char* desc = "");
 
-    void setNextUpdate(double t){ nextUpdateTime = t; };
-    void setDiscrete(bool d = true) { isDiscrete = d; };
+    void setNextUpdate(double t);
+    void setDiscrete(bool d = true);
 
-protected:
-
-    std::vector<std::pair<double*, double > > compare_greater_vector;
-    std::vector<std::pair<double*, double > > compare_smaller_vector;
-
-    double nextUpdateTime;
-    bool isDiscrete;
 };
 
 #define STATE(x,dx,s) state(&x,#x,&dx,#dx,s);

@@ -43,6 +43,14 @@ struct CommonSystemImplPrivate {
     std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vector_states;
 
     StoreHandler storeHandler;
+
+    bool isDiscrete {false};
+    double nextUpdateTime{0.0};
+
+    std::vector<std::pair<double*, double > > compare_greater_vector;
+    std::vector<std::pair<double*, double > > compare_smaller_vector;
+
+
 };
 
 

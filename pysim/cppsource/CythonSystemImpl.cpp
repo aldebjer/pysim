@@ -21,7 +21,7 @@ void CythonSystemImpl::doStep(double time) {
 }
 
 double CythonSystemImpl::getNextUpdateTime() { return 0; }
-bool CythonSystemImpl::getDiscrete() { return false; }
+
 bool CythonSystemImpl::do_comparison() { return false; }
 
 void CythonSystemImpl::add_input_vector(std::string name, size_t length){

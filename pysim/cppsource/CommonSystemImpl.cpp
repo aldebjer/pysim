@@ -544,6 +544,71 @@ void  CommonSystemImpl::store(char* name) {
     }
 }
 
+void CommonSystemImpl::add_compare_greater(char* comparename, double comparevalue) {
+    using std::make_pair;
+
+    if (d_ptr->output_scalars.count(comparename) == 1) {
+        auto p = make_pair(d_ptr->output_scalars[comparename], comparevalue);
+        d_ptr->compare_greater_vector.push_back(p);
+    } else if (d_ptr->state_scalars.count(comparename) == 1) {
+        auto p = make_pair(d_ptr->state_scalars[comparename].stateValue, comparevalue);
+        d_ptr->compare_greater_vector.push_back(p);
+    } else {
+        std::string errtxt("Could not find state or output to use for comparison");
+        throw std::invalid_argument(errtxt);
+    }
+}
+
+void CommonSystemImpl::add_compare_smaller(char* comparename, double comparevalue) {
+    using std::make_pair;
+
+    if (d_ptr->output_scalars.count(comparename) == 1) {
+        auto p = make_pair(d_ptr->output_scalars[comparename], comparevalue);
+        d_ptr->compare_smaller_vector.push_back(p);
+    } else if (d_ptr->state_scalars.count(comparename) == 1) {
+        auto p = make_pair(d_ptr->state_scalars[comparename].stateValue, comparevalue);
+        d_ptr->compare_smaller_vector.push_back(p);
+    } else {
+        std::string errtxt("Could not find state or output to use for comparison");
+        throw std::invalid_argument(errtxt);
+    }
+}
+
+
+bool CommonSystemImpl::do_comparison() {
+    bool is_greater = false;
+    auto compare_greater_pairs = d_ptr->compare_greater_vector.begin();
+    while (compare_greater_pairs != d_ptr->compare_greater_vector.end()) {
+        if (*(compare_greater_pairs->first) > compare_greater_pairs->second) {
+            is_greater = true;
+            d_ptr->compare_greater_vector.erase(compare_greater_pairs);
+        } else {
+            compare_greater_pairs++;
+        }
+    }
+
+    bool is_smaller = false;
+    auto compare_smaller_pairs = d_ptr->compare_smaller_vector.begin();
+    while (compare_smaller_pairs != d_ptr->compare_smaller_vector.end()) {
+        if (*(compare_smaller_pairs->first) < compare_smaller_pairs->second) {
+            is_smaller = true;
+            d_ptr->compare_smaller_vector.erase(compare_smaller_pairs);
+        } else {
+            compare_smaller_pairs++;
+        }
+    }
+
+    return is_greater || is_smaller;
+}
+
+double CommonSystemImpl::getNextUpdateTime() {
+    return d_ptr->nextUpdateTime;
+}
+
+bool CommonSystemImpl::getDiscrete(){
+    return d_ptr->isDiscrete;
+}
+
 StoreHandler* CommonSystemImpl::getStoreHandlerP(){
     return &(d_ptr->storeHandler);
 }

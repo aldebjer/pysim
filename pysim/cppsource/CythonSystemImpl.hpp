@@ -15,7 +15,6 @@ public:
     void doStep(double time);
 
     double getNextUpdateTime();
-    bool getDiscrete();
 
     bool do_comparison();
 

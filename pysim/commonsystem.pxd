@@ -51,6 +51,9 @@ cdef extern from "CommonSystemImpl.hpp":
         void store(char* name)
         StoreHandler* getStoreHandlerP()
 
+        void add_compare_greater(char* comparename, double comparevalue) except +
+        void add_compare_smaller(char* comparename, double comparevalue) except +
+
         void connect(char*, CommonSystemImpl*, char* );
 
 cdef extern from "StoreHandler.hpp":

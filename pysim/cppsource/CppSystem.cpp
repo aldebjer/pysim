@@ -15,13 +15,11 @@ using std::shared_ptr;
 
 
 
-CppSystem::CppSystem()
-    :nextUpdateTime(0.0),
-    isDiscrete(false){
+CppSystem::CppSystem(){
 }
 
 CppSystem::~CppSystem() {
-};
+}
 
 
 ///////////////////////////////////////
@@ -133,70 +131,11 @@ void CppSystem::output(boost::numeric::ublas::vector<double>* vars, const char* 
     d_ptr->output_descriptions[str] = string(description);
 }
 
-
-
-void CppSystem::add_compare_greater(char* comparename, double comparevalue) {
-    using std::make_pair;
-
-    if (d_ptr->output_scalars.count(comparename) == 1) {
-        auto p = make_pair(d_ptr->output_scalars[comparename], comparevalue);
-        compare_greater_vector.push_back(p);
-    } else if (d_ptr->state_scalars.count(comparename) == 1) {
-        auto p = make_pair(d_ptr->state_scalars[comparename].stateValue, comparevalue);
-        compare_greater_vector.push_back(p);
-    } else {
-        std::string errtxt("Could not find state or output to use for comparison");
-        throw std::invalid_argument(errtxt);
-    }
+void CppSystem::setDiscrete(bool d) {
+    d_ptr->isDiscrete = d;
 }
 
-void CppSystem::add_compare_smaller(char* comparename, double comparevalue) {
-    using std::make_pair;
-
-    if (d_ptr->output_scalars.count(comparename) == 1) {
-        auto p = make_pair(d_ptr->output_scalars[comparename], comparevalue);
-        compare_smaller_vector.push_back(p);
-    } else if (d_ptr->state_scalars.count(comparename) == 1) {
-        auto p = make_pair(d_ptr->state_scalars[comparename].stateValue, comparevalue);
-        compare_smaller_vector.push_back(p);
-    } else {
-        std::string errtxt("Could not find state or output to use for comparison");
-        throw std::invalid_argument(errtxt);
-    }
+void CppSystem::setNextUpdate(double t){
+    d_ptr->nextUpdateTime = t;
 }
-
-
-bool CppSystem::do_comparison() {
-    bool is_greater = false;
-    auto compare_greater_pairs = compare_greater_vector.begin();
-    while (compare_greater_pairs != compare_greater_vector.end()) {
-        if (*(compare_greater_pairs->first) > compare_greater_pairs->second) {
-            is_greater = true;
-            compare_greater_vector.erase(compare_greater_pairs);
-        } else {
-            compare_greater_pairs++;
-        }
-    }
-
-    bool is_smaller = false;
-    auto compare_smaller_pairs = compare_smaller_vector.begin();
-    while (compare_smaller_pairs != compare_smaller_vector.end()) {
-        if (*(compare_smaller_pairs->first) < compare_smaller_pairs->second) {
-            is_smaller = true;
-            compare_smaller_vector.erase(compare_smaller_pairs);
-        } else {
-            compare_smaller_pairs++;
-        }
-    }
-
-    return is_greater || is_smaller;
-}
-
-double CppSystem::getNextUpdateTime() {
-    return nextUpdateTime;
-}
-bool CppSystem::getDiscrete() {
-    return isDiscrete;
-}
-
 

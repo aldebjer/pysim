@@ -19,12 +19,19 @@ public:
     void copyoutputs();
     void copystateoutputs();
 
+    double getNextUpdateTime();
+    bool do_comparison();
+
     std::vector<double*> getStatePointers();
     std::vector<double*> getDerPointers();
 
     void doStoreStep(double time);
     void store(char* name);
     StoreHandler* getStoreHandlerP();
+
+
+    void add_compare_greater(char* comparename, double comparevalue);
+    void add_compare_smaller(char* comparename, double comparevalue);
 
     //Parameter handling
     std::vector<std::string> getParStringNames();
@@ -75,6 +82,8 @@ public:
     void setDerVector(char* name, std::vector<double> value);
     void setScalarDer(char* name, double value);
     std::map<std::string, std::string> getDerDescriptionMap();
+
+    bool getDiscrete();
 
     void connect(char* outputname, CommonSystemImpl* inputsys, char* inputname);
 

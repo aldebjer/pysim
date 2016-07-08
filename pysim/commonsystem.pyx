@@ -24,6 +24,20 @@ cdef class CommonSystem:
     def set_store_interval(self, interval):
         self._c_s.getStoreHandlerP().setStoreInterval(interval)
 
+    def add_break_greater(self,name,value):
+        """Add a break that will be activated if the value of the variable
+        or state is larger than the value supplied as argument
+        """
+        bname = bytes(name,'utf-8')
+        self._c_s.add_compare_greater(bname,value)
+
+    def add_break_smaller(self,name,value):
+        """Add a break that will be activated if the value of the variable
+        or state is smaller than the value supplied as argument
+        """
+        bname = bytes(name,'utf-8')
+        self._c_s.add_compare_smaller(bname,value)
+
 cdef class Results:
 
     @staticmethod 
