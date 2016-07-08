@@ -1,13 +1,9 @@
 //   Copyright (c) 2014-2016 SSPA Sweden AB
-
 #pragma once
-
 
 #include <vector>
 #include <map>
-#include <utility>
 #include <string>
-#include <memory>
 
 #include "PysimTypes.hpp"
 
