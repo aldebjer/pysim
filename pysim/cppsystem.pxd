@@ -6,7 +6,7 @@ from libcpp cimport bool
 from commonsystem cimport CommonSystemImpl
 from commonsystem cimport CommonSystem
 
-cdef extern from "CppSystem.hpp":
+cdef extern from "CppSystem.hpp" namespace "pysim":
 
     cdef cppclass CppSystem(CommonSystemImpl):
         pass

@@ -21,6 +21,9 @@
     <None Include="..\..\pysim\commonsystem.pxd">
       <Filter>cython</Filter>
     </None>
+    <None Include="..\..\pysim\simulatablesystem.pxd">
+      <Filter>cython</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\pysim\commonsystem.cpp">

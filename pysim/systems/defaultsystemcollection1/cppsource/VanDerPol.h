@@ -2,7 +2,7 @@
 #include "CppSystem.hpp"
 
 class VanDerPol :
-    public CppSystem
+    public pysim::CppSystem
 {
 public:
     VanDerPol(void);

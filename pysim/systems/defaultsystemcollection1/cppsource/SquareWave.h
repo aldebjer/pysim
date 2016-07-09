@@ -2,7 +2,7 @@
 #include "CppSystem.hpp"
 
 class SquareWave :
-    public CppSystem
+    public pysim::CppSystem
 {
 public:
     SquareWave(void);

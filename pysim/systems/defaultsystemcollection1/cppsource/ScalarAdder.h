@@ -2,7 +2,7 @@
 #include "CppSystem.hpp"
 
 class ScalarAdder :
-    public CppSystem
+    public pysim::CppSystem
 {
 public:
     ScalarAdder(void);

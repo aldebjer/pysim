@@ -8,6 +8,8 @@
 #include <map>
 #include <string>
 
+namespace pysim {
+
 class CppSystem :
     public CommonSystemImpl
 {
@@ -52,3 +54,5 @@ protected:
 
 #define INPUT(x,s) input(&x,#x,s);
 #define OUTPUT(x,s) output(&x,#x,s);
+
+}

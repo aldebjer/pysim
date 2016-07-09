@@ -10,10 +10,9 @@
 #include <iostream>
 
 using std::string;
-using std::vector;
 using std::shared_ptr;
 
-
+namespace pysim {
 
 CppSystem::CppSystem(){
 }
@@ -72,7 +71,7 @@ void CppSystem::input(double* var, const char* name, const char* description) {
     d_ptr->input_descriptions[str] = string(description);
 }
 
-void CppSystem::input(vector<double>* var, const char* name, const char* description) {
+void CppSystem::input(std::vector<double>* var, const char* name, const char* description) {
     //TODO:: Make parameter
     //string str(name);
     //boost::algorithm::trim(str);
@@ -139,3 +138,4 @@ void CppSystem::setNextUpdate(double t){
     d_ptr->nextUpdateTime = t;
 }
 
+}

@@ -2,7 +2,7 @@
 #include "CppSystem.hpp"
 
 class Adder :
-    public CppSystem
+    public pysim::CppSystem
 {
 public:
     Adder(void);

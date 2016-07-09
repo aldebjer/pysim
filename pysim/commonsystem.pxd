@@ -2,7 +2,7 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.map cimport map
 
-cdef extern from "CommonSystemImpl.hpp":
+cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
     cdef cppclass CommonSystemImpl:
 
         vector[string] getParStringNames()
@@ -56,7 +56,7 @@ cdef extern from "CommonSystemImpl.hpp":
 
         void connect(char*, CommonSystemImpl*, char* );
 
-cdef extern from "StoreHandler.hpp":
+cdef extern from "StoreHandler.hpp" namespace "pysim":
     cdef cppclass StoreHandler:
         int getStoreSize()  except +
         int getStoreColumns(char* name) except +

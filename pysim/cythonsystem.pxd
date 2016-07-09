@@ -6,7 +6,7 @@ from libcpp cimport bool
 from commonsystem cimport CommonSystemImpl
 from commonsystem cimport CommonSystem
 
-cdef extern from "CythonSystemImpl.hpp":
+cdef extern from "CythonSystemImpl.hpp" namespace "pysim":
     cdef cppclass CythonSystemImpl(CommonSystemImpl):
         void* sysp
         void add_input_vector(string, size_t)

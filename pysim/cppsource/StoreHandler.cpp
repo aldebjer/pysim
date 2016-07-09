@@ -12,6 +12,8 @@ using std::string;
 using std::shared_ptr;
 using std::map;
 
+namespace pysim {
+
 template <class T>
 class StoreStruct {
 public:
@@ -162,4 +164,6 @@ void StoreHandler::fillWithTime(double* p) {
     for (auto i = d_ptr->storetimes.cbegin(); i != d_ptr->storetimes.cend(); ++i) {
         *(ptemp++) = *i;
     }
+}
+
 }

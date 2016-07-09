@@ -6,6 +6,8 @@
 
 #include "SimulatableSystem.hpp"
 
+namespace pysim{
+
 class Simulation {
  public:
     Simulation(void);
@@ -35,3 +37,4 @@ class Simulation {
     double currentTime;
 };
 
+}

@@ -2,7 +2,7 @@
 #include "CppSystem.hpp"
 
 class ReadTextInput :
-    public CppSystem
+    public pysim::CppSystem
 {
 public:
 	ReadTextInput(void);

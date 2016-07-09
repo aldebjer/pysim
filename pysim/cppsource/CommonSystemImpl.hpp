@@ -7,6 +7,8 @@
 
 #include "SimulatableSystem.hpp"
 
+namespace pysim {
+
 struct CommonSystemImplPrivate;
 
 class  CommonSystemImpl :
@@ -92,3 +94,4 @@ protected:
 
 };
 
+}

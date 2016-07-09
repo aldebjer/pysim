@@ -2,7 +2,7 @@
 #include "CppSystem.hpp"
 
 class RigidBody :
-    public CppSystem
+    public pysim::CppSystem
 {
 public:
     RigidBody(void);

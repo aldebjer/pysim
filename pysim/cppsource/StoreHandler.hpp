@@ -7,6 +7,8 @@
 
 #include "PysimTypes.hpp"
 
+namespace pysim {
+
 struct Dptr;
 
 class StoreHandler{
@@ -34,3 +36,4 @@ private:
 
 };
 
+}

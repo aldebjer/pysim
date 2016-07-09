@@ -10,6 +10,7 @@
 
 using std::string;
 
+namespace pysim {
 
 CommonSystemImpl::CommonSystemImpl() :
     d_ptr(new CommonSystemImplPrivate())
@@ -90,12 +91,11 @@ std::vector<std::vector<double>> CommonSystemImpl::getParMatrix(char* name) {
     return out;
 }
 void CommonSystemImpl::setParMatrix(char* name, std::vector<std::vector<double>> value) {
-    using namespace boost::numeric::ublas;
 
     if (d_ptr->par_matrices.count(name) > 0) {
         *d_ptr->par_matrices.at(name) = value;
     } else if (d_ptr->par_boost_matrices.count(name) > 0) {
-        matrix<double> *inputm = d_ptr->par_boost_matrices.at(name);
+        boost::numeric::ublas::matrix<double> *inputm = d_ptr->par_boost_matrices.at(name);
 
         //Check number of rows
         if (value.size() != inputm->size1()) {
@@ -613,3 +613,4 @@ StoreHandler* CommonSystemImpl::getStoreHandlerP(){
     return &(d_ptr->storeHandler);
 }
 
+}

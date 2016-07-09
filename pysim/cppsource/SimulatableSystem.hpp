@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 
+namespace pysim {
+
 class SimulatableSystem
 {
 public:
@@ -22,3 +24,4 @@ public:
 
 };
 
+}

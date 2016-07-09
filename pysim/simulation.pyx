@@ -6,7 +6,7 @@ import json
 import importlib
 import collections
 
-cdef extern from "CppSimulation.hpp":
+cdef extern from "CppSimulation.hpp" namespace "pysim":
     cdef cppclass Simulation:
         void simulate(double endtime, double dt, char* solvername,double abs_err, double rel_err, bool dense_output) except +
         void addSystem(simulatablesystem.SimulatableSystem* system)

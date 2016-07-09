@@ -10,6 +10,7 @@
 
 using std::string;
 
+namespace pysim{
 
 CythonSystemImpl::CythonSystemImpl()
 {
@@ -59,3 +60,4 @@ void CythonSystemImpl::add_state_vector(std::string statename, std::string derna
     d_ptr->state_descriptions[statename] = std::string("No Description"); //TODO add descriptions in call
 }
 
+}

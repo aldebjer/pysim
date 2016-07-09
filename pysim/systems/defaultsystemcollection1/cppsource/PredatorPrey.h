@@ -2,7 +2,7 @@
 #include "CppSystem.hpp"
 
 class PredatorPrey :
-    public CppSystem
+    public pysim::CppSystem
 {
 public:
     PredatorPrey(void);

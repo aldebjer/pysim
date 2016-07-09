@@ -2,7 +2,7 @@
 #include "CppSystem.hpp"
 
 class LogisticMap :
-    public CppSystem
+    public pysim::CppSystem
 {
 public:
     LogisticMap(void);

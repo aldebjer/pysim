@@ -4,7 +4,7 @@
 
 using namespace std;
 
-CppSystem* getCppSystem(char* name) {
+pysim::CppSystem* getCppSystem(char* name) {
     return SystemFactory::Instance().Create(name);
 }
 
@@ -33,7 +33,7 @@ void SystemFactory::RegisterMaker(const std::string& key, ISystemMaker* maker)
     _makers[key] = maker;
 }
 
-CppSystem* SystemFactory::Create(char* name) const
+pysim::CppSystem* SystemFactory::Create(char* name) const
 {
     string key(name);
     auto i = _makers.find(key);

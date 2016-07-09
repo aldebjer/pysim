@@ -3,6 +3,7 @@
 
 #include "CommonSystemImpl.hpp"
 
+namespace pysim{
 
 class  CythonSystemImpl :
     public CommonSystemImpl
@@ -29,3 +30,4 @@ public:
 
 };
 
+}

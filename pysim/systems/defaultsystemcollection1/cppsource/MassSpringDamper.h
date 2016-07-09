@@ -2,7 +2,7 @@
 #include "CppSystem.hpp"
 
 class MassSpringDamper :
-    public CppSystem
+    public pysim::CppSystem
 {
 public:
     MassSpringDamper(void);

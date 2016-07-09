@@ -4,6 +4,8 @@
 
 #include "PysimTypes.hpp"
 
+namespace pysim {
+
 template <class T>
 struct StateType {
     T stateValue;
@@ -53,4 +55,5 @@ struct CommonSystemImplPrivate {
 
 };
 
+}
 

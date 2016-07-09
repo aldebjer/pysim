@@ -2,7 +2,7 @@
 
 #include "vector"
 
-CppSystem* getCppSystem(char* name);
+pysim::CppSystem* getCppSystem(char* name);
 std::string getCppSystemDocs(char* name);
 
 std::vector<std::string> getCppSystemNames();
@@ -15,7 +15,7 @@ class SystemFactory {
 public:
     void RegisterMaker(const std::string& key, ISystemMaker * maker);
     static SystemFactory& Instance();
-    CppSystem* Create(char* name) const;
+    pysim::CppSystem* Create(char* name) const;
     std::vector<std::string> getNames();
 
 private:
@@ -24,7 +24,7 @@ private:
 
 class ISystemMaker {
 public:
-    virtual CppSystem * Create() const = 0;
+    virtual pysim::CppSystem * Create() const = 0;
     virtual ~ISystemMaker() {}
 };
 
@@ -34,7 +34,7 @@ public:
     SystemMaker(const std::string& key) {
         SystemFactory::Instance().RegisterMaker(key, this);
     }
-    virtual CppSystem * Create() const {
+    virtual pysim::CppSystem * Create() const {
         return new T();
     }
 };

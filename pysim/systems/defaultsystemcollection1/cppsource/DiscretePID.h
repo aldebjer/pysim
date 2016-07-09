@@ -2,7 +2,7 @@
 #include "CppSystem.hpp"
 
 class DiscretePID :
-    public CppSystem
+    public pysim::CppSystem
 {
 public:
     DiscretePID(void);

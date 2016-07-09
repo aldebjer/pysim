@@ -6,6 +6,8 @@
 #include <vector>
 #include <exception>
 
+namespace pysim{
+
 class EarlyBreakException : public std::exception {
     virtual const char* what() const throw() {
         return "A comparison resulted in an early break of the simulation";
@@ -211,4 +213,6 @@ void Simulation::addSystem(SimulatableSystem* system) {
     } else {
         systems.push_back(system);
     }
+}
+
 }
