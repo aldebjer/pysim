@@ -19,9 +19,8 @@ access to these classes.
 ## Testing
 The tests are done automatically for each github push. They are done at [Travis CI](https://travis-ci.org/aldebjer/pysim) for Linux
 and [AppVeyor](https://ci.appveyor.com/project/aldebjer/pysim) for Windows. The environments use Python 3.5 to
-build for windows but Python 3.4 to build for Linux. This is due to the default setups of the build machines. To
-perform the tests there is a test collection stored in the tests folder. These can be run either with nosetests
-or pytest.
+build for both windows and Python. To
+perform the tests there is a test collection stored in the tests folder. These can be run with pytest.
 
 ## Deploying
 Deployments are done to PyPi where there is a registered package for [PySim](https://pypi.python.org/pypi/pysim). The
