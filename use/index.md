@@ -4,8 +4,8 @@ title: Use Pysim
 excerpt: "Pysim can be used with existing systems, or to model new systems"
 modified: 2016-06-06T12:23:00.0-01:00
 ---
-PySim is used with Python in which a simulations is set up, simulated and analysed. To give an example
-of how you would simulate a simple Van der Pol oscillator have a look at the following example: 
+PySim is used with Python in which a simulations is set up, simulated and analysed. To see
+how you would simulate a simple Van der Pol oscillator have a look at the following example: 
 
 {% highlight python %}
 from pysim.simulation import Sim
@@ -36,7 +36,7 @@ solver used above. The following solvers are currently available:
 * Dormand Prince 5
 
 ### Creating own systems
-It is also possible to create your own systems in C++. All systems are representations of
+It is also possible to create your own systems in either C++ or Python. All systems are representations of
 differential equations, having a state as well as inputs and outputs. 
 
 ### Documentation
