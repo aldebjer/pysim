@@ -57,10 +57,8 @@ cdef class Sim:
     def __dealloc__(self):
         del self._c_sim
 
-    def add_system(self,sys, name = None):
+    def add_system(self, CommonSystem sys not None, name = None):
         """Add a system that will participate in this simulation"""
-        cdef CommonSystem s
-        s = <CommonSystem> (sys)
 
         #If no name is given give the system instance a name as per:
         #classname, classname_2, classname_3, etc.
@@ -75,9 +73,7 @@ cdef class Sim:
                         name = newname
                         break
 
-        cdef simulatablesystem.SimulatableSystem* simsysp
-        simsysp = <simulatablesystem.SimulatableSystem*> (s._c_s)
-        self._c_sim.addSystem(simsysp)
+        self._c_sim.addSystem(sys._c_s)
         self.systems[name] = sys
 
 

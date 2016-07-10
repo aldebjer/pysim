@@ -2,8 +2,10 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.map cimport map
 
+cimport simulatablesystem
+
 cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
-    cdef cppclass CommonSystemImpl:
+    cdef cppclass CommonSystemImpl(simulatablesystem.SimulatableSystem):
 
         vector[string] getParStringNames()
         vector[string] getParMatrixNames()
