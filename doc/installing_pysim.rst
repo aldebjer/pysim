@@ -4,13 +4,13 @@ Installing PySim
 Installing Python
 -----------------
 PySim is based on Python and is compatible with Python 3. The latest
-version of Python 3 is 3.5.0. A Windows installer for can be 
+version of Python 3 is 3.5.2. A Windows installer for can be
 downloaded through the link below.
 
-https://www.python.org/ftp/python/3.5.0/python-3.5.0.exe
+https://www.python.org/ftp/python/3.5.2/python-3.5.2.exe
 
-After Python is installed it is recommended to add the following lines 
-to the system PATH (Assuming you installed python to C:\Python35): 
+After Python is installed it is recommended to add the following lines
+to the system PATH (Assuming you installed python to C:\Python35):
 
 .. code-block:: bash
 
