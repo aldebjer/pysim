@@ -25,3 +25,20 @@ seconds with a timestep of 0.1 type
 When the simulation is finished the equations of all systems have been solved,
 and any variables designated have been stored. To solve the equations the
 standard Runge Kutta 4 algorithm has been used.
+
+
+Choosing a solver
+-----------------
+The default solver is the classic Runge Kutta 4, but it is possible to use
+other solvers as well, some using adaptive step lengths and error control.
+To use another solver the solver can be imported from the pysim.simulation
+package. The solver should then be supplied to the simulate call. To use
+the adaptive steplenght Cash Karp solver type
+
+>>> from pysim.simulation import Cash_Karp
+>>> solver = Cash_Karp()
+>>> sim.simulate(20,0.1, solver)
+
+the attentive reader now wonder why there is a timestep when the steplength
+is adaptive. This timestep may be used as a starting point for the adaptive
+step length, but it is also used as a time interval for storing values.
