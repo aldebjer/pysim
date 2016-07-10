@@ -7,7 +7,10 @@ from commonsystem cimport CommonSystemImpl
 
 np.import_array()
 
-def dictToUtf8(inputDict):
+cdef dictToUtf8(inputDict):
+    """Convert a dict of bytes to strings.
+    It assumes the bytes are in utf-8 format.
+    """
     outputdict = {}
     for a,b in inputDict.items():
         key = a.decode('utf-8')
@@ -18,10 +21,17 @@ def dictToUtf8(inputDict):
 
 cdef class CommonSystem:
     def store(self,name):
+        """Store a input, output or state in the system."""
         bs = bytes(name,'utf-8')
         self._c_s.store(bs)
 
     def set_store_interval(self, interval):
+        """Set the store interval of this system. By default the
+        store interval for all systems in a simulation is set by
+        the simulation, typically for the step length for fixed
+        step algorithms. By calling this function the store interval
+        *for this system* is set differently.
+        """
         self._c_s.getStoreHandlerP().setStoreInterval(interval)
 
     def add_break_greater(self,name,value):
@@ -131,15 +141,8 @@ cdef class Parameters:
         else:
             raise AttributeError("No input {} in system".format(name))
 
-    def get_description(self,varname):
-        return self._c_sys.getParDescriptionMap()[varname]
-
 cdef class Inputs:
-    """Contains all the inputs for the system.
-    To list the inputs use input.list()
-    To search for a input that contains a specific word, or has a 
-    description that contains the word use input.search(word).
-    """
+    """Contains all the inputs for the system."""
 
     @staticmethod 
     cdef _create(CommonSystemImpl* ptr):
@@ -203,27 +206,12 @@ cdef class Inputs:
         sout = "\n".join(s)
         return sout
 
-    def find(self,word):
-        d = self._sys._getInputDescriptionMap()
-        found = False
-        for name,desc in d.items():
-            if (name.find(word) > -1) or (desc.find(word) > -1):
-                found = True
-                print("{}\t{}".format(name,desc))
-
-    def get_description(self,varname):
-        return self._getInputDescriptionMap[varname]
-
     def _getInputDescriptionMap(self):
         dutf8 = dictToUtf8(self._c_sys.getInputDescriptionMap())
         return dutf8
 
 cdef class Outputs:
-    """Contains all the outputs for the system.
-    To list the inputs use ouput.list()
-    To search for a input that contains a specific word, or has a 
-    description that contains the word use input.search(word).
-    """
+    """Contains all the outputs for the system."""
 
     @staticmethod 
     cdef _create(CommonSystemImpl* ptr):
@@ -266,14 +254,9 @@ cdef class Outputs:
         else:
             raise AttributeError("No output {} in system".format(name))
 
-    def get_description(self,varname):
-        return self._c_sys.getOutputDescriptionMap()[varname]
-
 cdef class States:
     """Contains all the states for the system.
     To list the inputs use ouput.list()
-    To search for a input that contains a specific word, or has a 
-    description that contains the word use input.search(word).
     """
 
     @staticmethod 
@@ -338,27 +321,12 @@ cdef class States:
         sout = "\n".join(s)
         return sout
 
-    def find(self,word):
-        d = self._sys._getStateDescriptionMap()
-        found = False
-        for name,desc in d.items():
-            if (name.find(word) > -1) or (desc.find(word) > -1):
-                found = True
-                print("{}\t{}".format(name,desc))
-
-    def get_description(self,varname):
-        return self._getStateDescriptionMap[varname]
-
     def _getStateDescriptionMap(self):
         dutf8 = dictToUtf8(self._c_sys.getStateDescriptionMap())
         return dutf8
 
 cdef class Ders:
-    """Contains all the Derivates for the system.
-    To list the inputs use ouput.list()
-    To search for a input that contains a specific word, or has a 
-    description that contains the word use input.search(word).
-    """
+    """Contains all the Derivates for the system."""
 
     @staticmethod 
     cdef _create(CommonSystemImpl* ptr):
@@ -400,9 +368,6 @@ cdef class Ders:
                 raise TypeError("Der '{}' is a scalar".format(name))
         else:
             raise AttributeError("No Der {} in system".format(name))
-
-    def get_description(self,varname):
-        return self._c_sys.getDerDescriptionMap()[varname]
 
 cdef class Connections:
     """The connections of the system.
