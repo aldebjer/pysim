@@ -3,6 +3,9 @@
 
 #include "factory.hpp"
 
+std::string LogisticMap::getDocs(){
+    return std::string("TODO: Add this");
+}
 
 LogisticMap::LogisticMap(void):
     stepsize(1.0),

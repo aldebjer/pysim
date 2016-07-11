@@ -7,6 +7,8 @@ class MassSpringDamper :
 public:
     MassSpringDamper(void);
 
+    static std::string getDocs();
+
     //First calculation in a simulation, only done once
     void preSim(){};
 

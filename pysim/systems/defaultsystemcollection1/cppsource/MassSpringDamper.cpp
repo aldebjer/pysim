@@ -2,6 +2,10 @@
 
 #include "factory.hpp"
 
+std::string MassSpringDamper::getDocs(){
+    return std::string("TODO: Add this");
+}
+
 
 MassSpringDamper::MassSpringDamper(void)
 {

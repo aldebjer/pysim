@@ -6,6 +6,7 @@ class LogisticMap :
 {
 public:
     LogisticMap(void);
+    static std::string getDocs();
     virtual void preSim();
     void doStep(double time);
 

@@ -3,6 +3,9 @@
 #include <cmath>
 #include "factory.hpp"
 
+std::string SquareWave::getDocs(){
+    return std::string("TODO: Add this");
+}
 
 
 SquareWave::SquareWave(void)

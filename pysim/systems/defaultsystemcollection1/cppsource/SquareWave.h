@@ -7,6 +7,8 @@ class SquareWave :
 public:
     SquareWave(void);
 
+    static std::string getDocs();
+
     void doStep(double time);
 
 protected:

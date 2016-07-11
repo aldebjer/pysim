@@ -6,6 +6,7 @@ class DiscretePID :
 {
 public:
     DiscretePID(void);
+    static std::string getDocs();
     virtual void preSim();
     void doStep(double time);
 

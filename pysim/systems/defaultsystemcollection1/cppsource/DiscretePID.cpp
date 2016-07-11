@@ -5,6 +5,10 @@
 
 #include "factory.hpp"
 
+std::string DiscretePID::getDocs(){
+    return std::string("TODO: Add this");
+}
+
 
 DiscretePID::DiscretePID(void)
 {
