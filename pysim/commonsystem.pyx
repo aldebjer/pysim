@@ -20,6 +20,8 @@ cdef dictToUtf8(inputDict):
 
 
 cdef class CommonSystem:
+    """Common base class for systems that are editable from Python.
+    """
     def store(self,name):
         """Store a input, output or state in the system."""
         bs = bytes(name,'utf-8')
