@@ -1,5 +1,5 @@
 Setting up a system for simulation
-=================================
+==================================
 
 Before running a simulation with a system it is possible to configure the
 system. The configuration generally involves:
