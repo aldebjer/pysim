@@ -190,7 +190,7 @@ def test_connected_system(adder_class1,adder_class2):
     sys1 = adder_class1()
     sys2 = adder_class2()
     sys1.inputs.input1 = [1,2,3]
-    sys1.connections.connect("output1",sys2,"input1")
+    sys1.connections.add_connection("output1",sys2,"input1")
     sim = Sim()
     sim.add_system(sys1)
     sim.add_system(sys2)

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppsystem", "cppsystem\cppsystem.vcxproj", "{5E9A6A31-4D76-4927-A1DB-33254EAFADC6}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -20,7 +20,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "defaultsystemcollection1", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulation", "simulation\simulation.vcxproj", "{7B715157-F3FB-4FFA-904D-54D75467A0A9}"
 	ProjectSection(ProjectDependencies) = postProject
+		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
+		{5E9A6A31-4D76-4927-A1DB-33254EAFADC6} = {5E9A6A31-4D76-4927-A1DB-33254EAFADC6}
 		{12E1F957-0931-4EE4-8AB0-15D2D839462A} = {12E1F957-0931-4EE4-8AB0-15D2D839462A}
+		{B3A85799-0C40-4905-849C-ED4DB0ED6688} = {B3A85799-0C40-4905-849C-ED4DB0ED6688}
 		{16F0A7F7-8AE6-4F5A-BC67-2B63CE324FD3} = {16F0A7F7-8AE6-4F5A-BC67-2B63CE324FD3}
 	EndProjectSection
 EndProject

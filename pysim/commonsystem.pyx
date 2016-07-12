@@ -1,3 +1,8 @@
+""" Systems used for simulation.
+
+Base classes for systems. They are inherited by CppSystems and CythonSystems.
+"""
+
 from collections import namedtuple
 from libcpp.vector cimport vector
 
@@ -23,7 +28,14 @@ cdef class CommonSystem:
     """Common base class for systems that are editable from Python.
     """
     def store(self,name):
-        """Store a input, output or state in the system."""
+        """Store a input, output or state in the system.
+
+        Parameters
+        ----------
+        name : str
+            The first parameter.
+        """
+
         bs = bytes(name,'utf-8')
         self._c_s.store(bs)
 
@@ -258,7 +270,6 @@ cdef class Outputs:
 
 cdef class States:
     """Contains all the states for the system.
-    To list the inputs use ouput.list()
     """
 
     @staticmethod 
@@ -382,8 +393,30 @@ cdef class Connections:
         p._c_sys = ptr
         return p
 
-    def connect(self,outputname,CommonSystem inputsys,inputname):
-         bsout =  bytes(outputname,'utf-8')
-         bsin =  bytes(inputname,'utf-8')
-         print("connecting")
-         self._c_sys.connect(bsout,inputsys._c_s,bsin)
+    def add_connection(self,outputname,CommonSystem inputsys,inputname):
+        """Connect the outputs from this system to the inputs of another.
+
+        The systems that are to be connected must be derived from a
+        CommonSystem, which is true for both CppSystems and CythonSystems.
+
+        Parameters
+        ----------
+        outputname : str
+            The name of the output of this system
+        inputsys : CommonSystem
+            The system that is to be connected, that will receive the signals.
+        inputname : str
+            The name of the input that will receive the signal 
+
+        Raises
+        ------
+        ValueError
+            If inputname or outputname are not inputs, outputs members
+            of the system.
+
+        """
+
+        bsout =  bytes(outputname,'utf-8')
+        bsin =  bytes(inputname,'utf-8')
+        print("connecting")
+        self._c_sys.connect(bsout,inputsys._c_s,bsin)
