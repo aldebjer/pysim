@@ -26,6 +26,18 @@ cdef dictToUtf8(inputDict):
 
 cdef class CommonSystem:
     """Common base class for systems that are editable from Python.
+
+    Attributes
+    ----------
+    pars : Parameters
+        The parameters, can be set before the simulation starts.
+    inputs : Inputs
+        The inputs to the system, can be set and connected to outputs
+    outputs : Ouputs
+        the outputs of the system, can be connected to inputs of other systems
+    states : States
+        The states of the system
+
     """
     def store(self,name):
         """Store a input, output or state in the system.
@@ -40,11 +52,18 @@ cdef class CommonSystem:
         self._c_s.store(bs)
 
     def set_store_interval(self, interval):
-        """Set the store interval of this system. By default the
+        """Set the store interval of this system. 
+
+        By default the
         store interval for all systems in a simulation is set by
         the simulation, typically for the step length for fixed
         step algorithms. By calling this function the store interval
         *for this system* is set differently.
+
+        Parameters
+        ----------
+        interval : float
+            The time between stores, in seconds.
         """
         self._c_s.getStoreHandlerP().setStoreInterval(interval)
 
@@ -156,7 +175,10 @@ cdef class Parameters:
             raise AttributeError("No input {} in system".format(name))
 
 cdef class Inputs:
-    """Contains all the inputs for the system."""
+    """Contains all the inputs for the system.
+    
+    Each attribute of this class correspond to a input of the system.
+    """
 
     @staticmethod 
     cdef _create(CommonSystemImpl* ptr):
