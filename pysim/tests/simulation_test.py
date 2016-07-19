@@ -103,9 +103,9 @@ def test_connected_system():
     controlsys.store("outsig")
     sim.add_system(controlsys)
 
-    sys.connections.connect("x1", controlsys, "insig")
-    sys.connections.connect("x2", controlsys, "dsig")
-    controlsys.connections.connect("outsig", sys, "f")
+    sys.connections.add_connection("x1", controlsys, "insig")
+    sys.connections.add_connection("x2", controlsys, "dsig")
+    controlsys.connections.add_connection("outsig", sys, "f")
     controlsys.inputs.d = 1
 
     sim.simulate(5, 0.1)
