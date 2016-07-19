@@ -16,6 +16,7 @@ public:
     void RegisterMaker(const std::string& key, ISystemMaker * maker);
     static SystemFactory& Instance();
     pysim::CppSystem* Create(char* name) const;
+    std::string getDocs(char* name) const;
     std::vector<std::string> getNames();
 
 private:
@@ -25,6 +26,7 @@ private:
 class ISystemMaker {
 public:
     virtual pysim::CppSystem * Create() const = 0;
+    virtual std::string getDocs() = 0;
     virtual ~ISystemMaker() {}
 };
 
@@ -34,8 +36,11 @@ public:
     SystemMaker(const std::string& key) {
         SystemFactory::Instance().RegisterMaker(key, this);
     }
-    virtual pysim::CppSystem * Create() const {
+    pysim::CppSystem * Create() const {
         return new T();
+    }
+    std::string getDocs(){
+        return T::getDocs();
     }
 };
 

@@ -9,7 +9,7 @@ pysim::CppSystem* getCppSystem(char* name) {
 }
 
 string getCppSystemDocs(char* name) {
-    return "";
+    return SystemFactory::Instance().getDocs(name);
 }
 
 vector<string> getCppSystemNames() {
@@ -42,6 +42,17 @@ pysim::CppSystem* SystemFactory::Create(char* name) const
     }
     ISystemMaker* maker = i->second;
     return maker->Create();
+}
+
+std::string SystemFactory::getDocs(char* name) const
+{
+    string key(name);
+    auto i = _makers.find(key);
+    if (i == _makers.end()) {
+        throw new runtime_error("Unrecognized object type!");
+    }
+    ISystemMaker* maker = i->second;
+    return maker->getDocs();
 }
 
 std::vector<string> SystemFactory::getNames() {
