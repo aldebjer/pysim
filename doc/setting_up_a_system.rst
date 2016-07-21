@@ -36,6 +36,7 @@ Storing
 A state or a variable can be stored during each step of the simulation. To
 do this call the store command of the system, with the name of the state or
 variable to be stored as an argument.
+
 >>> sys.store("x")
 
 Connecting Systems
