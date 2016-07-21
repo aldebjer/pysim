@@ -67,7 +67,7 @@ release build and choose build all.
 
 Testing
 -------
-After all cython and c++ modules are build, either with setuptools or with
+After all cython and c++ modules are built, either with setuptools or with
 the visual studio ide, and placed in along the python modules you can use
 PyTest to test the entire pysim package.
 

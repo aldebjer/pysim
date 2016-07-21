@@ -14,4 +14,5 @@ move to the pysim root and type
    :maxdepth: 2
 
    building_on_windows.rst
+   building_on_mac.rst
    building_on_linux.rst
