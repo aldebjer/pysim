@@ -92,7 +92,7 @@ setup(
                 ('pysim',['pysim/cppsystem.pxd']),
                 ],
     packages=['pysim', 'pysim.systems','pysim.tests'],
-    install_requires = ['numpy>=1.8.1','cython>=0.21'],
+    install_requires = ['numpy>=1.8.1',],
     description = "package for dynamical system modelling",
     classifiers=[
         'Development Status :: 3 - Alpha',
