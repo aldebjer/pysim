@@ -68,22 +68,5 @@ These commands will result in a plot like:
 
 .. image:: /images/VanDerPolPlot.png
 
-Using pysim can usually be divided into three steps:
+For more in depth information on how to use PySim check out :doc:`using_pysim`
 
-.. toctree::
-   :maxdepth: 1
-
-   setting_up_a_system.rst
-   running_a_simulation.rst
-   analyzing_results.rst
-
-Prebuilt Systems
-----------------
-PySim is build to be extended with custom systems. There are however some
-prebuilt systems included in the PySim, mainly for ilustration and
-demonstration purposes. The systems are listed below.
-
-.. toctree::
-   :maxdepth: 2
-
-   systems.rst
