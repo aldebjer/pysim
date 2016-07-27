@@ -6,7 +6,7 @@
 using std::string;
 
 string ScalarAdder::getDocs() {
-    std::string desc = str(boost::format("Adds inputs together. \n There can, at most, be %1% number of inputs, denoted input_0, input_1, ...") % MAX_INPUTS);
+    std::string desc = str(boost::format("Adds inputs together. \n The inputs are named input_0, input_1, ..."));
     return desc;
 }
 
