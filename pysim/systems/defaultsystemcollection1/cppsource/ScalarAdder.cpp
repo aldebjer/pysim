@@ -6,9 +6,8 @@
 using std::string;
 
 string ScalarAdder::getDocs() {
-    return string(
-        "System that simply adds a number of scalar inputs together\n\n"
-        );
+    std::string desc = str(boost::format("Adds inputs together. \n There can, at most, be %1% number of inputs, denoted input_0, input_1, ...") % MAX_INPUTS);
+    return desc;
 }
 
 ScalarAdder::ScalarAdder(void) :
