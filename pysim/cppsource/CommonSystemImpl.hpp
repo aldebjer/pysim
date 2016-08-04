@@ -7,6 +7,8 @@
 
 #include "SimulatableSystem.hpp"
 
+#include "Variable.hpp"
+
 namespace pysim {
 
 struct CommonSystemImplPrivate;
@@ -47,6 +49,11 @@ public:
     void setParMap(char* name, std::map<std::string, double> value);
 
     std::map<std::string, std::string> getParDescriptionMap();
+
+    Variable inputs;
+    Variable outputs;
+    Variable states;
+    Variable ders;
 
     //Input handling
     std::vector<std::string> getScalarInputNames();

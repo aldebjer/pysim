@@ -174,55 +174,55 @@ cdef class Parameters:
         else:
             raise AttributeError("No input {} in system".format(name))
 
-cdef class Inputs:
-    """Contains all the inputs for the system.
+cdef class PysimVars:
+    """Contains all the variables for the system.
     
-    Each attribute of this class correspond to a input of the system.
+    Each attribute of this class correspond to a variable of the system.
     """
 
     @staticmethod 
-    cdef _create(CommonSystemImpl* ptr):
-        p = Inputs()
-        p._c_sys = ptr
+    cdef _create(Variable* ptr):
+        p = PysimVars()
+        p._var_p = ptr
         return p
 
     def __dir__(self):
-        scalarnames = self._c_sys.getScalarInputNames()
+        scalarnames = self._var_p.getScalarNames()
         scalarnames_uc = [s.decode('utf-8') for s in scalarnames]
-        vectornames = self._c_sys.getInputVectorNames()
+        vectornames = self._var_p.getVectorNames()
         vectornames_uc = [s.decode('utf-8') for s in vectornames]
         return scalarnames_uc+vectornames_uc
 
     def __getattr__(self,name):
         bs = bytes(name,'utf-8')
-        allvectornames =  list(self._c_sys.getInputVectorNames())
-        allscalarnames =  list(self._c_sys.getScalarInputNames())
+        allvectornames =  list(self._var_p.getVectorNames())
+        allscalarnames =  list(self._var_p.getScalarNames())
         if bs in allvectornames:
-            return self._c_sys.getInputVector(bs)
+            return self._var_p.getVector(bs)
         elif bs in allscalarnames:
-            return self._c_sys.getScalarInput(bs)
+            return self._var_p.getScalar(bs)
         else:
-            raise AttributeError("No input {} in system".format(name))
+            raise AttributeError("No variable {} in system".format(name))
 
     def __setattr__(self,name,value):
         bs = bytes(name,'utf-8')
-        allvectornames =  list(self._c_sys.getInputVectorNames())
-        allscalarnames =  list(self._c_sys.getScalarInputNames())
+        allvectornames =  list(self._var_p.getVectorNames())
+        allscalarnames =  list(self._var_p.getScalarNames())
         if bs in allvectornames:
             try:
-                self._c_sys.setInputVector(bs,value)
+                self._var_p.setVector(bs,value)
             except TypeError:
-                raise TypeError("Input '{}' is a vector".format(name))
+                raise TypeError("Variable '{}' is a vector".format(name))
         elif bs in allscalarnames:
             try:
-                self._c_sys.setScalarInput(bs,value)
+                self._var_p.setScalar(bs,value)
             except TypeError:
-                raise TypeError("Input '{}' is a scalar".format(name))
+                raise TypeError("Variable '{}' is a scalar".format(name))
         else:
-            raise AttributeError("No input {} in system".format(name))
+            raise AttributeError("No variable {} in system".format(name))
 
     def __repr__(self):
-        d = self._getInputDescriptionMap()
+        d = self._getDescriptionMap()
         formatstring = "{:>10}  {:>8.3}  {}"
         s = [formatstring.format("name","value","description")]
         s.append("----------  --------  -------------")
@@ -242,167 +242,9 @@ cdef class Inputs:
         sout = "\n".join(s)
         return sout
 
-    def _getInputDescriptionMap(self):
-        dutf8 = dictToUtf8(self._c_sys.getInputDescriptionMap())
+    def _getDescriptionMap(self):
+        dutf8 = dictToUtf8(self._var_p.getDescriptionMap())
         return dutf8
-
-cdef class Outputs:
-    """Contains all the outputs for the system."""
-
-    @staticmethod 
-    cdef _create(CommonSystemImpl* ptr):
-        p = Outputs()
-        p._c_sys = ptr
-        return p
-
-    def __dir__(self):
-        scalarnames = self._c_sys.getScalarOutputNames()
-        scalarnames_uc = [s.decode('utf-8') for s in scalarnames]
-        vectornames = self._c_sys.getOutputVectorNames()
-        vectornames_uc = [s.decode('utf-8') for s in vectornames]
-        return scalarnames_uc+vectornames_uc
-
-    def __getattr__(self,name):
-        bs = bytes(name,'utf-8')
-        allvectornames =  list(self._c_sys.getOutputVectorNames())
-        allscalarnames =  list(self._c_sys.getScalarOutputNames())
-        if bs in allvectornames:
-            return self._c_sys.getOutputVector(bs)
-        elif bs in allscalarnames:
-            return self._c_sys.getScalarOutput(bs)
-        else:
-            raise AttributeError("No output {} in system".format(name))
-
-    def __setattr__(self,name,value):
-        bs = bytes(name,'utf-8')
-        allvectornames =  list(self._c_sys.getOutputVectorNames())
-        allscalarnames =  list(self._c_sys.getScalarOutputNames())
-        if bs in allvectornames:
-            try:
-                self._c_sys.setOutputVector(bs,value)
-            except TypeError:
-                raise TypeError("Output '{}' is a vector".format(name))
-        elif bs in allscalarnames:
-            try:
-                self._c_sys.setScalarOutput(bs,value)
-            except TypeError:
-                raise TypeError("Output '{}' is a scalar".format(name))
-        else:
-            raise AttributeError("No output {} in system".format(name))
-
-cdef class States:
-    """Contains all the states for the system.
-    """
-
-    @staticmethod 
-    cdef _create(CommonSystemImpl* ptr):
-        p = States()
-        p._c_sys = ptr
-        return p
-
-    def __dir__(self):
-        scalarnames = self._c_sys.getScalarStateNames()
-        scalarnames_uc = [s.decode('utf-8') for s in scalarnames]
-        vectornames = self._c_sys.getStateVectorNames()
-        vectornames_uc = [s.decode('utf-8') for s in vectornames]
-        return scalarnames_uc+vectornames_uc
-
-    def __getattr__(self,name):
-        bs = bytes(name,'utf-8')
-        allvectornames =  list(self._c_sys.getStateVectorNames())
-        allscalarnames =  list(self._c_sys.getScalarStateNames())
-        if bs in allvectornames:
-            return self._c_sys.getStateVector(bs)
-        elif bs in allscalarnames:
-            return self._c_sys.getScalarState(bs)
-        else:
-            raise AttributeError("No State {} in system".format(name))
-
-    def __setattr__(self,name,value):
-        bs = bytes(name,'utf-8')
-        allvectornames =  list(self._c_sys.getStateVectorNames())
-        allscalarnames =  list(self._c_sys.getScalarStateNames())
-        if bs in allvectornames:
-            try:
-                self._c_sys.setStateVector(bs,value)
-            except TypeError:
-                raise TypeError("State '{}' is a vector".format(name))
-        elif bs in allscalarnames:
-            try:
-                self._c_sys.setScalarState(bs,value)
-            except TypeError:
-                raise TypeError("State '{}' is a scalar".format(name))
-        else:
-            raise AttributeError("No State {} in system".format(name))
-
-    def __repr__(self):
-        d = self._getStateDescriptionMap()
-        formatstring = "{:>10}  {:>8.3}  {}"
-        s = [formatstring.format("name","value","description")]
-        s.append("----------  --------  -------------")
-        for name,desc in d.items():
-            value = self.__getattr__(name)
-            printvalues = []
-            if type(value)==float:
-                printvalues = [value]
-            elif type(value[0]) == float:
-                printvalues = value
-            else:
-                printvalues = ["---"]
-            shortdesc = desc.partition('\n')[0]
-            s.append(formatstring.format(name,printvalues[0],shortdesc))
-            for v in printvalues[1:]:
-                s.append(formatstring.format("",v,""))
-        sout = "\n".join(s)
-        return sout
-
-    def _getStateDescriptionMap(self):
-        dutf8 = dictToUtf8(self._c_sys.getStateDescriptionMap())
-        return dutf8
-
-cdef class Ders:
-    """Contains all the Derivates for the system."""
-
-    @staticmethod 
-    cdef _create(CommonSystemImpl* ptr):
-        p = Ders()
-        p._c_sys = ptr
-        return p
-
-    def __dir__(self):
-        scalarnames = self._c_sys.getScalarDerNames()
-        scalarnames_uc = [s.decode('utf-8') for s in scalarnames]
-        vectornames = self._c_sys.getDerVectorNames()
-        vectornames_uc = [s.decode('utf-8') for s in vectornames]
-        return scalarnames_uc+vectornames_uc
-
-    def __getattr__(self,name):
-        bs = bytes(name,'utf-8')
-        allvectornames =  list(self._c_sys.getDerVectorNames())
-        allscalarnames =  list(self._c_sys.getScalarDerNames())
-        if bs in allvectornames:
-            return self._c_sys.getDerVector(bs)
-        elif bs in allscalarnames:
-            return self._c_sys.getScalarDer(bs)
-        else:
-            raise AttributeError("No Der {} in system".format(name))
-
-    def __setattr__(self,name,value):
-        bs = bytes(name,'utf-8')
-        allvectornames =  list(self._c_sys.getDerVectorNames())
-        allscalarnames =  list(self._c_sys.getScalarDerNames())
-        if bs in allvectornames:
-            try:
-                self._c_sys.setDerVector(bs,value)
-            except TypeError:
-                raise TypeError("Der '{}' is a vector".format(name))
-        elif bs in allscalarnames:
-            try:
-                self._c_sys.setScalarDer(bs,value)
-            except TypeError:
-                raise TypeError("Der '{}' is a scalar".format(name))
-        else:
-            raise AttributeError("No Der {} in system".format(name))
 
 cdef class Connections:
     """The connections of the system.

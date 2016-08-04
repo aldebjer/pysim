@@ -4,10 +4,7 @@ from libcpp.vector cimport vector
 import numpy as np
 cimport numpy as np
 from cythonsystem cimport CythonSystemImpl
-from commonsystem cimport Inputs
-from commonsystem cimport Outputs
-from commonsystem cimport States
-from commonsystem cimport Ders
+from commonsystem cimport PysimVars
 from commonsystem cimport Results
 
 from commonsystem cimport Connections
@@ -23,10 +20,10 @@ cdef class Sys:
         self._c_s = <CommonSystemImpl*> _c_sys_local
         self._c_sys.sysp = <void*> self
 
-        self.inputs = Inputs._create(_c_sys_local)
-        self.outputs = Outputs._create(_c_sys_local)
-        self.states = States._create(_c_sys_local)
-        self.ders = Ders._create(_c_sys_local)
+        self.inputs = PysimVars._create(&_c_sys_local.inputs)
+        self.outputs = PysimVars._create(&_c_sys_local.outputs)
+        self.states = PysimVars._create(&_c_sys_local.states)
+        self.ders = PysimVars._create(&_c_sys_local.ders)
         self.connections = Connections._create(_c_sys_local)
         self.res = Results._create(_c_sys_local)
 

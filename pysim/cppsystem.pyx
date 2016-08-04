@@ -4,10 +4,7 @@ cimport numpy as np
 from cppsystem cimport CppSystem
 
 from commonsystem cimport Parameters
-from commonsystem cimport Inputs
-from commonsystem cimport Outputs
-from commonsystem cimport States
-from commonsystem cimport Ders
+from commonsystem cimport PysimVars
 from commonsystem cimport Results
 from commonsystem cimport Connections
 
@@ -26,9 +23,9 @@ cdef class Sys:
     cdef _setupParVar(self):
         cdef CommonSystemImpl* sp = self._c_s
         self.pars = Parameters._create(sp)
-        self.inputs = Inputs._create(sp)
-        self.outputs = Outputs._create(sp)
-        self.states = States._create(sp)
-        self.ders = Ders._create(sp)
+        self.inputs = PysimVars._create(&sp.inputs)
+        self.outputs = PysimVars._create(&sp.outputs)
+        self.states = PysimVars._create(&sp.states)
+        self.ders = PysimVars._create(&sp.ders)
         self.connections = Connections._create(sp)
         self.res = Results._create(sp)

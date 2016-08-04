@@ -24,6 +24,9 @@
     <ClCompile Include="..\..\pysim\cppsource\CommonSystemImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\pysim\cppsource\Variable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\pysim\cppsource\CppSystem.hpp">
@@ -42,6 +45,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl_p.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pysim\cppsource\Variable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pysim\cppsource\Variable_p.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

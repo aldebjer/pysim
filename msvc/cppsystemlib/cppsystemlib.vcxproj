@@ -14,6 +14,7 @@
     <ClCompile Include="..\..\pysim\cppsource\CommonSystemImpl.cpp" />
     <ClCompile Include="..\..\pysim\cppsource\CppSystem.cpp" />
     <ClCompile Include="..\..\pysim\cppsource\StoreHandler.cpp" />
+    <ClCompile Include="..\..\pysim\cppsource\Variable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl.hpp" />
@@ -22,6 +23,8 @@
     <ClInclude Include="..\..\pysim\cppsource\PysimTypes.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\SimulatableSystem.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\StoreHandler.hpp" />
+    <ClInclude Include="..\..\pysim\cppsource\Variable.hpp" />
+    <ClInclude Include="..\..\pysim\cppsource\Variable_p.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{63A6122D-0888-4CE9-9BB8-5BB33C9846FD}</ProjectGuid>

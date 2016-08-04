@@ -1,6 +1,6 @@
 #include <map>
 
-#include "CommonSystemImpl.hpp"
+#include "Variable_p.hpp"
 #include "CommonSystemImpl_p.hpp"
 
 #include <boost/algorithm/string.hpp>
@@ -11,6 +11,7 @@
 using std::string;
 
 namespace pysim {
+
 
 CommonSystemImpl::CommonSystemImpl() :
     d_ptr(new CommonSystemImplPrivate())
@@ -152,67 +153,31 @@ std::map<std::string, std::string> CommonSystemImpl::getParDescriptionMap() {
 //////////////////////////////
 
 std::map<std::string, std::string> CommonSystemImpl::getInputDescriptionMap(){
-    return d_ptr->input_descriptions;
+    return inputs.getDescriptionMap();
 }
 
 std::vector<std::string> CommonSystemImpl::getScalarInputNames() {
-    std::vector<std::string> names;
-    for (auto i = d_ptr->input_scalars.cbegin(); i != d_ptr->input_scalars.cend(); ++i) {
-        names.push_back(i->first);
-    }
-    return names;
+    return inputs.getScalarNames();
 }
 
 std::vector<std::string>  CommonSystemImpl::getInputVectorNames() {
-    std::vector<std::string> names;
-    for (auto i = d_ptr->input_vectors.cbegin(); i != d_ptr->input_vectors.cend(); ++i) {
-        names.push_back(i->first);
-    }
-    return names;
+    return inputs.getVectorNames();
 };
 
 void CommonSystemImpl::setScalarInput(char* name, double value) {
-    if (d_ptr->input_scalars.count(name) < 1) {
-        char errmsg[50];
-        snprintf(errmsg, 50, "Could not find: %s", name);
-        throw std::invalid_argument(errmsg);
-    }
-    *(d_ptr->input_scalars.at(name)) = value;
+    inputs.setScalar(name, value);
 }
 
 void CommonSystemImpl::setInputVector(char* name, std::vector<double> value) {
-    if (d_ptr->input_vectors.count(name) > 0) {
-        auto bv = d_ptr->input_vectors[name];
-        if (bv->size() != value.size()) {
-            std::string errstr = str(boost::format("Size of %1% is %2%") % name % bv->size());
-            throw std::invalid_argument(errstr);
-        }
-        std::copy(value.begin(), value.end(), bv->begin());
-    } else {
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
-
+    inputs.setVector(name, value);
 }
 
 double CommonSystemImpl::getScalarInput(char* name) {
-    if (d_ptr->input_scalars.count(name) < 1) {
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
-    return *(d_ptr->input_scalars.at(name));
+    return inputs.getScalar(name);
 };
 
 std::vector<double> CommonSystemImpl::getInputVector(char* name) {
-    if (d_ptr->input_vectors.count(name) > 0) {
-        auto bv = d_ptr->input_vectors[name];
-        std::vector<double> v(bv->size());
-        std::copy(bv->begin(), bv->end(), v.begin());
-        return v;
-    } else {
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
+    return inputs.getVector(name);
 }
 
 //////////////////////////////
@@ -221,67 +186,31 @@ std::vector<double> CommonSystemImpl::getInputVector(char* name) {
 //
 //////////////////////////////
 std::vector<std::string> CommonSystemImpl::getScalarOutputNames() {
-    std::vector<std::string> names;
-    for (auto i = d_ptr->output_scalars.cbegin(); i != d_ptr->output_scalars.cend(); ++i) {
-        names.push_back(i->first);
-    }
-    return names;
+    return outputs.getScalarNames();
 };
 
 std::vector<std::string> CommonSystemImpl::getOutputVectorNames() {
-    std::vector<std::string> names;
-    for (auto i = d_ptr->output_vectors.cbegin(); i != d_ptr->output_vectors.cend(); ++i) {
-        names.push_back(i->first);
-    }
-    return names;
+    return outputs.getVectorNames();
 }
 
 double CommonSystemImpl::getScalarOutput(char* name) {
-    if (d_ptr->output_scalars.count(name) < 1) {
-
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
-    return *(d_ptr->output_scalars.at(name));
+    return outputs.getScalar(name);
 };
 
 std::vector<double> CommonSystemImpl::getOutputVector(char* name) {
-    if (d_ptr->output_vectors.count(name) > 0) {
-        auto bv = d_ptr->output_vectors[name];
-        std::vector<double> v(bv->size());
-        std::copy(bv->begin(), bv->end(), v.begin());
-        return v;
-    } else {
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
+    return outputs.getVector(name);
 }
 
 void CommonSystemImpl::setScalarOutput(char* name, double value) {
-    if (d_ptr->output_scalars.count(name) < 1) {
-        char errmsg[50];
-        snprintf(errmsg, 50, "Could not find: %s", name);
-        throw std::invalid_argument(errmsg);
-    }
-    *(d_ptr->output_scalars.at(name)) = value;
+    outputs.setScalar(name, value);
 }
 
 void CommonSystemImpl::setOutputVector(char* name, std::vector<double> value) {
-    if (d_ptr->output_vectors.count(name) > 0) {
-        auto bv = d_ptr->output_vectors[name];
-        if (bv->size() != value.size()) {
-            std::string errstr = str(boost::format("Size of %1% is %2%") % name % bv->size());
-            throw std::invalid_argument(errstr);
-        }
-        std::copy(value.begin(), value.end(), bv->begin());
-    } else {
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
+    outputs.setVector(name, value);
 }
 
 std::map<std::string, std::string> CommonSystemImpl::getOutputDescriptionMap() {
-    return  d_ptr->output_descriptions;
+    return outputs.getDescriptionMap();
 }
 
 //////////////////////////////
@@ -290,67 +219,31 @@ std::map<std::string, std::string> CommonSystemImpl::getOutputDescriptionMap() {
 //
 //////////////////////////////
 std::vector<std::string> CommonSystemImpl::getScalarStateNames() {
-    std::vector<std::string> names;
-    for (auto i = d_ptr->state_scalars.cbegin(); i != d_ptr->state_scalars.cend(); ++i) {
-        names.push_back(i->first);
-    }
-    return names;
+    return states.getScalarNames();
 };
 
 std::vector<std::string> CommonSystemImpl::getStateVectorNames() {
-    std::vector<std::string> names;
-    for (auto i = d_ptr->state_vectors.cbegin(); i != d_ptr->state_vectors.cend(); ++i) {
-        names.push_back(i->first);
-    }
-    return names;
+    return states.getVectorNames();
 }
 
 double CommonSystemImpl::getScalarState(char* name) {
-    if (d_ptr->state_scalars.count(name) < 1) {
-
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
-    return *(d_ptr->state_scalars.at(name).stateValue);
+    return states.getScalar(name);
 };
 
 std::vector<double> CommonSystemImpl::getStateVector(char* name) {
-    if (d_ptr->state_vectors.count(name) > 0) {
-        auto bv = d_ptr->state_vectors[name].stateValue;
-        std::vector<double> v(bv->size());
-        std::copy(bv->begin(), bv->end(), v.begin());
-        return v;
-    } else {
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
+    return states.getVector(name);
 }
 
 void CommonSystemImpl::setStateVector(char* name, std::vector<double> value) {
-    if (d_ptr->state_vectors.count(name) > 0) {
-        auto bv = d_ptr->state_vectors[name].stateValue;
-        if (bv->size() != value.size()) {
-            std::string errstr = str(boost::format("Size of %1% is %2%") % name % bv->size());
-            throw std::invalid_argument(errstr);
-        }
-        std::copy(value.begin(), value.end(), bv->begin());
-    } else {
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
+    states.setVector(name, value);
 }
 
 void CommonSystemImpl::setScalarState(char* name, double value) {
-    if (d_ptr->state_scalars.count(name) < 1) {
-        char errmsg[50];
-        snprintf(errmsg, 50, "Could not find: %s", name);
-        throw std::invalid_argument(errmsg);
-    }
-    *(d_ptr->state_scalars.at(name).stateValue) = value;
+    states.setScalar(name, value);
 }
 
 std::map<std::string, std::string> CommonSystemImpl::getStateDescriptionMap() {
-    return  d_ptr->state_descriptions;
+    return states.getDescriptionMap();
 }
 
 //////////////////////////////
@@ -359,67 +252,31 @@ std::map<std::string, std::string> CommonSystemImpl::getStateDescriptionMap() {
 //
 //////////////////////////////
 std::vector<std::string> CommonSystemImpl::getScalarDerNames() {
-    std::vector<std::string> names;
-    for (auto i = d_ptr->der_scalars.cbegin(); i != d_ptr->der_scalars.cend(); ++i) {
-        names.push_back(i->first);
-    }
-    return names;
+    return ders.getScalarNames();
 };
 
 std::vector<std::string> CommonSystemImpl::getDerVectorNames() {
-    std::vector<std::string> names;
-    for (auto i = d_ptr->der_vectors.cbegin(); i != d_ptr->der_vectors.cend(); ++i) {
-        names.push_back(i->first);
-    }
-    return names;
+    return ders.getVectorNames();
 }
 
 double CommonSystemImpl::getScalarDer(char* name) {
-    if (d_ptr->der_scalars.count(name) < 1) {
-
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
-    return *(d_ptr->der_scalars.at(name).derValue);
+    return ders.getScalar(name);
 };
 
 std::vector<double> CommonSystemImpl::getDerVector(char* name) {
-    if (d_ptr->der_vectors.count(name) > 0) {
-        auto bv = d_ptr->state_vectors[name].derValue;
-        std::vector<double> v(bv->size());
-        std::copy(bv->begin(), bv->end(), v.begin());
-        return v;
-    } else {
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
+    return ders.getVector(name);
 }
 
 void CommonSystemImpl::setDerVector(char* name, std::vector<double> value) {
-    if (d_ptr->der_vectors.count(name) > 0) {
-        auto bv = d_ptr->der_vectors[name].derValue;
-        if (bv->size() != value.size()) {
-            std::string errstr = str(boost::format("Size of %1% is %2%") % name % bv->size());
-            throw std::invalid_argument(errstr);
-        }
-        std::copy(value.begin(), value.end(), bv->begin());
-    } else {
-        std::string errstr = str(boost::format("Could not find: %1%") % name);
-        throw std::invalid_argument(errstr);
-    }
+    ders.setVector(name, value);
 }
 
 void CommonSystemImpl::setScalarDer(char* name, double value) {
-    if (d_ptr->der_scalars.count(name) < 1) {
-        char errmsg[50];
-        snprintf(errmsg, 50, "Could not find: %s", name);
-        throw std::invalid_argument(errmsg);
-    }
-    *(d_ptr->der_scalars.at(name).derValue) = value;
+    ders.setScalar(name, value);
 }
 
 std::map<std::string, std::string> CommonSystemImpl::getDerDescriptionMap() {
-    return  d_ptr->der_descriptions;
+    return  ders.getDescriptionMap();
 }
 
 ////////////////////////////////////
@@ -432,23 +289,23 @@ void CommonSystemImpl::connect(char* outputname,
     char* inputname) {
     using std::make_pair;
 
-    if (inputsys->d_ptr->input_scalars.count(inputname) > 0) {
-        if (d_ptr->output_scalars.count(outputname) == 1) {
-            auto p = make_pair(d_ptr->output_scalars[outputname], inputsys->d_ptr->input_scalars[inputname]);
+    if (inputsys->inputs.d_ptr->scalars.count(inputname) > 0) {
+        if (outputs.d_ptr->scalars.count(outputname) == 1) {
+            auto p = make_pair(outputs.d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
             d_ptr->connected_scalars.push_back(p);
-        } else if (d_ptr->state_scalars.count(outputname) == 1) {
-            auto p = make_pair(d_ptr->state_scalars[outputname].stateValue, inputsys->d_ptr->input_scalars[inputname]);
+        } else if (states.d_ptr->scalars.count(outputname) == 1) {
+            auto p = make_pair(states.d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
             d_ptr->connected_scalar_states_.push_back(p);
         } else {
             std::string errtxt("Could not find matching state or output to connect from");
             throw std::invalid_argument(errtxt);
         }
-    } else if (inputsys->d_ptr->input_vectors.count(inputname) > 0) {
-        if (d_ptr->output_vectors.count(outputname) == 1) {
-            auto p = make_pair(d_ptr->output_vectors[outputname], inputsys->d_ptr->input_vectors[inputname]);
+    } else if (inputsys->inputs.d_ptr->vectors.count(inputname) > 0) {
+        if (outputs.d_ptr->vectors.count(outputname) == 1) {
+            auto p = make_pair(outputs.d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
             d_ptr->connected_vectors.push_back(p);
-        } else if (d_ptr->state_vectors.count(outputname) == 1) {
-            auto p = make_pair(d_ptr->state_vectors[outputname].stateValue, inputsys->d_ptr->input_vectors[inputname]);
+        } else if (states.d_ptr->vectors.count(outputname) == 1) {
+            auto p = make_pair(states.d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
             d_ptr->connected_vector_states.push_back(p);
         } else {
             std::string errtxt("Could not find matching state or output to connect from");
@@ -483,12 +340,12 @@ void CommonSystemImpl::copystateoutputs() {
 
 std::vector<double*> CommonSystemImpl::getStatePointers() {
     std::vector<double*> out;
-    for (auto const& p : d_ptr->state_scalars) {
-        out.push_back(p.second.stateValue);
+    for (auto const& p : states.d_ptr->scalars) {
+        out.push_back(p.second);
     }
 
-    for (auto const&p : d_ptr->state_vectors) {
-        pysim::vector* v = p.second.stateValue;
+    for (auto const&p : states.d_ptr->vectors) {
+        pysim::vector* v = p.second;
         size_t size = v->size();
         for (size_t i = 0; i < size; ++i) {
             out.push_back(&(v->operator()(i)));
@@ -498,13 +355,17 @@ std::vector<double*> CommonSystemImpl::getStatePointers() {
 }
 
 std::vector<double*> CommonSystemImpl::getDerPointers() {
+    //In this function we iterate over the state scalars to
+    //get the ders in the same order as the states.
     std::vector<double*> out;
-    for (auto const& p : d_ptr->state_scalars) {
-        out.push_back(p.second.derValue);
+    for (auto const& p : states.d_ptr->scalars) {
+        //push the der that corresponds to the state
+        out.push_back(ders.d_ptr->scalars[d_ptr->state_to_der_map_scalars[p.first]]);
     }
 
-    for (auto const&p : d_ptr->state_vectors) {
-        pysim::vector* v = p.second.derValue;
+    for (auto const&p : states.d_ptr->vectors) {
+        //the der that corresponds to the state
+        pysim::vector* v = ders.d_ptr->vectors[d_ptr->state_to_der_map_vectors[p.first]];
         size_t size = v->size();
         for (size_t i = 0; i < size; ++i) {
             out.push_back(&(v->operator()(i)));
@@ -521,22 +382,22 @@ void CommonSystemImpl::doStoreStep(double time) {
 //to be stored. If none with "name" is found the function raises an invalid_argument
 //exception.
 void  CommonSystemImpl::store(char* name) {
-    if (d_ptr->state_scalars.count(name) == 1) {
-        d_ptr->storeHandler.store_scalar(name, d_ptr->state_scalars[name].stateValue);
-    } else if (d_ptr->der_scalars.count(name) == 1) {
-        d_ptr->storeHandler.store_scalar(name, d_ptr->der_scalars[name].derValue);
-    } else if (d_ptr->input_scalars.count(name) == 1) {
-        d_ptr->storeHandler.store_scalar(name, d_ptr->input_scalars[name]);
-    } else if (d_ptr->output_scalars.count(name) == 1) {
-        d_ptr->storeHandler.store_scalar(name, d_ptr->output_scalars[name]);
-    } else if (d_ptr->state_vectors.count(name) == 1) {
-        d_ptr->storeHandler.store_vector(name, d_ptr->state_vectors[name].stateValue);
-    } else if (d_ptr->der_vectors.count(name) == 1) {
-        d_ptr->storeHandler.store_vector(name, d_ptr->der_vectors[name].derValue);
-    } else if (d_ptr->input_vectors.count(name) == 1) {
-        d_ptr->storeHandler.store_vector(name, d_ptr->input_vectors[name]);
-    } else if (d_ptr->output_vectors.count(name) == 1) {
-        d_ptr->storeHandler.store_vector(name, d_ptr->output_vectors[name]);
+    if (states.d_ptr->scalars.count(name) == 1) {
+        d_ptr->storeHandler.store_scalar(name, states.d_ptr->scalars[name]);
+    } else if (ders.d_ptr->scalars.count(name) == 1) {
+        d_ptr->storeHandler.store_scalar(name, ders.d_ptr->scalars[name]);
+    } else if (inputs.d_ptr->scalars.count(name) == 1) {
+        d_ptr->storeHandler.store_scalar(name, inputs.d_ptr->scalars[name]);
+    } else if (outputs.d_ptr->scalars.count(name) == 1) {
+        d_ptr->storeHandler.store_scalar(name, outputs.d_ptr->scalars[name]);
+    } else if (states.d_ptr->vectors.count(name) == 1) {
+        d_ptr->storeHandler.store_vector(name, states.d_ptr->vectors[name]);
+    } else if (ders.d_ptr->vectors.count(name) == 1) {
+        d_ptr->storeHandler.store_vector(name, ders.d_ptr->vectors[name]);
+    } else if (inputs.d_ptr->vectors.count(name) == 1) {
+        d_ptr->storeHandler.store_vector(name, inputs.d_ptr->vectors[name]);
+    } else if (outputs.d_ptr->vectors.count(name) == 1) {
+        d_ptr->storeHandler.store_vector(name, outputs.d_ptr->vectors[name]);
     } else {
         char errmsg[50];
         snprintf(errmsg, sizeof(errmsg), "Could not store: %s, no such variable", name);
@@ -547,11 +408,11 @@ void  CommonSystemImpl::store(char* name) {
 void CommonSystemImpl::add_compare_greater(char* comparename, double comparevalue) {
     using std::make_pair;
 
-    if (d_ptr->output_scalars.count(comparename) == 1) {
-        auto p = make_pair(d_ptr->output_scalars[comparename], comparevalue);
+    if (outputs.d_ptr->scalars.count(comparename) == 1) {
+        auto p = make_pair(outputs.d_ptr->scalars[comparename], comparevalue);
         d_ptr->compare_greater_vector.push_back(p);
-    } else if (d_ptr->state_scalars.count(comparename) == 1) {
-        auto p = make_pair(d_ptr->state_scalars[comparename].stateValue, comparevalue);
+    } else if (states.d_ptr->scalars.count(comparename) == 1) {
+        auto p = make_pair(states.d_ptr->scalars[comparename], comparevalue);
         d_ptr->compare_greater_vector.push_back(p);
     } else {
         std::string errtxt("Could not find state or output to use for comparison");
@@ -562,11 +423,11 @@ void CommonSystemImpl::add_compare_greater(char* comparename, double comparevalu
 void CommonSystemImpl::add_compare_smaller(char* comparename, double comparevalue) {
     using std::make_pair;
 
-    if (d_ptr->output_scalars.count(comparename) == 1) {
-        auto p = make_pair(d_ptr->output_scalars[comparename], comparevalue);
+    if (outputs.d_ptr->scalars.count(comparename) == 1) {
+        auto p = make_pair(outputs.d_ptr->scalars[comparename], comparevalue);
         d_ptr->compare_smaller_vector.push_back(p);
-    } else if (d_ptr->state_scalars.count(comparename) == 1) {
-        auto p = make_pair(d_ptr->state_scalars[comparename].stateValue, comparevalue);
+    } else if (states.d_ptr->scalars.count(comparename) == 1) {
+        auto p = make_pair(states.d_ptr->scalars[comparename], comparevalue);
         d_ptr->compare_smaller_vector.push_back(p);
     } else {
         std::string errtxt("Could not find state or output to use for comparison");

@@ -4,8 +4,24 @@ from libcpp.map cimport map
 
 cimport simulatablesystem
 
+cdef extern from "Variable.hpp" namespace "pysim":
+    cdef cppclass Variable:
+        vector[string] getVectorNames()
+        vector[double] getVector(char* name) except +
+        void setVector(char*, vector[double]) except +
+        vector[string] getScalarNames()
+        void setScalar(char*, double) except +
+        double getScalar(char*) except +
+        map[string,string] getDescriptionMap()
+
+
 cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
     cdef cppclass CommonSystemImpl(simulatablesystem.SimulatableSystem):
+
+        Variable inputs
+        Variable outputs
+        Variable states
+        Variable ders
 
         vector[string] getParStringNames()
         vector[string] getParMatrixNames()
@@ -17,38 +33,6 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
         map[string,double] getParMap(char* name) except +
         void setParMap(char* name, map[string,double] value) except +
         map[string,string] getParDescriptionMap() except +
-
-        vector[string] getInputVectorNames()
-        vector[double] getInputVector(char* name) except +
-        void setInputVector(char*, vector[double]) except +
-        vector[string] getScalarInputNames()
-        void setScalarInput(char*, double) except +
-        double getScalarInput(char*) except +
-        map[string,string] getInputDescriptionMap()
-
-        vector[string] getOutputVectorNames()
-        vector[double] getOutputVector(char* name) except +
-        void setOutputVector(char*, vector[double]) except +
-        vector[string] getScalarOutputNames()
-        void setScalarOutput(char*, double) except +
-        double getScalarOutput(char*) except +
-        map[string,string] getOutputDescriptionMap()
-
-        vector[string] getStateVectorNames()
-        vector[double] getStateVector(char* name) except +
-        void setStateVector(char*, vector[double]) except +
-        vector[string] getScalarStateNames()
-        void setScalarState(char*, double) except +
-        double getScalarState(char* name)
-        map[string,string] getStateDescriptionMap()
-
-        vector[string] getDerVectorNames()
-        vector[double] getDerVector(char* name) except +
-        void setDerVector(char*, vector[double]) except +
-        vector[string] getScalarDerNames()
-        void setScalarDer(char* name, double) except +
-        double getScalarDer(char* name)
-        map[string,string] getDerDescriptionMap()
 
         void store(char* name)
         StoreHandler* getStoreHandlerP()
@@ -76,25 +60,10 @@ cdef class Parameters:
     @staticmethod
     cdef _create(CommonSystemImpl* ptr)
 
-cdef class Inputs:
-    cdef CommonSystemImpl* _c_sys
+cdef class PysimVars:
+    cdef Variable* _var_p
     @staticmethod
-    cdef _create(CommonSystemImpl* ptr)
-
-cdef class Outputs:
-    cdef CommonSystemImpl* _c_sys
-    @staticmethod
-    cdef _create(CommonSystemImpl* ptr)
-
-cdef class States:
-    cdef CommonSystemImpl* _c_sys
-    @staticmethod
-    cdef _create(CommonSystemImpl* ptr)
-
-cdef class Ders:
-    cdef CommonSystemImpl* _c_sys
-    @staticmethod
-    cdef _create(CommonSystemImpl* ptr)
+    cdef _create(Variable* var_ptr)
 
 cdef class Connections:
     cdef CommonSystemImpl* _c_sys
