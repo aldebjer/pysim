@@ -85,9 +85,9 @@ setup(
     url="http://pys.im",
     ext_modules=cythonize(extensions),
 
-    data_files=[('pysim/include',['pysim/cppsource/simulatablesystem.hpp',
-                                  'pysim/cppsource/cppsystem.hpp',
-                                  'pysim/cppsource/pysimtypes.hpp',
+    data_files=[('pysim/include',['pysim/cppsource/SimulatableSystem.hpp',
+                                  'pysim/cppsource/CppSystem.hpp',
+                                  'pysim/cppsource/PysimTypes.hpp',
                                   'pysim/cppsource/CommonSystemImpl.hpp',
                                   'pysim/cppsource/Variable.hpp',
                                   'pysim/cppsource/StoreHandler.hpp',
