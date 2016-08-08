@@ -5,6 +5,7 @@
 #include "CommonSystemImpl.hpp"
 #include "Variable.hpp"
 
+#include "StoreHandler.hpp"
 #include "PysimTypes.hpp"
 
 

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CommonSystemImpl.hpp"
+#include "PysimTypes.hpp"
 
 #include <vector>
 #include <map>

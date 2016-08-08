@@ -3,7 +3,6 @@
 #include <map>
 #include <memory>
 
-#include "StoreHandler.hpp"
 
 #include "SimulatableSystem.hpp"
 
@@ -12,6 +11,7 @@
 namespace pysim {
 
 struct CommonSystemImplPrivate;
+class StoreHandler;
 
 class  CommonSystemImpl :
     public SimulatableSystem
