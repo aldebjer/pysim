@@ -26,11 +26,8 @@ PySim
 
 .. end-badges
 
-Under development, things will change!!!
-
-Pysim simulates systems that can be described by an ordinary differential
-equation. There are a number of systems included, and more systems can be
-added to plugin-packages.
+Pysim is a tool for modeling and simulation of dynamical systems. The systems are described by ordinary differential
+equations. There are a number of systems included, and more systems can be added.
 
 For more information on how to use it, build it and extend it please see the
 homepage at:
