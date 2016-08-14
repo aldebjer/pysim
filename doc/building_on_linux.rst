@@ -57,6 +57,12 @@ To build pysim move to the pysim directory and type:
 
 .. code-block:: bash
 
+    python3 setup.py build_clib
+
+and then
+
+.. code-block:: bash
+
     python3 setup.py build_ext --inplace
 
 This will build the c++ libraries and put the cython extensions side by side
