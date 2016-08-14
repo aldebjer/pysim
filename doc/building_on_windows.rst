@@ -51,11 +51,15 @@ step-debugging. Both methods are described below.
 Building with Setuptools
 ^^^^^^^^^^^^^^^^^^^^^^^^
 To build with setuptools open a command prompt and move to the pysim directory,
-e.g.``C:/dev/pysim/``. We will build the c++ and cython
+e.g.``C:/dev/pysim/``. To build the c libraries type:
+
+.. code-block:: bash
+    python setup.py build_clib
+
+After that we build the the c++ and cython
 modules and place them besides the python module by typing:
 
 .. code-block:: bash
-
     python setup.py build_ext --inplace
 
 Building with the Visual Studio IDE
