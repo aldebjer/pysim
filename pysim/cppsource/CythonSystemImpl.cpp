@@ -26,7 +26,7 @@ double CythonSystemImpl::getNextUpdateTime() { return 0; }
 
 bool CythonSystemImpl::do_comparison() { return false; }
 
-void CythonSystemImpl::add_input_vector(std::string name, size_t length){
+void CythonSystemImpl::add_input(std::string name, size_t length){
     if (length == 1) {
         inputs.d_ptr->scalars[name] = new double(0);
     } else {
@@ -35,16 +35,16 @@ void CythonSystemImpl::add_input_vector(std::string name, size_t length){
     }
 }
 
-void CythonSystemImpl::add_output_vector(std::string name, size_t length) {
+void CythonSystemImpl::add_output(std::string name, size_t length) {
     if (length == 1) {
         outputs.d_ptr->scalars[name] = new double(0);
     } else {
         outputs.d_ptr->vectors[name] = new pysim::vector(length);
-        outputs.d_ptr->descriptions[name] = std::string("No Description"); //TODO add descriptions in call
     }
+    outputs.d_ptr->descriptions[name] = std::string("No Description"); //TODO add descriptions in call
 }
 
-void CythonSystemImpl::add_state_vector(std::string statename, std::string dername, size_t length) {
+void CythonSystemImpl::add_state(std::string statename, std::string dername, size_t length) {
     if (length == 1) {
         states.d_ptr->scalars[statename] = new double(0.0);
         ders.d_ptr->scalars[dername] = new double(0.0);

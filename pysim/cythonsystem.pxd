@@ -9,9 +9,9 @@ from commonsystem cimport CommonSystem
 cdef extern from "CythonSystemImpl.hpp" namespace "pysim":
     cdef cppclass CythonSystemImpl(CommonSystemImpl):
         void* sysp
-        void add_input_vector(string, size_t)
-        void add_output_vector(string, size_t)
-        void add_state_vector(string, string , size_t)
+        void add_input(string, size_t)
+        void add_output(string, size_t)
+        void add_state(string, string , size_t)
 
 
 cdef class Sys(CommonSystem):
