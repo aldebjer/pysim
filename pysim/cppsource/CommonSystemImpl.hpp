@@ -20,22 +20,29 @@ public:
     CommonSystemImpl();
     virtual ~CommonSystemImpl();
 
+    //////////////////////////////////////////////////////////////////////////
+    //      Inherited from Simulatable System
+    //////////////////////////////////////////////////////////////////////////
     void copyoutputs();
     void copystateoutputs();
-
     double getNextUpdateTime();
     bool do_comparison();
-
     std::vector<double*> getStatePointers();
     std::vector<double*> getDerPointers();
-
     void doStoreStep(double time);
+    bool getDiscrete();
+
+
+    //////////////////////////////////////////////////////////////////////////
+    //      Interface used from python
+    //////////////////////////////////////////////////////////////////////////
     void store(char* name);
     StoreHandler* getStoreHandlerP();
 
-
     void add_compare_greater(char* comparename, double comparevalue);
     void add_compare_smaller(char* comparename, double comparevalue);
+
+    void connect(char* outputname, CommonSystemImpl* inputsys, char* inputname);
 
     //Parameter handling
     std::vector<std::string> getParStringNames();
@@ -49,15 +56,14 @@ public:
     void setParMap(char* name, std::map<std::string, double> value);
 
     std::map<std::string, std::string> getParDescriptionMap();
-
+    
+    //////////////////////////////////////////////////////////////////////////
+    //      Attributes
+    //////////////////////////////////////////////////////////////////////////
     Variable inputs;
     Variable outputs;
     Variable states;
     Variable ders;
-
-    bool getDiscrete();
-
-    void connect(char* outputname, CommonSystemImpl* inputsys, char* inputname);
 
 protected:
     std::unique_ptr<CommonSystemImplPrivate> d_ptr;
