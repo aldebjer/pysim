@@ -35,4 +35,3 @@ def test_read_inputfile():
 
 if __name__ == "__main__":
     test_read_inputfile()
-
