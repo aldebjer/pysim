@@ -6,7 +6,7 @@
 
 namespace pysim{
 
-struct CompositeSystemPrivate;
+struct CompositeSystemImplPrivate;
 class CommonSystemImpl;
 
 class  CompositeSystemImpl :
@@ -42,7 +42,7 @@ public:
     Variable outputs;
 
 protected:
-    std::unique_ptr<CompositeSystemPrivate> d_ptr;
+    std::unique_ptr<CompositeSystemImplPrivate> d_ptr;
 };
 
 }

@@ -44,6 +44,12 @@ extensions = [Extension("pysim.cppsystem",
                         extra_compile_args=extracompileargs,
                         libraries=["cppsystemlib",]
                         ),
+              Extension("pysim.compositesystem",
+                        ['pysim/compositesystem.pyx','pysim/cppsource/CompositeSystemImpl.cpp'],
+                        language="c++",
+                        extra_compile_args=extracompileargs,
+                        libraries=["cppsystemlib",]
+                        ),
               Extension("pysim.commonsystem",
                         ['pysim/commonsystem.pyx'],
                         language="c++",

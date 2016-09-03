@@ -15,7 +15,7 @@ using std::string;
 
 namespace pysim{
 
-struct CompositeSystemPrivate {
+struct CompositeSystemImplPrivate {
     std::vector<CommonSystemImpl*> subsystems_common;
     std::map<std::string, CommonSystemImpl*> subsystems_common_map;
 
@@ -24,7 +24,8 @@ struct CompositeSystemPrivate {
 };
 
 
-CompositeSystemImpl::CompositeSystemImpl()
+CompositeSystemImpl::CompositeSystemImpl():
+    d_ptr(new CompositeSystemImplPrivate())
 {
 }
 CompositeSystemImpl::~CompositeSystemImpl()
