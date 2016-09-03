@@ -1,4 +1,4 @@
-#include "CompositeSystem.hpp"
+#include "CompositeSystemImpl.hpp"
 
 #include <map>
 
@@ -7,7 +7,6 @@
 #include "Variable_p.hpp"
 
 #include "PysimTypes.hpp"
-#include "CompositeSystem.hpp"
 
 #include <iostream>
 #include <string>
@@ -25,10 +24,10 @@ struct CompositeSystemPrivate {
 };
 
 
-CompositeSystem::CompositeSystem()
+CompositeSystemImpl::CompositeSystemImpl()
 {
 }
-CompositeSystem::~CompositeSystem()
+CompositeSystemImpl::~CompositeSystemImpl()
 {
 }
 
@@ -36,7 +35,7 @@ CompositeSystem::~CompositeSystem()
 //      Inherited from Simulatable System
 //////////////////////////////////////////////////////////////////////////
 
-std::vector<double*> CompositeSystem::getStatePointers() {
+std::vector<double*> CompositeSystemImpl::getStatePointers() {
     std::vector<double*> states;
     for (CommonSystemImpl* s : d_ptr->subsystems_common) {
         std::vector<double*> subs_states = s->getStatePointers();
@@ -45,7 +44,7 @@ std::vector<double*> CompositeSystem::getStatePointers() {
     return states;
 };
 
-std::vector<double*> CompositeSystem::getDerPointers() {
+std::vector<double*> CompositeSystemImpl::getDerPointers() {
     std::vector<double*> ders;
     for (CommonSystemImpl* s : d_ptr->subsystems_common) {
         std::vector<double*> subs_ders = s->getDerPointers();
@@ -55,26 +54,26 @@ std::vector<double*> CompositeSystem::getDerPointers() {
 };
 
 
-void CompositeSystem::preSim()
+void CompositeSystemImpl::preSim()
 {
     for (CommonSystemImpl* s : d_ptr->subsystems_common) {
         s->preSim();
     }
 }
 
-void CompositeSystem::doStep(double time)
+void CompositeSystemImpl::doStep(double time)
 {
     for (CommonSystemImpl* s : d_ptr->subsystems_common) {
         s->doStep(time);
     }
 }
 
-double CompositeSystem::getNextUpdateTime() 
+double CompositeSystemImpl::getNextUpdateTime() 
 {
     return 0;
 }
 
-bool CompositeSystem::do_comparison()
+bool CompositeSystemImpl::do_comparison()
 {
     bool comparison_trigged = false;
     for (CommonSystemImpl* s : d_ptr->subsystems_common) {
@@ -88,7 +87,7 @@ bool CompositeSystem::do_comparison()
 //       Connections
 //
 ////////////////////////////////////
-void CompositeSystem::connect(char* outputname,
+void CompositeSystemImpl::connect(char* outputname,
     CommonSystemImpl* inputsys,
     char* inputname) {
     using std::make_pair;
@@ -115,7 +114,7 @@ void CompositeSystem::connect(char* outputname,
 }
 
 
-void CompositeSystem::copyoutputs() {
+void CompositeSystemImpl::copyoutputs() {
     for (auto vi = d_ptr->connected_scalars.cbegin(); vi != d_ptr->connected_scalars.cend(); ++vi) {
         *(vi->second) = *(vi->first);
     }
@@ -131,13 +130,13 @@ void CompositeSystem::copyoutputs() {
 //
 /////////////////////////////////////////////////////////////////////
 
-void CompositeSystem::add_subsystem(CommonSystemImpl* subsystem, string name)
+void CompositeSystemImpl::add_subsystem(CommonSystemImpl* subsystem, string name)
 {
     d_ptr->subsystems_common_map[name] = subsystem;
     d_ptr->subsystems_common.push_back(subsystem);
 }
 
-void CompositeSystem::add_input_port(string name, string subsystemname, string subsystem_input, string description)
+void CompositeSystemImpl::add_input_port(string name, string subsystemname, string subsystem_input, string description)
 {
     double* ss_input_p = d_ptr->subsystems_common_map[subsystemname]->inputs.d_ptr->scalars[subsystem_input];
 
@@ -145,7 +144,7 @@ void CompositeSystem::add_input_port(string name, string subsystemname, string s
     inputs.d_ptr->descriptions[name] = description;
 }
 
-void CompositeSystem::add_output_port(string name, string subsystemname, string subsystem_output, string description)
+void CompositeSystemImpl::add_output_port(string name, string subsystemname, string subsystem_output, string description)
 {
     double* ss_ouput_p = d_ptr->subsystems_common_map[subsystemname]->outputs.d_ptr->scalars[subsystem_output];
 

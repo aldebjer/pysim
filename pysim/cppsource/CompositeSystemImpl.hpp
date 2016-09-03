@@ -9,12 +9,12 @@ namespace pysim{
 struct CompositeSystemPrivate;
 class CommonSystemImpl;
 
-class  CompositeSystem :
+class  CompositeSystemImpl :
     public SimulatableSystem
 {
 public:
-    CompositeSystem();
-    virtual ~CompositeSystem();
+    CompositeSystemImpl();
+    virtual ~CompositeSystemImpl();
 
     //////////////////////////////////////////////////////////////////////////
     //      Inherited from Simulatable System
