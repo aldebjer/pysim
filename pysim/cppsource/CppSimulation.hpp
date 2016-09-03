@@ -17,7 +17,7 @@ class Simulation {
                   double abs_err, double rel_err, bool dense_output);
 
     void observer(const std::vector<double> &state, double time);
-    void addSystem(SimulatableSystem* system);
+    void addSystem(SimulatableSystemInterface* system);
     double getCurrentTime() { return currentTime; }
 
  protected:
@@ -28,8 +28,8 @@ class Simulation {
                        std::vector< double > &der,
                        double time);
 
-    std::vector<SimulatableSystem*> systems;
-    std::vector<SimulatableSystem*> discreteSystems;
+    std::vector<SimulatableSystemInterface*> systems;
+    std::vector<SimulatableSystemInterface*> discreteSystems;
 
     std::vector<double*> states;
     std::vector<double*> ders;

@@ -69,6 +69,13 @@ void CompositeSystemImpl::doStep(double time)
     }
 }
 
+void CompositeSystemImpl::doStoreStep(double time) {
+    for (CommonSystemImpl* s : d_ptr->subsystems_common) {
+        s->doStoreStep(time);
+    }
+
+}
+
 double CompositeSystemImpl::getNextUpdateTime() 
 {
     return 0;

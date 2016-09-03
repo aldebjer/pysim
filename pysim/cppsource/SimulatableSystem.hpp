@@ -3,10 +3,10 @@
 
 namespace pysim {
 
-class SimulatableSystem
+class SimulatableSystemInterface
 {
 public:
-    virtual ~SimulatableSystem(void){};
+    virtual ~SimulatableSystemInterface(void){};
 
     virtual void preSim(){};
     virtual void doStep(double time)=0;

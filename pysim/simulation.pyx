@@ -1,15 +1,18 @@
 from libcpp.vector cimport vector
 from libcpp cimport bool
 from commonsystem cimport CommonSystem
+from compositesystem import CompositeSystem
 cimport simulatablesystem
 import json
 import importlib
 import collections
+from simulatablesystem cimport SimulatableSystem
+
 
 cdef extern from "CppSimulation.hpp" namespace "pysim":
     cdef cppclass Simulation:
         void simulate(double endtime, double dt, char* solvername,double abs_err, double rel_err, bool dense_output) except +
-        void addSystem(simulatablesystem.SimulatableSystem* system)
+        void addSystem(simulatablesystem.SimulatableSystemInterface* system)
         double getCurrentTime()
 
 class Runge_Kutta_4:
@@ -57,7 +60,7 @@ cdef class Sim:
     def __dealloc__(self):
         del self._c_sim
 
-    def add_system(self, CommonSystem sys not None, name = None):
+    def add_system(self, SimulatableSystem sys not None, name = None):
         """Add a system that will participate in this simulation"""
 
         #If no name is given give the system instance a name as per:
@@ -73,9 +76,8 @@ cdef class Sim:
                         name = newname
                         break
 
-        self._c_sim.addSystem(sys._c_s)
+        self._c_sim.addSystem(sys._SimulatableSystemInterface_p)
         self.systems[name] = sys
-
 
     def get_time(self):
         """Get the current time of the simulation.

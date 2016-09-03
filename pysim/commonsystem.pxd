@@ -16,7 +16,7 @@ cdef extern from "Variable.hpp" namespace "pysim":
 
 
 cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
-    cdef cppclass CommonSystemImpl(simulatablesystem.SimulatableSystem):
+    cdef cppclass CommonSystemImpl(simulatablesystem.SimulatableSystemInterface):
 
         Variable inputs
         Variable outputs
@@ -51,8 +51,7 @@ cdef extern from "StoreHandler.hpp" namespace "pysim":
         vector[string] getStoreNames()
         void setStoreInterval(double interval)
 
-
-cdef class CommonSystem:
+cdef class CommonSystem(simulatablesystem.SimulatableSystem):
     cdef CommonSystemImpl * _c_s
 
 cdef class Parameters:

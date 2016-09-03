@@ -22,6 +22,7 @@ cdef class Sys:
 
     cdef _setupParVar(self):
         cdef CommonSystemImpl* sp = self._c_s
+        self._SimulatableSystemInterface_p = sp
         self.pars = Parameters._create(sp)
         self.inputs = PysimVars._create(&sp.inputs)
         self.outputs = PysimVars._create(&sp.outputs)

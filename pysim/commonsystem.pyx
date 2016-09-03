@@ -9,6 +9,8 @@ from libcpp.vector cimport vector
 import numpy as np
 cimport numpy as np
 from commonsystem cimport CommonSystemImpl
+cimport simulatablesystem
+
 
 np.import_array()
 

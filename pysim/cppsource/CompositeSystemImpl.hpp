@@ -10,7 +10,7 @@ struct CompositeSystemImplPrivate;
 class CommonSystemImpl;
 
 class  CompositeSystemImpl :
-    public SimulatableSystem
+    public SimulatableSystemInterface
 {
 public:
     CompositeSystemImpl();
@@ -23,7 +23,7 @@ public:
     void copystateoutputs() {};
     std::vector<double*> getStatePointers();
     std::vector<double*> getDerPointers();
-    void doStoreStep(double time) {};
+    void doStoreStep(double time);
     bool getDiscrete() { return false; };
 
     void preSim();

@@ -6,6 +6,7 @@ cimport numpy as np
 from cythonsystem cimport CythonSystemImpl
 from commonsystem cimport PysimVars
 from commonsystem cimport Results
+#cimport simulatablesystem
 
 from commonsystem cimport Connections
 
@@ -19,6 +20,7 @@ cdef class Sys:
         self._c_sys = _c_sys_local
         self._c_s = <CommonSystemImpl*> _c_sys_local
         self._c_sys.sysp = <void*> self
+        self._SimulatableSystemInterface_p = _c_sys_local
 
         self.inputs = PysimVars._create(&_c_sys_local.inputs)
         self.outputs = PysimVars._create(&_c_sys_local.outputs)

@@ -7,18 +7,20 @@ cimport numpy as np
 from compositesystem cimport CompositeSystemImpl
 from commonsystem cimport PysimVars
 from commonsystem cimport Results
+from commonsystem cimport CommonSystem
 from simulatablesystem cimport SimulatableSystem
 
 from commonsystem cimport Connections
 
 np.import_array()
 
-cdef class CompositeSystem:
+cdef class CompositeSystem(SimulatableSystem):
 
     def __cinit__(self):
         cdef CompositeSystemImpl* _c_sys_local
         _c_sys_local = new CompositeSystemImpl()
         self._c_sys = _c_sys_local
+        self._SimulatableSystemInterface_p = _c_sys_local
 
         self.inputs = PysimVars._create(&_c_sys_local.inputs)
 #        self.outputs = PysimVars._create(&_c_sys_local.outputs)

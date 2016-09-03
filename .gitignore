@@ -19,7 +19,10 @@ pysim/cythonsystem.cpp
 pysim/commonsystem.cpp
 pysim/compositesystem.cpp
 pysim/cythonsystem_api.h
+pysim/simulatablesystem.cpp
 pysim/systems/defaultsystemcollection1/defaultsystemcollection1.cpp
 
 *.sdf
 
+
+/msvc/cythonsystem/cythonsystem.vcxproj.user

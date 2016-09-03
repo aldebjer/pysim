@@ -14,7 +14,7 @@ struct CommonSystemImplPrivate;
 class StoreHandler;
 
 class  CommonSystemImpl :
-    public SimulatableSystem
+    public SimulatableSystemInterface
 {
 public:
     CommonSystemImpl();
