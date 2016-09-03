@@ -19,13 +19,12 @@ public:
     //////////////////////////////////////////////////////////////////////////
     //      Inherited from Simulatable System
     //////////////////////////////////////////////////////////////////////////
-    void copyoutputs() {};
+    void copyoutputs();
     void copystateoutputs() {};
     std::vector<double*> getStatePointers();
     std::vector<double*> getDerPointers();
     void doStoreStep(double time) {};
     bool getDiscrete() { return false; };
-
 
     void preSim();
     void doStep(double time);
@@ -33,9 +32,11 @@ public:
     bool do_comparison();
 
     //Python Interface
+    void connect(char* outputname, CommonSystemImpl* inputsys, char* inputname);
+
     void add_subsystem(CommonSystemImpl* subsystem, std::string name);
-    void add_input_port(std::string name, size_t length);
-    void add_output_port(std::string name, size_t length);
+    void add_input_port(std::string name, std::string subsystemname, std::string subsystem_input, std::string description);
+    void add_output_port(std::string name, std::string subsystemname, std::string subsystem_output, std::string description);
 
     Variable inputs;
     Variable outputs;

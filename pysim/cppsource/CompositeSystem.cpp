@@ -18,7 +18,10 @@ namespace pysim{
 
 struct CompositeSystemPrivate {
     std::vector<CommonSystemImpl*> subsystems_common;
-    std::vector<std::string> subsystems_common_names;
+    std::map<std::string, CommonSystemImpl*> subsystems_common_map;
+
+    std::vector<std::pair<double*, double* > > connected_scalars;
+    std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vectors;
 };
 
 
@@ -80,6 +83,48 @@ bool CompositeSystem::do_comparison()
     return comparison_trigged;
 }
 
+////////////////////////////////////
+//
+//       Connections
+//
+////////////////////////////////////
+void CompositeSystem::connect(char* outputname,
+    CommonSystemImpl* inputsys,
+    char* inputname) {
+    using std::make_pair;
+
+    if (inputsys->inputs.d_ptr->scalars.count(inputname) > 0) {
+        if (outputs.d_ptr->scalars.count(outputname) == 1) {
+            auto p = make_pair(outputs.d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
+            d_ptr->connected_scalars.push_back(p);
+        } else {
+            std::string errtxt("Could not find matching state or output to connect from");
+            throw std::invalid_argument(errtxt);
+        }
+    } else if (inputsys->inputs.d_ptr->vectors.count(inputname) > 0) {
+        if (outputs.d_ptr->vectors.count(outputname) == 1) {
+            auto p = make_pair(outputs.d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
+            d_ptr->connected_vectors.push_back(p);
+        }else {
+            std::string errtxt("Could not find matching state or output to connect from");
+            throw std::invalid_argument(errtxt);
+        }
+    } else {
+        throw std::invalid_argument("Could not find input to connect to");
+    }
+}
+
+
+void CompositeSystem::copyoutputs() {
+    for (auto vi = d_ptr->connected_scalars.cbegin(); vi != d_ptr->connected_scalars.cend(); ++vi) {
+        *(vi->second) = *(vi->first);
+    }
+
+    for (auto vi = d_ptr->connected_vectors.cbegin(); vi != d_ptr->connected_vectors.cend(); ++vi) {
+        *(vi->second) = *(vi->first);
+    }
+}
+
 /////////////////////////////////////////////////////////////////////
 //
 //         Python Interface
@@ -88,16 +133,24 @@ bool CompositeSystem::do_comparison()
 
 void CompositeSystem::add_subsystem(CommonSystemImpl* subsystem, string name)
 {
-    d_ptr->subsystems_common_names.push_back(name);
+    d_ptr->subsystems_common_map[name] = subsystem;
     d_ptr->subsystems_common.push_back(subsystem);
 }
 
-void CompositeSystem::add_input_port(std::string name, size_t length)
+void CompositeSystem::add_input_port(string name, string subsystemname, string subsystem_input, string description)
 {
+    double* ss_input_p = d_ptr->subsystems_common_map[subsystemname]->inputs.d_ptr->scalars[subsystem_input];
+
+    inputs.d_ptr->scalars[name] = ss_input_p;
+    inputs.d_ptr->descriptions[name] = description;
 }
 
-void CompositeSystem::add_output_port(std::string name, size_t length)
+void CompositeSystem::add_output_port(string name, string subsystemname, string subsystem_output, string description)
 {
+    double* ss_ouput_p = d_ptr->subsystems_common_map[subsystemname]->outputs.d_ptr->scalars[subsystem_output];
+
+    outputs.d_ptr->scalars[name] = ss_ouput_p;
+    outputs.d_ptr->descriptions[name] = description;
 }
 
 } //End namespace pysim
