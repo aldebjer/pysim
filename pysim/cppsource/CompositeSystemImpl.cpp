@@ -175,6 +175,9 @@ StoreHandler* CompositeSystemImpl::getStoreHandlerP() {
 
 void CompositeSystemImpl::add_subsystem(CommonSystemImpl* subsystem, string name)
 {
+    if (subsystem->getDiscrete()) {
+        throw std::invalid_argument("Discrete systems not supported as subsystems");
+    }
     d_ptr->subsystems_common_map[name] = subsystem;
     d_ptr->subsystems_common.push_back(subsystem);
 }
@@ -189,10 +192,17 @@ void CompositeSystemImpl::add_input_port(string name, string subsystemname, stri
 
 void CompositeSystemImpl::add_output_port(string name, string subsystemname, string subsystem_output, string description)
 {
-    double* ss_ouput_p = d_ptr->subsystems_common_map[subsystemname]->outputs.d_ptr->scalars[subsystem_output];
-
-    outputs.d_ptr->scalars[name] = ss_ouput_p;
-    outputs.d_ptr->descriptions[name] = description;
+    std::map<string, double*>* scalar_output_map = &(d_ptr->subsystems_common_map[subsystemname]->outputs.d_ptr->scalars);
+    std::map<string, double*>* scalar_states_map = &(d_ptr->subsystems_common_map[subsystemname]->states.d_ptr->scalars);
+    if (scalar_output_map->count(subsystem_output) > 0) {
+        double* ss_ouput_p = (*scalar_output_map)[subsystem_output];
+        outputs.d_ptr->scalars[name] = ss_ouput_p;
+        outputs.d_ptr->descriptions[name] = description;
+    } else if (scalar_states_map->count(subsystem_output) > 0) {
+        double* ss_ouput_p = (*scalar_states_map)[subsystem_output];
+        outputs.d_ptr->scalars[name] = ss_ouput_p;
+        outputs.d_ptr->descriptions[name] = description;
+    }
 }
 
 } //End namespace pysim

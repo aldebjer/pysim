@@ -283,5 +283,4 @@ cdef class Connections:
 
         bsout =  bytes(outputname,'utf-8')
         bsin =  bytes(inputname,'utf-8')
-        print("connecting")
         self._c_sys.connect(bsout,inputsys._c_s,bsin)

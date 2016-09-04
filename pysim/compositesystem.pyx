@@ -51,6 +51,8 @@ cdef class CompositeSystem(SimulatableSystem):
         bs_args = [bytes(s,'utf-8') for s in string_args]
         self._c_sys.add_input_port(bs_args[0],bs_args[1],bs_args[2],bs_args[3])
 
-#    def add_output(self, name, size = 1):
-#        bs = bytes(name,'utf-8')
-#        self._c_sys.add_output(bs,size)
+    def add_output_port(self, name, subsystemname, subsystem_output, description):
+        string_args = [name, subsystemname,subsystem_output,description]
+        bs_args = [bytes(s,'utf-8') for s in string_args]
+        self._c_sys.add_output_port(bs_args[0],bs_args[1],bs_args[2],bs_args[3])
+

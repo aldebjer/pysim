@@ -19,9 +19,9 @@ cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
         Variable outputs
 
         #void connect(char*, CommonSystemImpl*, char* )
-        void add_subsystem(CommonSystemImpl* , string)
-        void add_input_port(string, string, string, string)
-        void add_output_port(string, string, string, string)
+        void add_subsystem(CommonSystemImpl* , string) except +
+        void add_input_port(string, string, string, string) except +
+        void add_output_port(string, string, string, string) except +
 
         void store(char* name)
         StoreHandler* getStoreHandlerP()
