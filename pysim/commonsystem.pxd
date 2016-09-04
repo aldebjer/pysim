@@ -70,7 +70,6 @@ cdef class Connections:
     cdef _create(CommonSystemImpl* ptr)
 
 cdef class Results:
-    cdef CommonSystemImpl* _c_sys
     cdef StoreHandler* shp
     @staticmethod
-    cdef _create(CommonSystemImpl* ptr)
+    cdef _create(StoreHandler* ptr)

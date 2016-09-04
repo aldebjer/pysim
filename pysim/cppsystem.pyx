@@ -29,4 +29,4 @@ cdef class Sys:
         self.states = PysimVars._create(&sp.states)
         self.ders = PysimVars._create(&sp.ders)
         self.connections = Connections._create(sp)
-        self.res = Results._create(sp)
+        self.res = Results._create(sp.getStoreHandlerP())

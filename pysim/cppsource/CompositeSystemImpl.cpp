@@ -11,6 +11,8 @@
 #include <iostream>
 #include <string>
 
+#include "StoreHandler.hpp"
+
 using std::string;
 
 namespace pysim{
@@ -21,6 +23,8 @@ struct CompositeSystemImplPrivate {
 
     std::vector<std::pair<double*, double* > > connected_scalars;
     std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vectors;
+
+    StoreHandler storeHandler;
 };
 
 
@@ -70,6 +74,8 @@ void CompositeSystemImpl::doStep(double time)
 }
 
 void CompositeSystemImpl::doStoreStep(double time) {
+    d_ptr->storeHandler.doStoreStep(time);
+
     for (CommonSystemImpl* s : d_ptr->subsystems_common) {
         s->doStoreStep(time);
     }
@@ -123,6 +129,11 @@ void CompositeSystemImpl::connect(char* outputname,
 
 
 void CompositeSystemImpl::copyoutputs() {
+
+    for (CommonSystemImpl* s : d_ptr->subsystems_common) {
+        s->copyoutputs();
+    }
+
     for (auto vi = d_ptr->connected_scalars.cbegin(); vi != d_ptr->connected_scalars.cend(); ++vi) {
         *(vi->second) = *(vi->first);
     }
@@ -137,6 +148,30 @@ void CompositeSystemImpl::copyoutputs() {
 //         Python Interface
 //
 /////////////////////////////////////////////////////////////////////
+
+
+//Put the state, der, input or output named "name" in the vector of pointers 
+//to be stored. If none with "name" is found the function raises an invalid_argument
+//exception.
+void  CompositeSystemImpl::store(char* name) {
+    if (inputs.d_ptr->scalars.count(name) == 1) {
+        d_ptr->storeHandler.store_scalar(name, inputs.d_ptr->scalars[name]);
+    } else if (outputs.d_ptr->scalars.count(name) == 1) {
+        d_ptr->storeHandler.store_scalar(name, outputs.d_ptr->scalars[name]);
+    } else if (inputs.d_ptr->vectors.count(name) == 1) {
+        d_ptr->storeHandler.store_vector(name, inputs.d_ptr->vectors[name]);
+    } else if (outputs.d_ptr->vectors.count(name) == 1) {
+        d_ptr->storeHandler.store_vector(name, outputs.d_ptr->vectors[name]);
+    } else {
+        char errmsg[50];
+        snprintf(errmsg, sizeof(errmsg), "Could not store: %s, no such variable", name);
+        throw std::invalid_argument(errmsg);
+    }
+}
+
+StoreHandler* CompositeSystemImpl::getStoreHandlerP() {
+    return &(d_ptr->storeHandler);
+}
 
 void CompositeSystemImpl::add_subsystem(CommonSystemImpl* subsystem, string name)
 {

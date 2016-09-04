@@ -27,7 +27,7 @@ cdef class Sys:
         self.states = PysimVars._create(&_c_sys_local.states)
         self.ders = PysimVars._create(&_c_sys_local.ders)
         self.connections = Connections._create(_c_sys_local)
-        self.res = Results._create(_c_sys_local)
+        self.res = Results._create(_c_sys_local.getStoreHandlerP())
 
     def __dealloc__(self):
         del self._c_sys

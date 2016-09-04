@@ -23,12 +23,24 @@ cdef class CompositeSystem(SimulatableSystem):
         self._SimulatableSystemInterface_p = _c_sys_local
 
         self.inputs = PysimVars._create(&_c_sys_local.inputs)
-#        self.outputs = PysimVars._create(&_c_sys_local.outputs)
+        self.outputs = PysimVars._create(&_c_sys_local.outputs)
 #        self.connections = Connections._create(_c_sys_local)
-#        self.res = Results._create(_c_sys_local)
+        self.res = Results._create(_c_sys_local.getStoreHandlerP())
 
     def __dealloc__(self):
         del self._c_sys
+
+    def store(self,name):
+        """Store a input, output or state in the system.
+
+        Parameters
+        ----------
+        name : str
+            The first parameter.
+        """
+
+        bs = bytes(name,'utf-8')
+        self._c_sys.store(bs)
 
     def add_subsystem(self, CommonSystem subsystem, name):
         bs = bytes(name,'utf-8')

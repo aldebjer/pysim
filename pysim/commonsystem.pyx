@@ -86,10 +86,9 @@ cdef class CommonSystem:
 cdef class Results:
 
     @staticmethod 
-    cdef _create(CommonSystemImpl* ptr):
+    cdef _create(StoreHandler* ptr):
         p = Results()
-        p._c_sys = ptr
-        p.shp = p._c_sys.getStoreHandlerP()
+        p.shp =ptr
         return p
 
     def __dir__(self):

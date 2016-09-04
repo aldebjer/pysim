@@ -10,6 +10,7 @@ from commonsystem cimport CommonSystemImpl
 
 from commonsystem cimport Variable
 from commonsystem cimport PysimVars
+from commonsystem cimport StoreHandler
 
 cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
     cdef cppclass CompositeSystemImpl(SimulatableSystemInterface):
@@ -21,6 +22,9 @@ cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
         void add_subsystem(CommonSystemImpl* , string)
         void add_input_port(string, string, string, string)
         void add_output_port(string, string, string, string)
+
+        void store(char* name)
+        StoreHandler* getStoreHandlerP()
 
 
 cdef class CompositeSystem(SimulatableSystem):

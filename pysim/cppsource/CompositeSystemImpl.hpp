@@ -8,6 +8,7 @@ namespace pysim{
 
 struct CompositeSystemImplPrivate;
 class CommonSystemImpl;
+class StoreHandler;
 
 class  CompositeSystemImpl :
     public SimulatableSystemInterface
@@ -32,6 +33,9 @@ public:
     bool do_comparison();
 
     //Python Interface
+    void store(char* name);
+    StoreHandler* getStoreHandlerP();
+
     void connect(char* outputname, CommonSystemImpl* inputsys, char* inputname);
 
     void add_subsystem(CommonSystemImpl* subsystem, std::string name);
