@@ -24,7 +24,7 @@ cdef class CompositeSystem(SimulatableSystem):
 
         self.inputs = PysimVars._create(&_c_sys_local.inputs)
         self.outputs = PysimVars._create(&_c_sys_local.outputs)
-#        self.connections = Connections._create(_c_sys_local)
+        self.connections = Connections._create(&_c_sys_local.connectionHandler)
         self.res = Results._create(_c_sys_local.getStoreHandlerP())
 
     def __dealloc__(self):

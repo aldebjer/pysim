@@ -38,8 +38,6 @@ public:
     void store(char* name);
     StoreHandler* getStoreHandlerP();
 
-    void connect(char* outputname, CommonSystemImpl* inputsys, char* inputname);
-
     void add_subsystem(CommonSystemImpl* subsystem, std::string name);
     void add_input_port(std::string name, std::string subsystemname, std::string subsystem_input, std::string description);
     void add_output_port(std::string name, std::string subsystemname, std::string subsystem_output, std::string description);

@@ -39,6 +39,17 @@ class CompositeSpring(CompositeSystem):
         self.add_input_port("force","msd","f", "force acting on the mass")
         self.add_output_port("position","msd","x1", "Position")
 
+class CompositeSquareWave(CompositeSystem):
+    def __init__(self):
+        wave_sys = SquareWave()
+        wave_sys.inputs.amplitude = 50
+        wave_sys.inputs.freq = 0.1
+        self.add_subsystem(wave_sys,"wave_sys")
+
+        self.add_input_port("freq","wave_sys","freq", "frequency of wave")
+        self.add_input_port("amplitude","wave_sys","amplitude", "amplitude of wave")
+        self.add_output_port("signal","wave_sys","signal", "signal from wave")
+
 def test_connected_subsystems():
     """Test that subsystems can be connected"""
 
@@ -48,6 +59,26 @@ def test_connected_subsystems():
 
     sim.simulate(2, 0.1)
     assert np.abs(cd.outputs.out-0.3240587706226495) < 1e-10
+
+def test_connection_from_composite():
+    """Test that it is possible to connect a composite system to an ordinary"""
+    sim = Sim()
+
+    msd = MassSpringDamper()
+    msd.inputs.b = 80
+    msd.inputs.m = 50
+    msd.inputs.f = 0
+    sim.add_system(msd)
+
+    sw = CompositeSquareWave()
+    sw.inputs.amplitude = 50
+    sw.inputs.freq = 0.1
+    sim.add_system(sw)
+
+    sw.connections.add_connection("signal",msd,"f")
+    sim.simulate(2, 0.1)
+    assert np.abs(msd.states.x1 - 0.3240587706226495) < 1e-10
+
 
 def test_system_store():
     """Test that it is possible to store the output from a composite system"""
@@ -64,4 +95,4 @@ def test_system_store():
 
 
 if __name__ == "__main__":
-    test_connected_subsystems()
+    test_connection_from_composite()

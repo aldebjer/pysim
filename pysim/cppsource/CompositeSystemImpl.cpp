@@ -92,12 +92,6 @@ bool CompositeSystemImpl::do_comparison()
 //       Connections
 //
 ////////////////////////////////////
-void CompositeSystemImpl::connect(char* outputname,
-    CommonSystemImpl* inputsys,
-    char* inputname) {
-    connectionHandler.connect(outputname, inputsys, inputname);
-}
-
 
 void CompositeSystemImpl::copyoutputs() {
 

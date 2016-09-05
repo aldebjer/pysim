@@ -11,12 +11,15 @@ from commonsystem cimport CommonSystemImpl
 from commonsystem cimport Variable
 from commonsystem cimport PysimVars
 from commonsystem cimport StoreHandler
+from commonsystem cimport Connections
+from commonsystem cimport ConnectionHandler
 
 cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
     cdef cppclass CompositeSystemImpl(SimulatableSystemInterface):
 
         Variable inputs
         Variable outputs
+        ConnectionHandler connectionHandler
 
         #void connect(char*, CommonSystemImpl*, char* )
         void add_subsystem(CommonSystemImpl* , string) except +
@@ -30,3 +33,4 @@ cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
 cdef class CompositeSystem(SimulatableSystem):
     cdef CompositeSystemImpl * _c_sys
     cdef public PysimVars inputs
+    cdef public Connections connections
