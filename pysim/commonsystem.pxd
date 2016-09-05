@@ -14,6 +14,10 @@ cdef extern from "Variable.hpp" namespace "pysim":
         double getScalar(char*) except +
         map[string,string] getDescriptionMap()
 
+cdef extern from "ConnectionHandler.hpp" namespace "pysim":
+    cdef cppclass ConnectionHandler:
+        void connect[T](char*, T*, char*);
+
 
 cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
     cdef cppclass CommonSystemImpl(simulatablesystem.SimulatableSystemInterface):
@@ -22,6 +26,7 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
         Variable outputs
         Variable states
         Variable ders
+        ConnectionHandler connectionHandler
 
         vector[string] getParStringNames()
         vector[string] getParMatrixNames()
@@ -40,8 +45,6 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
         void add_compare_greater(char* comparename, double comparevalue) except +
         void add_compare_smaller(char* comparename, double comparevalue) except +
 
-        void connect(char*, CommonSystemImpl*, char* );
-
 cdef extern from "StoreHandler.hpp" namespace "pysim":
     cdef cppclass StoreHandler:
         int getStoreSize()  except +
@@ -50,6 +53,9 @@ cdef extern from "StoreHandler.hpp" namespace "pysim":
         void fillWithTime(double* p) except +
         vector[string] getStoreNames()
         void setStoreInterval(double interval)
+
+
+
 
 cdef class CommonSystem(simulatablesystem.SimulatableSystem):
     cdef CommonSystemImpl * _c_s
@@ -65,9 +71,9 @@ cdef class PysimVars:
     cdef _create(Variable* var_ptr)
 
 cdef class Connections:
-    cdef CommonSystemImpl* _c_sys
+    cdef ConnectionHandler* _c_connectionHandler
     @staticmethod
-    cdef _create(CommonSystemImpl* ptr)
+    cdef _create(ConnectionHandler* ptr)
 
 cdef class Results:
     cdef StoreHandler* shp

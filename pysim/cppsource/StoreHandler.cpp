@@ -28,7 +28,7 @@ public:
 typedef map<string, shared_ptr<StoreStruct<double>>> StoreMap;
 typedef map<string, shared_ptr<StoreStruct<pysim::vector>>> StoreVectorMap;
 
-struct Dptr {
+struct StoreHandlerPrivate {
     StoreMap storemap;
     StoreVectorMap storeVectorMap;
     std::vector<double> storetimes;
@@ -40,7 +40,7 @@ struct Dptr {
 
 
 StoreHandler::StoreHandler():
-    d_ptr(new Dptr()){
+    d_ptr(new StoreHandlerPrivate()){
 }
 
 StoreHandler::~StoreHandler() {

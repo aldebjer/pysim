@@ -1,4 +1,4 @@
-#include "CompositeSystemImpl.hpp"
+#include "CompositeSystemImpl_p.hpp"
 
 #include <map>
 
@@ -17,19 +17,10 @@ using std::string;
 
 namespace pysim{
 
-struct CompositeSystemImplPrivate {
-    std::vector<CommonSystemImpl*> subsystems_common;
-    std::map<std::string, CommonSystemImpl*> subsystems_common_map;
-
-    std::vector<std::pair<double*, double* > > connected_scalars;
-    std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vectors;
-
-    StoreHandler storeHandler;
-};
-
 
 CompositeSystemImpl::CompositeSystemImpl():
-    d_ptr(new CompositeSystemImplPrivate())
+    d_ptr(new CompositeSystemImplPrivate()),
+    connectionHandler(&outputs)
 {
 }
 CompositeSystemImpl::~CompositeSystemImpl()
@@ -104,27 +95,7 @@ bool CompositeSystemImpl::do_comparison()
 void CompositeSystemImpl::connect(char* outputname,
     CommonSystemImpl* inputsys,
     char* inputname) {
-    using std::make_pair;
-
-    if (inputsys->inputs.d_ptr->scalars.count(inputname) > 0) {
-        if (outputs.d_ptr->scalars.count(outputname) == 1) {
-            auto p = make_pair(outputs.d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
-            d_ptr->connected_scalars.push_back(p);
-        } else {
-            std::string errtxt("Could not find matching state or output to connect from");
-            throw std::invalid_argument(errtxt);
-        }
-    } else if (inputsys->inputs.d_ptr->vectors.count(inputname) > 0) {
-        if (outputs.d_ptr->vectors.count(outputname) == 1) {
-            auto p = make_pair(outputs.d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
-            d_ptr->connected_vectors.push_back(p);
-        }else {
-            std::string errtxt("Could not find matching state or output to connect from");
-            throw std::invalid_argument(errtxt);
-        }
-    } else {
-        throw std::invalid_argument("Could not find input to connect to");
-    }
+    connectionHandler.connect(outputname, inputsys, inputname);
 }
 
 
@@ -133,14 +104,7 @@ void CompositeSystemImpl::copyoutputs() {
     for (CommonSystemImpl* s : d_ptr->subsystems_common) {
         s->copyoutputs();
     }
-
-    for (auto vi = d_ptr->connected_scalars.cbegin(); vi != d_ptr->connected_scalars.cend(); ++vi) {
-        *(vi->second) = *(vi->first);
-    }
-
-    for (auto vi = d_ptr->connected_vectors.cbegin(); vi != d_ptr->connected_vectors.cend(); ++vi) {
-        *(vi->second) = *(vi->first);
-    }
+    connectionHandler.copyoutputs();
 }
 
 /////////////////////////////////////////////////////////////////////

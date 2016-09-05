@@ -12,7 +12,6 @@ from pysim.compositesystem import CompositeSystem
 class ControlledSpring(CompositeSystem):
     def __init__(self):
         msd = MassSpringDamper()
-        #msd.store("x1")
         msd.inputs.b = 80
         msd.inputs.m = 50
         msd.inputs.f = 0
@@ -29,16 +28,40 @@ class ControlledSpring(CompositeSystem):
         self.add_output_port("out","msd","x1", "position")
         self.add_output_port("signal","wave_sys","signal", "signal from wave")
 
-def test_connected_system():
-    """Test of composite system - Work in Progress!"""
+class CompositeSpring(CompositeSystem):
+    def __init__(self):
+        msd = MassSpringDamper()
+        msd.inputs.b = 80
+        msd.inputs.m = 50
+        msd.inputs.f = 0
+        self.add_subsystem(msd,"msd")
+
+        self.add_input_port("force","msd","f", "force acting on the mass")
+        self.add_output_port("position","msd","x1", "Position")
+
+def test_connected_subsystems():
+    """Test that subsystems can be connected"""
 
     cd = ControlledSpring()
     sim = Sim()
     sim.add_system(cd)
 
-    sim.simulate(5, 0.1)
+    sim.simulate(2, 0.1)
+    assert np.abs(cd.outputs.out-0.3240587706226495) < 1e-10
 
-    assert np.abs(cd.outputs.out) < 0.1
+def test_system_store():
+    """Test that it is possible to store the output from a composite system"""
+    cd = CompositeSpring()
+    sim = Sim()
+    sim.add_system(cd)
+    cd.store("position")
+
+    sim.simulate(2, 0.1)
+
+    assert np.abs(cd.res.position[5]-0.90450499) < 1e-7
+    assert np.abs(cd.res.position[-1]-0.32405877) < 1e-7
+
+
 
 if __name__ == "__main__":
-    test_connected_system()
+    test_connected_subsystems()

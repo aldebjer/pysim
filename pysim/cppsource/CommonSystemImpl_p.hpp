@@ -19,10 +19,6 @@ struct StateType {
 };
 
 struct CommonSystemImplPrivate {
-    Variable inputs;
-    Variable outputs;
-    Variable states;
-    Variable ders;
 
     std::map<std::string, std::string> state_to_der_map_scalars;
     std::map<std::string, std::string> state_to_der_map_vectors;
@@ -33,12 +29,6 @@ struct CommonSystemImplPrivate {
     std::map<std::string, pysim::matrix* > par_boost_matrices;
     std::map<std::string, std::string> par_descriptions;
 
-    std::vector<std::pair<double*, double* > > connected_scalars;
-    std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vectors;
-
-    std::vector<std::pair<double*, double* > > connected_scalar_states_;
-    std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vector_states;
-
     StoreHandler storeHandler;
 
     bool isDiscrete {false};
@@ -46,7 +36,6 @@ struct CommonSystemImplPrivate {
 
     std::vector<std::pair<double*, double > > compare_greater_vector;
     std::vector<std::pair<double*, double > > compare_smaller_vector;
-
 
 };
 

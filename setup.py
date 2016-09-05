@@ -24,6 +24,7 @@ config.add_installed_library("cppsystemlib",
                      'pysim/cppsource/StoreHandler.cpp',
                      'pysim/cppsource/CommonSystemImpl.cpp',
                      'pysim/cppsource/Variable.cpp',
+                     'pysim/cppsource/ConnectionHandler.cpp',
                     ],
                     build_info = {
                     "extra_compiler_args":extracompileargs,

@@ -30,6 +30,9 @@
     <ClCompile Include="..\..\pysim\cppsource\CompositeSystemImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\pysim\cppsource\ConnectionHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\pysim\cppsource\CppSystem.hpp">
@@ -57,6 +60,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\pysim\cppsource\CompositeSystemImpl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pysim\cppsource\ConnectionHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pysim\cppsource\CompositeSystemImpl_p.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

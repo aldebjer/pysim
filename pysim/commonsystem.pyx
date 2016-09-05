@@ -253,9 +253,9 @@ cdef class Connections:
     """
 
     @staticmethod 
-    cdef _create(CommonSystemImpl* ptr):
+    cdef _create(ConnectionHandler* ptr):
         p = Connections()
-        p._c_sys = ptr
+        p._c_connectionHandler = ptr
         return p
 
     def add_connection(self,outputname,CommonSystem inputsys,inputname):
@@ -283,4 +283,5 @@ cdef class Connections:
 
         bsout =  bytes(outputname,'utf-8')
         bsin =  bytes(inputname,'utf-8')
-        self._c_sys.connect(bsout,inputsys._c_s,bsin)
+        cdef CommonSystemImpl* p = inputsys._c_s
+        self._c_connectionHandler.connect[CommonSystemImpl](bsout,p,bsin)

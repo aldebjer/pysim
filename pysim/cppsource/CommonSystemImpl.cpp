@@ -14,7 +14,8 @@ namespace pysim {
 
 
 CommonSystemImpl::CommonSystemImpl() :
-    d_ptr(new CommonSystemImplPrivate())
+    d_ptr(new CommonSystemImplPrivate()),
+    connectionHandler(&outputs, &states)
 {
 }
 
@@ -152,57 +153,13 @@ std::map<std::string, std::string> CommonSystemImpl::getParDescriptionMap() {
 //       Connections
 //
 ////////////////////////////////////
-void CommonSystemImpl::connect(char* outputname,
-    CommonSystemImpl* inputsys,
-    char* inputname) {
-    using std::make_pair;
-
-    if (inputsys->inputs.d_ptr->scalars.count(inputname) > 0) {
-        if (outputs.d_ptr->scalars.count(outputname) == 1) {
-            auto p = make_pair(outputs.d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
-            d_ptr->connected_scalars.push_back(p);
-        } else if (states.d_ptr->scalars.count(outputname) == 1) {
-            auto p = make_pair(states.d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
-            d_ptr->connected_scalar_states_.push_back(p);
-        } else {
-            std::string errtxt("Could not find matching state or output to connect from");
-            throw std::invalid_argument(errtxt);
-        }
-    } else if (inputsys->inputs.d_ptr->vectors.count(inputname) > 0) {
-        if (outputs.d_ptr->vectors.count(outputname) == 1) {
-            auto p = make_pair(outputs.d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
-            d_ptr->connected_vectors.push_back(p);
-        } else if (states.d_ptr->vectors.count(outputname) == 1) {
-            auto p = make_pair(states.d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
-            d_ptr->connected_vector_states.push_back(p);
-        } else {
-            std::string errtxt("Could not find matching state or output to connect from");
-            throw std::invalid_argument(errtxt);
-        }
-    } else {
-        throw std::invalid_argument("Could not find input to connect to");
-    }
-}
-
 
 void CommonSystemImpl::copyoutputs() {
-    for (auto vi = d_ptr->connected_scalars.cbegin(); vi != d_ptr->connected_scalars.cend(); ++vi) {
-        *(vi->second) = *(vi->first);
-    }
-
-    for (auto vi = d_ptr->connected_vectors.cbegin(); vi != d_ptr->connected_vectors.cend(); ++vi) {
-        *(vi->second) = *(vi->first);
-    }
+    connectionHandler.copyoutputs();
 }
 
 void CommonSystemImpl::copystateoutputs() {
-    for (auto vi = d_ptr->connected_scalar_states_.cbegin(); vi != d_ptr->connected_scalar_states_.cend(); ++vi) {
-        *(vi->second) = *(vi->first);
-    }
-
-    for (auto vi = d_ptr->connected_vector_states.cbegin(); vi != d_ptr->connected_vector_states.cend(); ++vi) {
-        *(vi->second) = *(vi->first);
-    }
+    connectionHandler.copystateoutputs();
 }
 
 

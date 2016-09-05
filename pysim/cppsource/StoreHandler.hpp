@@ -9,7 +9,7 @@
 
 namespace pysim {
 
-struct Dptr;
+struct StoreHandlerPrivate;
 
 class StoreHandler{
 public:
@@ -32,7 +32,7 @@ public:
 protected:
 
 private:
-    Dptr* d_ptr;
+    std::unique_ptr<StoreHandlerPrivate> d_ptr;
 
 };
 

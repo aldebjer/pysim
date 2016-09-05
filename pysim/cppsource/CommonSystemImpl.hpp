@@ -8,6 +8,8 @@
 
 #include "Variable.hpp"
 
+#include "ConnectionHandler.hpp"
+
 namespace pysim {
 
 struct CommonSystemImplPrivate;
@@ -42,8 +44,6 @@ public:
     void add_compare_greater(char* comparename, double comparevalue);
     void add_compare_smaller(char* comparename, double comparevalue);
 
-    void connect(char* outputname, CommonSystemImpl* inputsys, char* inputname);
-
     //Parameter handling
     std::vector<std::string> getParStringNames();
     std::vector<std::string> getParMatrixNames();
@@ -64,6 +64,7 @@ public:
     Variable outputs;
     Variable states;
     Variable ders;
+    ConnectionHandler connectionHandler;
 
 protected:
     std::unique_ptr<CommonSystemImplPrivate> d_ptr;

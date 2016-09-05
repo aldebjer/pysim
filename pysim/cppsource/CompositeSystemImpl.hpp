@@ -4,6 +4,8 @@
 #include "SimulatableSystem.hpp"
 #include "Variable.hpp"
 
+#include "ConnectionHandler.hpp"
+
 namespace pysim{
 
 struct CompositeSystemImplPrivate;
@@ -44,6 +46,8 @@ public:
 
     Variable inputs;
     Variable outputs;
+
+    ConnectionHandler connectionHandler;
 
 protected:
     std::unique_ptr<CompositeSystemImplPrivate> d_ptr;
