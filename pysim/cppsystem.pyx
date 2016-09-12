@@ -6,7 +6,7 @@ from cppsystem cimport CppSystem
 from commonsystem cimport Parameters
 from commonsystem cimport PysimVars
 from commonsystem cimport Results
-from commonsystem cimport Connections
+from connections cimport Connections
 
 np.import_array()
 

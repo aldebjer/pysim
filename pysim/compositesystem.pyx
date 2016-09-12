@@ -5,12 +5,9 @@ import numpy as np
 cimport numpy as np
 
 from compositesystem cimport CompositeSystemImpl
-from commonsystem cimport PysimVars
 from commonsystem cimport Results
 from commonsystem cimport CommonSystem
 from simulatablesystem cimport SimulatableSystem
-
-from commonsystem cimport Connections
 
 np.import_array()
 

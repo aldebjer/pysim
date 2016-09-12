@@ -57,6 +57,12 @@ extensions = [Extension("pysim.cppsystem",
                         extra_compile_args=extracompileargs,
                         libraries=["cppsystemlib",]
                         ),
+              Extension("pysim.connections",
+                        ['pysim/connections.pyx'],
+                        language="c++",
+                        extra_compile_args=extracompileargs,
+                        libraries=["cppsystemlib",]
+                        ),
               Extension("pysim.commonsystem",
                         ['pysim/commonsystem.pyx'],
                         language="c++",

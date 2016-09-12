@@ -61,7 +61,7 @@ def test_connected_subsystems():
     assert np.abs(cd.outputs.out-0.3240587706226495) < 1e-10
 
 def test_connection_from_composite():
-    """Test that it is possible to connect a composite system to an ordinary"""
+    """Test that it is possible to connect from a composite system to an ordinary"""
     sim = Sim()
 
     msd = MassSpringDamper()
@@ -78,6 +78,22 @@ def test_connection_from_composite():
     sw.connections.add_connection("signal",msd,"f")
     sim.simulate(2, 0.1)
     assert np.abs(msd.states.x1 - 0.3240587706226495) < 1e-10
+    
+def test_connection_to_composite():
+    """Test that it is possible to connect from an ordinary system to a composite"""
+    sim = Sim()
+
+    msd = CompositeSpring()
+    sim.add_system(msd)
+
+    sw = SquareWave()
+    sw.inputs.amplitude = 50
+    sw.inputs.freq = 0.1
+    sim.add_system(sw)
+
+    sw.connections.add_connection("signal",msd,"force")
+    sim.simulate(2, 0.1)
+    assert np.abs(msd.outputs.position - 0.3240587706226495) < 1e-10
 
 
 def test_system_store():
@@ -95,4 +111,4 @@ def test_system_store():
 
 
 if __name__ == "__main__":
-    test_connection_from_composite()
+    test_connection_to_composite()

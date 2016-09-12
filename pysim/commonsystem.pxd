@@ -3,6 +3,7 @@ from libcpp.string cimport string
 from libcpp.map cimport map
 
 cimport simulatablesystem
+from connections cimport ConnectionHandler
 
 cdef extern from "Variable.hpp" namespace "pysim":
     cdef cppclass Variable:
@@ -13,11 +14,6 @@ cdef extern from "Variable.hpp" namespace "pysim":
         void setScalar(char*, double) except +
         double getScalar(char*) except +
         map[string,string] getDescriptionMap()
-
-cdef extern from "ConnectionHandler.hpp" namespace "pysim":
-    cdef cppclass ConnectionHandler:
-        void connect[T](char*, T*, char*);
-
 
 cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
     cdef cppclass CommonSystemImpl(simulatablesystem.SimulatableSystemInterface):
@@ -69,11 +65,6 @@ cdef class PysimVars:
     cdef Variable* _var_p
     @staticmethod
     cdef _create(Variable* var_ptr)
-
-cdef class Connections:
-    cdef ConnectionHandler* _c_connectionHandler
-    @staticmethod
-    cdef _create(ConnectionHandler* ptr)
 
 cdef class Results:
     cdef StoreHandler* shp

@@ -61,6 +61,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "compositesystem", "composit
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulatablesystem", "simulatablesystem\simulatablesystem.vcxproj", "{D76C6AEB-E20A-4C10-82A8-C508CEDCDFC3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "connections", "connections\connections.vcxproj", "{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -205,6 +207,20 @@ Global
 		{D76C6AEB-E20A-4C10-82A8-C508CEDCDFC3}.Release|Win32.Build.0 = Release|Win32
 		{D76C6AEB-E20A-4C10-82A8-C508CEDCDFC3}.Release|x64.ActiveCfg = Release|x64
 		{D76C6AEB-E20A-4C10-82A8-C508CEDCDFC3}.Release|x64.Build.0 = Release|x64
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Debug|Win32.ActiveCfg = Debug|Win32
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Debug|Win32.Build.0 = Debug|Win32
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Debug|x64.ActiveCfg = Debug|x64
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Debug|x64.Build.0 = Debug|x64
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Release|Any CPU.ActiveCfg = Release|Win32
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Release|Win32.ActiveCfg = Release|Win32
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Release|Win32.Build.0 = Release|Win32
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Release|x64.ActiveCfg = Release|x64
+		{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,7 +8,7 @@ from commonsystem cimport PysimVars
 from commonsystem cimport Results
 #cimport simulatablesystem
 
-from commonsystem cimport Connections
+from connections cimport Connections
 
 np.import_array()
 

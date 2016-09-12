@@ -11,8 +11,8 @@ from commonsystem cimport CommonSystemImpl
 from commonsystem cimport Variable
 from commonsystem cimport PysimVars
 from commonsystem cimport StoreHandler
-from commonsystem cimport Connections
-from commonsystem cimport ConnectionHandler
+from connections cimport Connections
+from connections cimport ConnectionHandler
 
 cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
     cdef cppclass CompositeSystemImpl(SimulatableSystemInterface):
