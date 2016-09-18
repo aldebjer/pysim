@@ -76,7 +76,10 @@
       {% else %}
       transition: 'slide', // none/fade/slide/convex/concave/zoom
       {% endif %}
-
+      math: {
+      mathjax: 'https://cdn.mathjax.org/mathjax/latest/MathJax.js',
+      config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+          },
       // Optional reveal.js plugins
       dependencies: [
       { src: '{{ "/reveal.js/lib/js/classList.js" | prepend: site.baseurl }}', condition: function() { return !document.body.classList; } },
@@ -84,7 +87,8 @@
       { src: '{{ "/reveal.js/plugin/markdown/markdown.js" | prepend: site.baseurl }}', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
       { src: '{{ "/reveal.js/plugin/highlight/highlight.js" | prepend: site.baseurl }}', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
       { src: '{{ "/reveal.js/plugin/zoom-js/zoom.js" | prepend: site.baseurl }}', async: true },
-      { src: '{{ "/reveal.js/plugin/notes/notes.js" | prepend: site.baseurl }}', async: true }
+      { src: '{{ "/reveal.js/plugin/notes/notes.js" | prepend: site.baseurl }}', async: true },
+      { src: '{{ "/reveal.js/plugin/math/math.js" | prepend: site.baseurl }}', async: true }
       ]
       });
 
