@@ -25,12 +25,15 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
         ConnectionHandler connectionHandler
 
         vector[string] getParStringNames()
+        vector[string] getParVectorNames()
         vector[string] getParMatrixNames()
         vector[string] getParMapNames()
         void setParString(char*, string) except +
         string getParString(char*) except +
         vector[vector[double]] getParMatrix(char* name) except +
         void setParMatrix(char* name, vector[vector[double]] value) except +
+        vector[double] getParVector(char* name) except +
+        void setParVector(char* name, vector[double] value) except +
         map[string,double] getParMap(char* name) except +
         void setParMap(char* name, map[string,double] value) except +
         map[string,string] getParDescriptionMap() except +

@@ -46,6 +46,14 @@ std::vector<std::string> CommonSystemImpl::getParMatrixNames() {
     return names;
 }
 
+std::vector<std::string> CommonSystemImpl::getParVectorNames() {
+    std::vector<std::string> names;
+    for (auto& v : d_ptr->par_vectors) {
+        names.push_back(v.first);
+    }
+    return names;
+}
+
 std::vector<std::string> CommonSystemImpl::getParMapNames() {
     std::vector<std::string> names;
     for (auto i = d_ptr->par_maps.cbegin(); i != d_ptr->par_maps.cend(); ++i) {
@@ -70,6 +78,25 @@ void CommonSystemImpl::setParString(char* name, std::string value) {
         throw std::invalid_argument(errmsg);
     }
     *(d_ptr->par_strings.at(name)) = value;
+}
+
+std::vector<double> CommonSystemImpl::getParVector(char* name) {
+    std::vector<double> out;
+    if (d_ptr->par_vectors.count(name) > 0) {
+        out = *d_ptr->par_vectors.at(name);
+    } else {
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+    return out;
+}
+void CommonSystemImpl::setParVector(char* name, std::vector<double> value) {
+    if (d_ptr->par_vectors.count(name) > 0) {
+        *d_ptr->par_vectors.at(name) = value;
+    } else {
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
 }
 
 std::vector<std::vector<double>> CommonSystemImpl::getParMatrix(char* name) {

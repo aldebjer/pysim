@@ -25,6 +25,7 @@ struct CommonSystemImplPrivate {
 
     std::map<std::string, std::string*> par_strings;
     std::map<std::string, std::map<std::string, double>* > par_maps;
+    std::map<std::string, std::vector<double>* > par_vectors;
     std::map<std::string, std::vector<std::vector<double>>* > par_matrices;
     std::map<std::string, pysim::matrix* > par_boost_matrices;
     std::map<std::string, std::string> par_descriptions;

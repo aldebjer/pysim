@@ -1,0 +1,47 @@
+"""This module contains tests for for the parameter functionality
+"""
+import re
+
+import pytest
+import numpy as np
+
+from pysim.simulation import Sim
+from pysim.systems import ParameterTestSystem
+
+def get_system():
+    sys = ParameterTestSystem()
+    sys.pars.parameter_vector = [1,2,3]
+    sys.pars.parameter_matrix = [[1,2,3],[4,5,6]]
+    sys.pars.parameter_map = {'a':1, 'b':2}
+    return sys
+
+def test_vector_parameter():
+    """Test that it is possible to set a vector parameter"""
+    sys = get_system()
+    assert sys.pars.parameter_vector == [1,2,3]
+    sim = Sim()
+    sim.add_system(sys)
+    sim.simulate(0.1,0.1)
+    assert sys.outputs.output_from_vector == 1
+
+def test_matrix_parameter():
+    """Test that it is possible to set a vector parameter"""
+    sys = get_system()
+    assert sys.pars.parameter_matrix == [[1,2,3],[4,5,6]]
+    sim = Sim()
+    sim.add_system(sys)
+    sim.simulate(0.1,0.1)
+    assert sys.outputs.output_from_matrix == 1
+
+def test_map_parameter():
+    """Test that it is possible to set a vector parameter"""
+    sys = get_system()
+    assert sys.pars.parameter_map == {'a':1, 'b':2}
+    sim = Sim()
+    sim.add_system(sys)
+    sim.simulate(0.1,0.1)
+    assert sys.outputs.output_from_map == 1
+
+if __name__ == "__main__":
+    test_map_parameter()
+

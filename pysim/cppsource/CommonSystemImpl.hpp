@@ -47,9 +47,12 @@ public:
     //Parameter handling
     std::vector<std::string> getParStringNames();
     std::vector<std::string> getParMatrixNames();
+    std::vector<std::string> getParVectorNames();
     std::vector<std::string> getParMapNames();
     std::string getParString(char* name);
     void setParString(char* name, std::string value);
+    std::vector<double> getParVector(char* name);
+    void setParVector(char* name, std::vector<double> value);
     std::vector<std::vector<double>> getParMatrix(char* name);
     void setParMatrix(char* name, std::vector<std::vector<double>> value);
     std::map<std::string, double> getParMap(char* name);

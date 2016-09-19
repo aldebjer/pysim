@@ -69,18 +69,18 @@ void CppSystem::input(double* var, const char* name, const char* description) {
 
 void CppSystem::input(std::vector<double>* var, const char* name, const char* description) {
     //TODO:: Make parameter
-    //string str(name);
-    //boost::algorithm::trim(str);
-    //input_vectors[str] = var;
-    //d_ptr->input_descriptions[str] = string(description);
+    string str(name);
+    boost::algorithm::trim(str);
+    d_ptr->par_vectors[str] = var;
+    d_ptr->par_descriptions[str] = string(description);
 }
 
 void CppSystem::input(std::vector<std::vector<double>>* var, const char* name, const char* description) {
     //TODO:: Make parameter
-    //string str(name);
-    //boost::algorithm::trim(str);
-    //input_matrices[str] = var;
-    //d_ptr->input_descriptions[str] = string(description);
+    string str(name);
+    boost::algorithm::trim(str);
+    d_ptr->par_matrices[str] = var;
+    d_ptr->par_descriptions[str] = string(description);
 }
 
 void CppSystem::input(pysim::vector* vars, const char* name, const char* description) {
