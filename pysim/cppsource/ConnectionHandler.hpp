@@ -25,9 +25,6 @@ public:
     template <typename T>
     void connect(char* outputname, T* inputsys, char* inputname);
 
-    //void connect(char* outputname, CommonSystemImpl* inputsys, char* inputname);
-    //void connect(char* outputname, CompositeSystemImpl* inputsys, char* inputname);
-
 protected:
 
 private:
