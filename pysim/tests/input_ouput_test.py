@@ -47,6 +47,7 @@ class PythonInOutTestSystem(pysim.cythonsystem.Sys):
         self.ders.der_vector = np.zeros(3)
 
     def do_step(self,dummy):
+        """During a timestep we set the outputs to their respective inputs"""
         self.outputs.input_output_scalar = self.inputs.input_scalar
         self.outputs.input_output_vector = self.inputs.input_vector
         self.outputs.state_output_scalar = self.states.state_scalar
@@ -242,7 +243,7 @@ def test_connected_system(adder_class1,adder_class2):
                           (InOutTestSystem,PythonInOutTestSystem),
                           (PythonInOutTestSystem,InOutTestSystem),
                          ])
-def test_vector_to_scalar_connection(sys1_class,sys2_class):
+def test_vector_scalar_conn(sys1_class,sys2_class):
     """Test that it is possible to connect vector to scalar
 
     An element of a vector output shall be possible to connect to an input
@@ -264,4 +265,4 @@ def test_vector_to_scalar_connection(sys1_class,sys2_class):
     assert sys3.outputs.input_output_scalar == 5.0
 
 if __name__ == "__main__":
-    test_vector_to_scalar_connection(PythonInOutTestSystem,InOutTestSystem)
+    test_vector_scalar_conn(PythonInOutTestSystem,InOutTestSystem)
