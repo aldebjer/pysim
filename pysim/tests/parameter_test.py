@@ -1,14 +1,11 @@
 """This module contains tests for for the parameter functionality
 """
-import re
-
-import pytest
-import numpy as np
 
 from pysim.simulation import Sim
 from pysim.systems import ParameterTestSystem
 
 def get_system():
+    """Get a default parameter test system and set it up"""
     sys = ParameterTestSystem()
     sys.pars.parameter_vector = [1,2,3]
     sys.pars.parameter_matrix = [[1,2,3],[4,5,6]]
