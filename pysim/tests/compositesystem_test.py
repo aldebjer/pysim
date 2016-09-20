@@ -1,7 +1,6 @@
 ﻿"""Tests the compositesystem
 """
 import numpy as np
-import pytest
 
 from pysim.simulation import Sim
 from pysim.systems import MassSpringDamper
@@ -10,6 +9,11 @@ from pysim.systems import SquareWave
 from pysim.compositesystem import CompositeSystem
 
 class ControlledSpring(CompositeSystem):
+    """Composite system created for testing
+    The system is made up of a square wave system and a mass-spring-damper 
+    system. The square wave is applied as a force acting on the mass,
+    driving it up and down.
+    """
     def __init__(self):
         msd = MassSpringDamper()
         msd.inputs.b = 80
@@ -29,6 +33,10 @@ class ControlledSpring(CompositeSystem):
         self.add_output_port("signal","wave_sys","signal", "signal from wave")
 
 class CompositeSpring(CompositeSystem):
+    """Composite system for testing purposes
+    The system contains only a mass spring damper subsystem connected to 
+    ports.
+    """
     def __init__(self):
         msd = MassSpringDamper()
         msd.inputs.b = 80
@@ -40,15 +48,25 @@ class CompositeSpring(CompositeSystem):
         self.add_output_port("position","msd","x1", "Position")
 
 class CompositeSquareWave(CompositeSystem):
+    """Composite system representating a square wave, used for testing."""
     def __init__(self):
         wave_sys = SquareWave()
         wave_sys.inputs.amplitude = 50
         wave_sys.inputs.freq = 0.1
         self.add_subsystem(wave_sys,"wave_sys")
 
-        self.add_input_port("freq","wave_sys","freq", "frequency of wave")
-        self.add_input_port("amplitude","wave_sys","amplitude", "amplitude of wave")
-        self.add_output_port("signal","wave_sys","signal", "signal from wave")
+        self.add_input_port("freq",
+                            "wave_sys",
+                            "freq",
+                            "frequency of wave")
+        self.add_input_port("amplitude",
+                            "wave_sys",
+                            "amplitude",
+                            "amplitude of wave")
+        self.add_output_port("signal",
+                             "wave_sys",
+                             "signal",
+                             "signal from wave")
 
 def test_connected_subsystems():
     """Test that subsystems can be connected"""
@@ -61,7 +79,9 @@ def test_connected_subsystems():
     assert np.abs(cd.outputs.out-0.3240587706226495) < 1e-10
 
 def test_connection_from_composite():
-    """Test that it is possible to connect from a composite system to an ordinary"""
+    """Test that it is possible to connect from a composite system to an
+    ordinary.
+    """
     sim = Sim()
 
     msd = MassSpringDamper()
@@ -80,7 +100,9 @@ def test_connection_from_composite():
     assert np.abs(msd.states.x1 - 0.3240587706226495) < 1e-10
     
 def test_connection_to_composite():
-    """Test that it is possible to connect from an ordinary system to a composite"""
+    """Test that it is possible to connect from an ordinary system to
+    a composite
+    """
     sim = Sim()
 
     msd = CompositeSpring()
