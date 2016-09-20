@@ -15,6 +15,7 @@
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Adder3D.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\DiscretePID.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Factory.cpp" />
+    <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\InOutTestSystem.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\LogisticMap.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\MassSpringDamper.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ParameterTestSystem.cpp" />
@@ -31,6 +32,7 @@
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Adder3D.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\DiscretePID.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Factory.hpp" />
+    <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\InOutTestSystem.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\LogisticMap.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\MassSpringDamper.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ParameterTestSystem.h" />

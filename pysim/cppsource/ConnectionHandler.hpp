@@ -25,6 +25,9 @@ public:
     template <typename T>
     void connect(char* outputname, T* inputsys, char* inputname);
 
+    template <typename T>
+    void connect(char* outputname, T* inputsys, char* inputname, int output_index);
+
 protected:
 
 private:

@@ -16,6 +16,12 @@
     <Filter Include="cython">
       <UniqueIdentifier>{25c50a6b-d2d5-4973-bb53-b158b94da884}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\test_systems">
+      <UniqueIdentifier>{22713343-a3cd-478c-b4e2-78b8aa8c1602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\test_systems">
+      <UniqueIdentifier>{a0038b66-b5de-4ef6-afd5-847a12141b80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Factory.cpp">
@@ -60,6 +66,9 @@
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ParameterTestSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\InOutTestSystem.cpp">
+      <Filter>Source Files\test_systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Factory.hpp">
@@ -100,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ParameterTestSystem.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\InOutTestSystem.h">
+      <Filter>Header Files\test_systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

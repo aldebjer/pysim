@@ -6,6 +6,7 @@ from libcpp.map cimport map
 cdef extern from "ConnectionHandler.hpp" namespace "pysim":
     cdef cppclass ConnectionHandler:
         void connect[T](char*, T*, char*) except +
+        void connect[T](char*, T*, char*, int) except +
 
 
 cdef class Connections:

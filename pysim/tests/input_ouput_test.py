@@ -13,6 +13,44 @@ from pysim.systems import Adder3D
 from pysim.systems import Adder
 from pysim.systems import VanDerPol
 from pysim.systems import ReadTextInput
+from pysim.systems import InOutTestSystem
+
+class PythonInOutTestSystem(pysim.cythonsystem.Sys):
+    """Python representation of the cpp InOutTestSystem
+
+    Used for testing that the cpp system behaves as the python system
+    with regards to the input output handling
+    """
+    def __init__(self):
+        self.add_input("input_scalar")
+        self.add_input("input_vector",3)
+
+        self.add_state("state_scalar","der_scalar")
+        self.add_state("state_vector","der_vector", 3)
+
+        self.add_output("input_output_scalar")
+        self.add_output("input_output_vector",3)
+        self.add_output("state_output_scalar")
+        self.add_output("state_output_vector",3)
+
+        self.inputs.input_scalar = 0.0
+        self.inputs.input_vector = [0.0, 0.0, 0.0]
+
+        self.outputs.input_output_scalar = 0.0
+        self.outputs.input_output_vector = [0.0, 0.0, 0.0]
+        self.outputs.state_output_scalar = 0.0
+        self.outputs.state_output_vector = [0.0, 0.0, 0.0]
+
+        self.states.state_scalar = 1.23
+        self.states.state_vector = np.ones(3)*4.56
+        self.ders.der_scalar = 0
+        self.ders.der_vector = np.zeros(3)
+
+    def do_step(self,dummy):
+        self.outputs.input_output_scalar = self.inputs.input_scalar
+        self.outputs.input_output_vector = self.inputs.input_vector
+        self.outputs.state_output_scalar = self.states.state_scalar
+        self.outputs.state_output_vector = self.states.state_vector
 
 class PythonAdder3D(pysim.cythonsystem.Sys):
     """Class used in testing, equivalent to the c++ Adder3D"""
@@ -197,3 +235,33 @@ def test_connected_system(adder_class1,adder_class2):
     assert np.all(sys2.outputs.output1 == [0.0, 0.0, 0.0])
     sim.simulate(1,0.1)
     assert np.all(sys2.outputs.output1 == [1.0, 2.0, 3.0])
+
+@pytest.mark.parametrize("sys1_class,sys2_class",
+                         [(InOutTestSystem,InOutTestSystem),
+                          (PythonInOutTestSystem,PythonInOutTestSystem),
+                          (InOutTestSystem,PythonInOutTestSystem),
+                          (PythonInOutTestSystem,InOutTestSystem),
+                         ])
+def test_vector_to_scalar_connection(sys1_class,sys2_class):
+    """Test that it is possible to connect vector to scalar
+
+    An element of a vector output shall be possible to connect to an input
+    scalar
+    """
+    sys1 = sys1_class()
+    sys2 = sys2_class()
+    sys3 = sys2_class()
+    sys1.inputs.input_vector = [1,2,3]
+    sys1.states.state_vector = [4,5,6]
+    sys1.connections.add_connection("input_output_vector",sys2,"input_scalar",1)
+    sys1.connections.add_connection("state_vector",sys3,"input_scalar",1)
+    sim = Sim()
+    sim.add_system(sys1)
+    sim.add_system(sys2)
+    sim.add_system(sys3)
+    sim.simulate(0.1,0.1)
+    assert sys2.outputs.input_output_scalar == 2.0
+    assert sys3.outputs.input_output_scalar == 5.0
+
+if __name__ == "__main__":
+    test_vector_to_scalar_connection(PythonInOutTestSystem,InOutTestSystem)

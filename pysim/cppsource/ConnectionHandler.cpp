@@ -72,6 +72,32 @@ void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname) 
 template void ConnectionHandler::connect<CommonSystemImpl>(char* outputname, CommonSystemImpl* inputsys, char* inputname);
 template void ConnectionHandler::connect<CompositeSystemImpl>(char* outputname, CompositeSystemImpl* inputsys, char* inputname);
 
+template <typename T>
+void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname, int output_index) {
+    using std::make_pair;
+    if (inputsys->inputs.d_ptr->scalars.count(inputname) > 0) {
+        if (d_ptr->outputp->d_ptr->vectors.count(outputname) == 1) {
+            pysim::vector* v_ptr = d_ptr->outputp->d_ptr->vectors[outputname];
+            double* element_ptr = &(v_ptr->data()[output_index]);
+            auto p = make_pair(element_ptr, inputsys->inputs.d_ptr->scalars[inputname]);
+            d_ptr->connected_scalars.push_back(p);
+        } else if ((d_ptr->statep != nullptr) && (d_ptr->statep->d_ptr->vectors.count(outputname) == 1)) {
+            pysim::vector* v_ptr = d_ptr->statep->d_ptr->vectors[outputname];
+            double* element_ptr = &(v_ptr->data()[output_index]);
+            auto p = make_pair(element_ptr, inputsys->inputs.d_ptr->scalars[inputname]);
+            d_ptr->connected_scalars.push_back(p);
+        } else {
+            std::string errtxt("Could not find matching state or output to connect from");
+            throw std::invalid_argument(errtxt);
+        }
+    } else {
+        throw std::invalid_argument("Could not find input to connect to");
+    }
+}
+
+template void ConnectionHandler::connect<CommonSystemImpl>(char* outputname, CommonSystemImpl* inputsys, char* inputname, int output_index);
+template void ConnectionHandler::connect<CompositeSystemImpl>(char* outputname, CompositeSystemImpl* inputsys, char* inputname, int output_index);
+
 void ConnectionHandler::copyoutputs() {
     for (auto vi = d_ptr->connected_scalars.cbegin(); vi != d_ptr->connected_scalars.cend(); ++vi) {
         *(vi->second) = *(vi->first);

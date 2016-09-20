@@ -1,5 +1,7 @@
 2.1
 ===
+ - Adding Composite Systems, systems that contain other systems
+ - Making it possible to connect an element of a output vector to scalar input
 
 2.0
 ===
