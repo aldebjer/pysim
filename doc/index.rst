@@ -7,6 +7,7 @@ PySim Documentation Contents
    tutorial.rst
    installing_pysim.rst
    using_pysim.rst
+   creating_systems.rst
    building_pysim.rst
 
 
