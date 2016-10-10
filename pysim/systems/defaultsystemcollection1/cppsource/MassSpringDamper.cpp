@@ -16,6 +16,8 @@ MassSpringDamper::MassSpringDamper(void)
     
     STATE(x1,dx1,"Position")
     STATE(x2,dx2, "Velocity")
+
+    OUTPUT(acceleration, "Acceleration of the mass")
     
     
     x1 = 1;
@@ -28,7 +30,8 @@ MassSpringDamper::MassSpringDamper(void)
 
 void MassSpringDamper::doStep(double time){
     dx1 = x2;
-    dx2 = -k/m*x1-b/m*x2+1/m*f;
+    acceleration = -k / m*x1 - b / m*x2 + 1 / m*f;
+    dx2 = acceleration;
 }
 
 REGISTER_SYSTEM(MassSpringDamper);

@@ -15,7 +15,7 @@ namespace pysim {
 
 CommonSystemImpl::CommonSystemImpl() :
     d_ptr(new CommonSystemImplPrivate()),
-    connectionHandler(&outputs, &states)
+    connectionHandler(&outputs, &states, &ders)
 {
 }
 

@@ -24,10 +24,13 @@ public:
 
 protected:
 
-    //Parameters
+    //Inputs
     double m,b,k,f;
     
     //States
     double x1,dx1,x2,dx2;
+
+    //Outputs
+    double acceleration;
 
 };

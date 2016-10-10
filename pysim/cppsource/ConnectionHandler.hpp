@@ -16,7 +16,7 @@ class CompositeSystemImpl;
 
 class ConnectionHandler{
 public:
-    ConnectionHandler(Variable* outputp, Variable* statep = nullptr);
+    ConnectionHandler(Variable* outputp, Variable* statep = nullptr, Variable* derp = nullptr);
     virtual ~ConnectionHandler();
 
     void copyoutputs();

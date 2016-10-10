@@ -12,6 +12,7 @@ import pysim.cythonsystem
 from pysim.systems import Adder3D
 from pysim.systems import Adder
 from pysim.systems import VanDerPol
+from pysim.systems import MassSpringDamper
 from pysim.systems import ReadTextInput
 from pysim.systems import InOutTestSystem
 
@@ -263,6 +264,19 @@ def test_vector_scalar_conn(sys1_class,sys2_class):
     sim.simulate(0.1,0.1)
     assert sys2.outputs.input_output_scalar == 2.0
     assert sys3.outputs.input_output_scalar == 5.0
+
+def test_der_as_output():
+    """Test that it is possible to connect a derivative as output"""
+    sys1 = MassSpringDamper()
+    sys2 = InOutTestSystem()
+    sys1.connections.add_connection("acceleration",sys2,"input_scalar")
+    sys1.store("acceleration")
+    sys2.store("input_output_scalar")
+    sim = Sim()
+    sim.add_system(sys1)
+    sim.add_system(sys2)
+    sim.simulate(1,0.1)
+    assert np.allclose(sys1.res.acceleration,sys2.res.input_output_scalar)
 
 if __name__ == "__main__":
     test_vector_scalar_conn(PythonInOutTestSystem,InOutTestSystem)

@@ -21,6 +21,7 @@ namespace pysim {
 struct ConnectionHandlerPrivate {
     Variable* outputp;
     Variable* statep;
+    Variable* derp;
 
     std::vector<std::pair<double*, double* > > connected_scalars;
     std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vectors;
@@ -29,11 +30,12 @@ struct ConnectionHandlerPrivate {
     std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vector_states;
 };
 
-ConnectionHandler::ConnectionHandler(Variable* outputp, Variable* statep):
+ConnectionHandler::ConnectionHandler(Variable* outputp, Variable* statep, Variable* derp):
     d_ptr(new ConnectionHandlerPrivate())
 {
     d_ptr->outputp = outputp;
     d_ptr->statep = statep;
+    d_ptr->derp = derp;
 }
 
 ConnectionHandler::~ConnectionHandler() {
@@ -49,8 +51,11 @@ void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname) 
         } else if ((d_ptr->statep != nullptr) && (d_ptr->statep->d_ptr->scalars.count(outputname) == 1)) {
             auto p = make_pair(d_ptr->statep->d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
             d_ptr->connected_scalar_states_.push_back(p);
+        } else if ((d_ptr->derp != nullptr) && (d_ptr->derp->d_ptr->scalars.count(outputname) == 1)) {
+            auto p = make_pair(d_ptr->derp->d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
+            d_ptr->connected_scalars.push_back(p);
         } else {
-            std::string errtxt("Could not find matching state or output to connect from");
+            std::string errtxt("Could not find matching state, der, or output to connect from");
             throw std::invalid_argument(errtxt);
         }
     } else if (inputsys->inputs.d_ptr->vectors.count(inputname) > 0) {
@@ -60,8 +65,11 @@ void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname) 
         } else if ((d_ptr->statep != nullptr) && (d_ptr->statep->d_ptr->vectors.count(outputname) == 1)) {
             auto p = make_pair(d_ptr->statep->d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
             d_ptr->connected_vector_states.push_back(p);
+        } else if ((d_ptr->derp != nullptr) && (d_ptr->derp->d_ptr->vectors.count(outputname) == 1)) {
+            auto p = make_pair(d_ptr->derp->d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
+            d_ptr->connected_vectors.push_back(p);
         } else {
-            std::string errtxt("Could not find matching state or output to connect from");
+            std::string errtxt("Could not find matching state, der or output to connect from");
             throw std::invalid_argument(errtxt);
         }
     } else {
@@ -86,8 +94,13 @@ void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname, 
             double* element_ptr = &(v_ptr->data()[output_index]);
             auto p = make_pair(element_ptr, inputsys->inputs.d_ptr->scalars[inputname]);
             d_ptr->connected_scalars.push_back(p);
+        } else if ((d_ptr->derp != nullptr) && (d_ptr->derp->d_ptr->vectors.count(outputname) == 1)) {
+            pysim::vector* v_ptr = d_ptr->derp->d_ptr->vectors[outputname];
+            double* element_ptr = &(v_ptr->data()[output_index]);
+            auto p = make_pair(element_ptr, inputsys->inputs.d_ptr->scalars[inputname]);
+            d_ptr->connected_scalars.push_back(p);
         } else {
-            std::string errtxt("Could not find matching state or output to connect from");
+            std::string errtxt("Could not find matching state, der or output to connect from");
             throw std::invalid_argument(errtxt);
         }
     } else {
