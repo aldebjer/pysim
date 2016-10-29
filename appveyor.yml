@@ -13,6 +13,7 @@ install:
   - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
   # We need wheel installed to build wheels later
   - "%PYTHON%\\python.exe -m pip install wheel"
+  - "%PYTHON%\\python.exe -m pip freeze > used_packages.txt"
   - "%PYTHON%\\python.exe setup.py install"
 
 build: off
@@ -29,6 +30,7 @@ after_test:
 artifacts:
   # bdist_wheel puts your built wheel in the dist directory
   - path: dist\*
+  - path: used_packages.txt
 
 #Upload to pypi
 on_success:
@@ -40,5 +42,4 @@ on_success:
  - "echo password = %PIP_PASSWORD% >> %USERPROFILE%\\.pypirc"
  
  - set HOME=%USERPROFILE%
- 
- - "%PYTHON%\\python.exe setup.py bdist_wheel upload"
+ - if "%APPVEYOR_REPO_TAG%"=="true" ( %PYTHON%\\python.exe setup.py bdist_wheel upload )
