@@ -42,4 +42,8 @@ on_success:
  - "echo password = %PIP_PASSWORD% >> %USERPROFILE%\\.pypirc"
  
  - set HOME=%USERPROFILE%
- - if "%APPVEYOR_REPO_TAG%"=="true" ( %PYTHON%\\python.exe setup.py bdist_wheel upload )
+ 
+ - ps: if ($APPVEYOR_REPO_TAG -eq "true") {%PYTHON%\\python.exe setup.py bdist_wheel upload }
+ 
+#sdist is only uploaded one time, arbitrarily chosen as when x86 build is run.
+ - ps: if (($APPVEYOR_REPO_TAG -eq "true") -And ($PYTHON -eq "C:\\Python35")) {%PYTHON%\\python.exe setup.py sdist upload }
