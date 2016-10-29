@@ -266,17 +266,30 @@ def test_vector_scalar_conn(sys1_class,sys2_class):
     assert sys3.outputs.input_output_scalar == 5.0
 
 def test_der_as_output():
-    """Test that it is possible to connect a derivative as output"""
+    """Test that it is possible to connect a derivative as output
+    
+    The der output should behave as a normal output. That this is the case is
+    tested by connecting two systems to each output (der/output) and compare
+    them.
+    
+    """
     sys1 = MassSpringDamper()
     sys2 = InOutTestSystem()
-    sys1.connections.add_connection("acceleration",sys2,"input_scalar")
-    sys1.store("acceleration")
+    sys3 = InOutTestSystem()
+    sys1.connections.add_connection("dx2",sys2,"input_scalar")
+    sys1.connections.add_connection("acceleration",sys3,"input_scalar")
+
     sys2.store("input_output_scalar")
+    sys3.store("input_output_scalar")
+
     sim = Sim()
     sim.add_system(sys1)
     sim.add_system(sys2)
+    sim.add_system(sys3)
+
     sim.simulate(1,0.1)
-    assert np.allclose(sys1.res.acceleration,sys2.res.input_output_scalar)
+
+    assert np.allclose(sys2.res.input_output_scalar, sys3.res.input_output_scalar)
 
 if __name__ == "__main__":
     test_vector_scalar_conn(PythonInOutTestSystem,InOutTestSystem)
