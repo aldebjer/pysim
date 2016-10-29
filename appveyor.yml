@@ -6,13 +6,6 @@ environment:
       secure: 5/+VoitJX0FZVcCLi1xOHQ==
 
   matrix:
-
-    # For Python versions available on Appveyor, see
-    # http://www.appveyor.com/docs/installed-software#python
-    # The list here is complete (excluding Python 2.6, which
-    # isn't covered by this document) at the time of writing.
-
-
     - PYTHON: "C:\\Python35"
     - PYTHON: "C:\\Python35-x64"
 
@@ -25,13 +18,6 @@ install:
 build: off
 
 test_script:
-  # Put your test command here.
-  # If you don't need to build C extensions on 64-bit Python 3.3 or 3.4,
-  # you can remove "build.cmd" from the front of the command, as it's
-  # only needed to support those cases.
-  # Note that you must use the environment variable %PYTHON% to refer to
-  # the interpreter you're using - Appveyor does not do anything special
-  # to put the Python evrsion you want to use on PATH.
   - mkdir testrundir
   - cd testrundir
   - "%PYTHON%\\scripts\\py.test --pyargs pysim"
@@ -45,8 +31,14 @@ artifacts:
   - path: dist\*
 
 #Upload to pypi
-# on_success:
-# - "echo [pypi] > %USERPROFILE%\\.pypirc"
-# - "echo username = aldebjer >> %USERPROFILE%\\.pypirc"
-# - "echo password = %PIP_PASSWORD% >> %USERPROFILE%\\.pypirc"
-# - "%PYTHON%\\python.exe setup.py sdist bdist_wheel upload"
+on_success:
+ - "echo [distutils] > %USERPROFILE%\\.pypirc"
+ - "echo index-servers=pypi >> %USERPROFILE%\\.pypirc"
+ - "echo [pypi] >> %USERPROFILE%\\.pypirc"
+ - "echo repository = https://pypi.python.org/pypi >> %USERPROFILE%\\.pypirc"
+ - "echo username = aldebjer >> %USERPROFILE%\\.pypirc"
+ - "echo password = %PIP_PASSWORD% >> %USERPROFILE%\\.pypirc"
+ 
+ - set HOME=%USERPROFILE%
+ 
+ - "%PYTHON%\\python.exe setup.py sdist bdist_wheel upload"
