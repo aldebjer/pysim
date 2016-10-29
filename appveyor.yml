@@ -26,11 +26,13 @@ test_script:
 
 after_test:
   - "%PYTHON%\\python.exe setup.py bdist_wheel"
+  - "%PYTHON%\\python.exe setup.py build_sphinx"
 
 artifacts:
   # bdist_wheel puts your built wheel in the dist directory
   - path: dist\*
   - path: used_packages.txt
+  - path: build\sphinx\html
 
 #Upload to pypi
 on_success:
