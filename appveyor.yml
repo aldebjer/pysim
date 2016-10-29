@@ -41,4 +41,4 @@ on_success:
  
  - set HOME=%USERPROFILE%
  
- - "%PYTHON%\\python.exe setup.py sdist bdist_wheel upload"
+ - "%PYTHON%\\python.exe setup.py bdist_wheel upload"

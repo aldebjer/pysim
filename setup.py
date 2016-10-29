@@ -97,10 +97,13 @@ extensions = [Extension("pysim.cppsystem",
                           libraries=["cppsystemlib",],
                           ),
              ]
-             
+
+def readme():
+    with open('README.rst') as f:
+        return f.read()
 setup(
     name="pysim",
-    version="2.1.dev0",
+    version="2.1.dev2",
     author="Linus Aldebjer",
     author_email="aldebjer@gmail.com",
     url="http://pys.im",
@@ -126,7 +129,8 @@ setup(
                 ],
     packages=['pysim', 'pysim.systems','pysim.tests'],
     install_requires = ['numpy>=1.8.1',],
-    description = "package for dynamical system modelling",
+    description = "Modeling and Simulation of Dynamical Systems",
+    long_description=readme(),
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
