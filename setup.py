@@ -9,6 +9,8 @@ import sys
 import numpy
 import os
 
+from pysim import __version__
+
 config = Configuration()
 config.add_include_dirs(['pysim/cppsource', numpy.get_include()])
 
@@ -103,7 +105,7 @@ def readme():
         return f.read()
 setup(
     name="pysim",
-    version="2.1.dev2",
+    version=__version__,
     author="Linus Aldebjer",
     author_email="aldebjer@gmail.com",
     url="http://pys.im",
