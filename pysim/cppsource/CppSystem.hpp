@@ -37,6 +37,8 @@ protected:
     void input(std::string*, const char* name, const char* description);
     void input(std::map<std::string, double>*, const char* name, const char* description);
 
+    void par(std::map<std::string, std::vector<double>>* var, const char* name, const char* description);
+
     void input(double* var, const char* name, const char* desc);
     void input(pysim::vector* vars, const char* name, const char* description);
 
@@ -56,4 +58,5 @@ protected:
 #define INPUT(x,s) input(&x,#x,s);
 #define OUTPUT(x,s) output(&x,#x,s);
 
+#define PAR(x,s) par(&x,#x,s);
 }

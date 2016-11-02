@@ -1,3 +1,7 @@
+2.2
+===
+ - parameters can be map of vectors
+
 2.1
 ===
  - Adding Composite Systems, systems that contain other systems

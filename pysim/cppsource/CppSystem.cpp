@@ -112,6 +112,13 @@ void CppSystem::input(std::map<string, double>* var, const char* name, const cha
     d_ptr->par_descriptions[str] = string(description);
 }
 
+void CppSystem::par(std::map<string, std::vector<double>>* var, const char* name, const char* description) {
+    string str(name);
+    boost::algorithm::trim(str);
+    d_ptr->par_vector_maps[str] = var;
+    d_ptr->par_descriptions[str] = string(description);
+}
+
 void CppSystem::output(double* var, const char* name, const char* description) {
     string str(name);
     boost::algorithm::trim(str);

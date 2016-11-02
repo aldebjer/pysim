@@ -130,21 +130,22 @@ cdef class Parameters:
         return p
 
     def __dir__(self):
-        parstringnames = self._c_sys.getParStringNames()
-        parstringnames_uc = [s.decode('utf-8') for s in parstringnames]
-        parmapnames = self._c_sys.getParMapNames()
-        parmapnames_uc = [s.decode('utf-8') for s in parmapnames]
-        parmatrixnames = self._c_sys.getParMatrixNames()
-        parmatrixnames_uc = [s.decode('utf-8') for s in parmatrixnames]
-        parvectornames = self._c_sys.getParVectorNames()
-        parvectornames_uc = [s.decode('utf-8') for s in parvectornames]
-        return parstringnames_uc
+        allnames = []
+        allnames.extend(self._c_sys.getParStringNames())
+        allnames.extend(self._c_sys.getParMapNames())
+        allnames.extend(self._c_sys.getParVectorMapNames())
+        allnames.extend(self._c_sys.getParMatrixNames())
+        allnames.extend(self._c_sys.getParVectorNames())
+
+        allnames_uc = [s.decode('utf-8') for s in allnames]
+        return allnames_uc
 
     def __getattr__(self,name):
         bs = bytes(name,'utf-8')
         parstringnames =  list(self._c_sys.getParStringNames())
         parvectornames =  list(self._c_sys.getParVectorNames())
         parmapnames = list(self._c_sys.getParMapNames())
+        parvectormapnames = list(self._c_sys.getParVectorMapNames())
         parmatrixnames = list(self._c_sys.getParMatrixNames())
         if bs in parstringnames:
             return self._c_sys.getParString(bs).decode("utf-8")
@@ -152,6 +153,10 @@ cdef class Parameters:
             return self._c_sys.getParVector(bs)
         elif bs in parmapnames:
             bytes_dict = self._c_sys.getParMap(bs)
+            utf_8_dict = {x.decode('utf-8'):v for x,v in bytes_dict.items()}
+            return utf_8_dict
+        elif bs in parvectormapnames:
+            bytes_dict = self._c_sys.getParVectorMap(bs)
             utf_8_dict = {x.decode('utf-8'):v for x,v in bytes_dict.items()}
             return utf_8_dict
         elif bs in parmatrixnames:
@@ -163,6 +168,7 @@ cdef class Parameters:
         bs = bytes(name,'utf-8')
         parstringnames =  list(self._c_sys.getParStringNames())
         parmapnames = list(self._c_sys.getParMapNames())
+        parvectormapnames = list(self._c_sys.getParVectorMapNames())
         parmatrixnames = list(self._c_sys.getParMatrixNames())
         parvectornames =  list(self._c_sys.getParVectorNames())
         if bs in parstringnames:
@@ -176,6 +182,12 @@ cdef class Parameters:
                 self._c_sys.setParMap(bs,bytesmap)
             except TypeError:
                 raise TypeError("Parameter '{}' is a map".format(name))
+        elif bs in parvectormapnames:
+            try:
+                bytesmap = {bytes(x,'utf-8'):v for x,v in value.items()}
+                self._c_sys.setParVectorMap(bs,bytesmap)
+            except TypeError:
+                raise TypeError("Parameter '{}' is a vector map".format(name))
         elif bs in parmatrixnames:
             try:
                 self._c_sys.setParMatrix(bs,value)

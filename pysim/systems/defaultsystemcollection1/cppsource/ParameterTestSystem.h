@@ -28,10 +28,12 @@ protected:
     std::vector<double> parameter_vector;
     std::vector<std::vector<double>> parameter_matrix;
     std::map<std::string, double> parameter_map;
+    std::map<std::string, std::vector<double>> parameter_vectormap;
 
     double output_from_vector;
     double output_from_matrix;
     double output_from_map;
+    double output_from_vectormap;
 
 
 };

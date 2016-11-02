@@ -28,6 +28,7 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
         vector[string] getParVectorNames()
         vector[string] getParMatrixNames()
         vector[string] getParMapNames()
+        vector[string] getParVectorMapNames()
         void setParString(char*, string) except +
         string getParString(char*) except +
         vector[vector[double]] getParMatrix(char* name) except +
@@ -36,6 +37,8 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
         void setParVector(char* name, vector[double] value) except +
         map[string,double] getParMap(char* name) except +
         void setParMap(char* name, map[string,double] value) except +
+        map[string,vector[double]] getParVectorMap(char* name) except +
+        void setParVectorMap(char* name, map[string,vector[double]] value) except +
         map[string,string] getParDescriptionMap() except +
 
         void store(char* name)

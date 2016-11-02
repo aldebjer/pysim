@@ -62,6 +62,13 @@ std::vector<std::string> CommonSystemImpl::getParMapNames() {
     return names;
 }
 
+std::vector<std::string> CommonSystemImpl::getParVectorMapNames() {
+    std::vector<std::string> names;
+    for (auto i = d_ptr->par_vector_maps.cbegin(); i != d_ptr->par_vector_maps.cend(); ++i) {
+        names.push_back(i->first);
+    }
+    return names;
+}
 
 std::string CommonSystemImpl::getParString(char* name) {
     if (d_ptr->par_strings.count(name) < 1) {
@@ -168,6 +175,23 @@ void CommonSystemImpl::setParMap(char* name, std::map<std::string, double> value
         throw std::invalid_argument(errmsg);
     }
     *d_ptr->par_maps.at(name) = value;
+}
+
+std::map<std::string, std::vector<double>> CommonSystemImpl::getParVectorMap(char* name) {
+    if (d_ptr->par_vector_maps.count(name) < 1) {
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+    return *(d_ptr->par_vector_maps.at(name));
+}
+
+void CommonSystemImpl::setParVectorMap(char* name, std::map<std::string, std::vector<double>> value) {
+    if (d_ptr->par_vector_maps.count(name) < 1) {
+        char errmsg[50];
+        snprintf(errmsg, 50, "Could not find: %s", name);
+        throw std::invalid_argument(errmsg);
+    }
+    *d_ptr->par_vector_maps.at(name) = value;
 }
 
 std::map<std::string, std::string> CommonSystemImpl::getParDescriptionMap() {
