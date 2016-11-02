@@ -149,9 +149,9 @@
   <ItemGroup>
     <CustomBuild Include="..\..\pysim\cythonsystem.pyx">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">c:\python35\Scripts\cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\cythonsystem.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\cythonsystem.pyx</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cythonsystem.cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">c:\python35\Scripts\cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\cythonsystem.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\cythonsystem.pyx</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cythonsystem.cpp</Outputs>
     </CustomBuild>
     <None Include="..\..\pysim\cythonsystem.pxd" />

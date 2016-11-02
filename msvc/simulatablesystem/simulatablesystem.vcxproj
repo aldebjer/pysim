@@ -132,8 +132,8 @@
       <FileType>Document</FileType>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">simulatablesystem.cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">simulatablesystem.cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">c:\python35\Scripts\cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulatablesystem.pyx</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">c:\python35\Scripts\cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulatablesystem.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulatablesystem.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulatablesystem.pyx</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

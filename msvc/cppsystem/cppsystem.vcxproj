@@ -14,8 +14,8 @@
     <None Include="..\..\pysim\cppsystem.pxd" />
     <CustomBuild Include="..\..\pysim\cppsystem.pyx">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">c:\python35\Scripts\cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\cppsystem.pyx</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">c:\python35\Scripts\cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\cppsystem.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\cppsystem.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\cppsystem.pyx</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cppsystem.cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cppsystem.cpp</Outputs>
     </CustomBuild>

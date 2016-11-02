@@ -15,9 +15,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </ExcludedFromBuild>
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">c:\python35\Scripts\cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulation.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulation.pyx</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">simulation.cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">c:\python35\Scripts\cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulation.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulation.pyx</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">simulation.cpp</Outputs>
     </CustomBuild>
   </ItemGroup>

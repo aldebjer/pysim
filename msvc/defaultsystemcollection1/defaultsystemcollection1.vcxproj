@@ -46,9 +46,9 @@
   <ItemGroup>
     <CustomBuild Include="..\..\pysim\systems\defaultsystemcollection1\defaultsystemcollection1.pyx">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">c:\python35\Scripts\cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\systems\defaultsystemcollection1\defaultsystemcollection1.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\systems\defaultsystemcollection1\defaultsystemcollection1.pyx</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">defaultsystemcollection1.cpp</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">c:\python35\Scripts\cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\systems\defaultsystemcollection1\defaultsystemcollection1.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\systems\defaultsystemcollection1\defaultsystemcollection1.pyx</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">defaultsystemcollection1.cpp</Outputs>
     </CustomBuild>
   </ItemGroup>
