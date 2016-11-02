@@ -45,21 +45,9 @@ public:
     void add_compare_smaller(char* comparename, double comparevalue);
 
     //Parameter handling
-    std::vector<std::string> getParStringNames();
-    std::vector<std::string> getParMatrixNames();
-    std::vector<std::string> getParVectorNames();
-    std::vector<std::string> getParMapNames();
-    std::vector<std::string> getParVectorMapNames();
-    std::string getParString(char* name);
-    void setParString(char* name, std::string value);
-    std::vector<double> getParVector(char* name);
-    void setParVector(char* name, std::vector<double> value);
-    std::vector<std::vector<double>> getParMatrix(char* name);
-    void setParMatrix(char* name, std::vector<std::vector<double>> value);
-    std::map<std::string, double> getParMap(char* name);
-    void setParMap(char* name, std::map<std::string, double> value);
-    std::map<std::string, std::vector<double>> getParVectorMap(char* name);
-    void setParVectorMap(char* name, std::map<std::string, std::vector<double>> value);
+    template <typename T> std::vector<std::string> getParNames();
+    template <typename T> T getPar(char* name);
+    template <typename T> void setPar(char* name, T value);
 
     std::map<std::string, std::string> getParDescriptionMap();
     

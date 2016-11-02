@@ -27,7 +27,9 @@ CommonSystemImpl::~CommonSystemImpl(){
 //     Parameter handling
 //
 //////////////////////////////
-std::vector<std::string> CommonSystemImpl::getParStringNames() {
+
+template<>
+std::vector<std::string> CommonSystemImpl::getParNames<ParString>() {
     std::vector<std::string> names;
     for (auto i = d_ptr->par_strings.cbegin(); i != d_ptr->par_strings.cend(); ++i) {
         names.push_back(i->first);
@@ -35,7 +37,8 @@ std::vector<std::string> CommonSystemImpl::getParStringNames() {
     return names;
 }
 
-std::vector<std::string> CommonSystemImpl::getParMatrixNames() {
+template <>
+std::vector<std::string> CommonSystemImpl::getParNames<ParMatrix>() {
     std::vector<std::string> names;
     for (auto i = d_ptr->par_matrices.cbegin(); i != d_ptr->par_matrices.cend(); ++i) {
         names.push_back(i->first);
@@ -46,7 +49,8 @@ std::vector<std::string> CommonSystemImpl::getParMatrixNames() {
     return names;
 }
 
-std::vector<std::string> CommonSystemImpl::getParVectorNames() {
+template <>
+std::vector<std::string> CommonSystemImpl::getParNames<ParVector>() {
     std::vector<std::string> names;
     for (auto& v : d_ptr->par_vectors) {
         names.push_back(v.first);
@@ -54,7 +58,9 @@ std::vector<std::string> CommonSystemImpl::getParVectorNames() {
     return names;
 }
 
-std::vector<std::string> CommonSystemImpl::getParMapNames() {
+
+template <>
+std::vector<std::string> CommonSystemImpl::getParNames<ParMap>(){
     std::vector<std::string> names;
     for (auto i = d_ptr->par_maps.cbegin(); i != d_ptr->par_maps.cend(); ++i) {
         names.push_back(i->first);
@@ -62,7 +68,8 @@ std::vector<std::string> CommonSystemImpl::getParMapNames() {
     return names;
 }
 
-std::vector<std::string> CommonSystemImpl::getParVectorMapNames() {
+template <>
+std::vector<std::string> CommonSystemImpl::getParNames<ParVectorMap>() {
     std::vector<std::string> names;
     for (auto i = d_ptr->par_vector_maps.cbegin(); i != d_ptr->par_vector_maps.cend(); ++i) {
         names.push_back(i->first);
@@ -70,7 +77,8 @@ std::vector<std::string> CommonSystemImpl::getParVectorMapNames() {
     return names;
 }
 
-std::string CommonSystemImpl::getParString(char* name) {
+template <>
+std::string CommonSystemImpl::getPar(char* name) {
     if (d_ptr->par_strings.count(name) < 1) {
         std::string errstr = str(boost::format("Could not find: %1%") % name);
         throw std::invalid_argument(errstr);
@@ -78,7 +86,9 @@ std::string CommonSystemImpl::getParString(char* name) {
     std::string s(*d_ptr->par_strings.at(name));
     return s;
 }
-void CommonSystemImpl::setParString(char* name, std::string value) {
+
+template <>
+void CommonSystemImpl::setPar(char* name, std::string value) {
     if (d_ptr->par_strings.count(name) < 1) {
         char errmsg[50];
         snprintf(errmsg, 50, "Could not find: %s", name);
@@ -87,7 +97,8 @@ void CommonSystemImpl::setParString(char* name, std::string value) {
     *(d_ptr->par_strings.at(name)) = value;
 }
 
-std::vector<double> CommonSystemImpl::getParVector(char* name) {
+template <>
+ParVector CommonSystemImpl::getPar(char* name) {
     std::vector<double> out;
     if (d_ptr->par_vectors.count(name) > 0) {
         out = *d_ptr->par_vectors.at(name);
@@ -97,7 +108,9 @@ std::vector<double> CommonSystemImpl::getParVector(char* name) {
     }
     return out;
 }
-void CommonSystemImpl::setParVector(char* name, std::vector<double> value) {
+
+template <>
+void CommonSystemImpl::setPar(char* name, ParVector value) {
     if (d_ptr->par_vectors.count(name) > 0) {
         *d_ptr->par_vectors.at(name) = value;
     } else {
@@ -106,7 +119,8 @@ void CommonSystemImpl::setParVector(char* name, std::vector<double> value) {
     }
 }
 
-std::vector<std::vector<double>> CommonSystemImpl::getParMatrix(char* name) {
+template <>
+ParMatrix CommonSystemImpl::getPar(char* name) {
     std::vector<std::vector<double>> out;
     if (d_ptr->par_matrices.count(name) > 0) {
         out = *d_ptr->par_matrices.at(name);
@@ -126,8 +140,9 @@ std::vector<std::vector<double>> CommonSystemImpl::getParMatrix(char* name) {
     }
     return out;
 }
-void CommonSystemImpl::setParMatrix(char* name, std::vector<std::vector<double>> value) {
 
+template <>
+void CommonSystemImpl::setPar(char* name, ParMatrix value) {
     if (d_ptr->par_matrices.count(name) > 0) {
         *d_ptr->par_matrices.at(name) = value;
     } else if (d_ptr->par_boost_matrices.count(name) > 0) {
@@ -160,7 +175,8 @@ void CommonSystemImpl::setParMatrix(char* name, std::vector<std::vector<double>>
     }
 }
 
-std::map<std::string, double> CommonSystemImpl::getParMap(char* name) {
+template <>
+ParMap CommonSystemImpl::getPar(char* name) {
     if (d_ptr->par_maps.count(name) < 1) {
         std::string errstr = str(boost::format("Could not find: %1%") % name);
         throw std::invalid_argument(errstr);
@@ -168,7 +184,8 @@ std::map<std::string, double> CommonSystemImpl::getParMap(char* name) {
     return *(d_ptr->par_maps.at(name));
 }
 
-void CommonSystemImpl::setParMap(char* name, std::map<std::string, double> value) {
+template <>
+void CommonSystemImpl::setPar(char* name, ParMap value) {
     if (d_ptr->par_maps.count(name) < 1) {
         char errmsg[50];
         snprintf(errmsg, 50, "Could not find: %s", name);
@@ -177,7 +194,8 @@ void CommonSystemImpl::setParMap(char* name, std::map<std::string, double> value
     *d_ptr->par_maps.at(name) = value;
 }
 
-std::map<std::string, std::vector<double>> CommonSystemImpl::getParVectorMap(char* name) {
+template <>
+ParVectorMap CommonSystemImpl::getPar(char* name) {
     if (d_ptr->par_vector_maps.count(name) < 1) {
         std::string errstr = str(boost::format("Could not find: %1%") % name);
         throw std::invalid_argument(errstr);
@@ -185,7 +203,8 @@ std::map<std::string, std::vector<double>> CommonSystemImpl::getParVectorMap(cha
     return *(d_ptr->par_vector_maps.at(name));
 }
 
-void CommonSystemImpl::setParVectorMap(char* name, std::map<std::string, std::vector<double>> value) {
+template <>
+void CommonSystemImpl::setPar(char* name, ParVectorMap value) {
     if (d_ptr->par_vector_maps.count(name) < 1) {
         char errmsg[50];
         snprintf(errmsg, 50, "Could not find: %s", name);

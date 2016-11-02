@@ -119,6 +119,11 @@ cdef class Results:
         else:
             raise AttributeError("No stored {} in system".format(name))
 
+ctypedef vector[double] ParVectorType
+ctypedef vector[vector[double]] ParMatrixType
+ctypedef map[string,double] ParMapType
+ctypedef map[string,vector[double]] ParVectorMap
+
 cdef class Parameters:
     """Contains all the parameters for the system.
     """
@@ -131,71 +136,73 @@ cdef class Parameters:
 
     def __dir__(self):
         allnames = []
-        allnames.extend(self._c_sys.getParStringNames())
-        allnames.extend(self._c_sys.getParMapNames())
-        allnames.extend(self._c_sys.getParVectorMapNames())
-        allnames.extend(self._c_sys.getParMatrixNames())
-        allnames.extend(self._c_sys.getParVectorNames())
+        allnames.exten(self._c_sys.getParNames[string]())
+        allnames.extend(self._c_sys.getParNames[ParMapType]())
+        allnames.extend(self._c_sys.getParNames[ParVectorMap]())
+        allnames.extend(self._c_sys.getParNames[ParMatrixType]())
+        allnames.extend(self._c_sys.getParNames[ParVectorType]())
 
         allnames_uc = [s.decode('utf-8') for s in allnames]
         return allnames_uc
 
     def __getattr__(self,name):
         bs = bytes(name,'utf-8')
-        parstringnames =  list(self._c_sys.getParStringNames())
-        parvectornames =  list(self._c_sys.getParVectorNames())
-        parmapnames = list(self._c_sys.getParMapNames())
-        parvectormapnames = list(self._c_sys.getParVectorMapNames())
-        parmatrixnames = list(self._c_sys.getParMatrixNames())
+        parstringnames =  list(self._c_sys.getParNames[string]())
+        parvectornames =  list(self._c_sys.getParNames[ParVectorType]())
+        parmapnames = list(self._c_sys.getParNames[ParMapType]())
+        parvectormapnames = list(self._c_sys.getParNames[ParVectorMap]())
+        parmatrixnames = list(self._c_sys.getParNames[ParMatrixType]())
         if bs in parstringnames:
-            return self._c_sys.getParString(bs).decode("utf-8")
+            return self._c_sys.getPar[string](bs).decode("utf-8")
         elif bs in parvectornames:
-            return self._c_sys.getParVector(bs)
+            return self._c_sys.getPar[ParVectorType](bs)
         elif bs in parmapnames:
-            bytes_dict = self._c_sys.getParMap(bs)
+            bytes_dict = self._c_sys.getPar[ParMapType](bs)
             utf_8_dict = {x.decode('utf-8'):v for x,v in bytes_dict.items()}
             return utf_8_dict
         elif bs in parvectormapnames:
-            bytes_dict = self._c_sys.getParVectorMap(bs)
+            bytes_dict = self._c_sys.getPar[ParVectorMap](bs)
             utf_8_dict = {x.decode('utf-8'):v for x,v in bytes_dict.items()}
             return utf_8_dict
         elif bs in parmatrixnames:
-            return self._c_sys.getParMatrix(bs)
+            return self._c_sys.getPar[ParMatrixType](bs)
         else:
             raise AttributeError("No parameter {} in system".format(name))
 
     def __setattr__(self,name,value):
         bs = bytes(name,'utf-8')
-        parstringnames =  list(self._c_sys.getParStringNames())
-        parmapnames = list(self._c_sys.getParMapNames())
-        parvectormapnames = list(self._c_sys.getParVectorMapNames())
-        parmatrixnames = list(self._c_sys.getParMatrixNames())
-        parvectornames =  list(self._c_sys.getParVectorNames())
+        parstringnames =  list(self._c_sys.getParNames[string]())
+        parvectornames =  list(self._c_sys.getParNames[ParVectorType]())
+        parmapnames = list(self._c_sys.getParNames[ParMapType]())
+        parvectormapnames = list(self._c_sys.getParNames[ParVectorMap]())
+        parmatrixnames = list(self._c_sys.getParNames[ParMatrixType]())
+        print(parmatrixnames)
+        print(bs)
         if bs in parstringnames:
             try:
-                self._c_sys.setParString(bs,bytes(value,'utf-8'))
+                self._c_sys.setPar[string](bs,bytes(value,'utf-8'))
             except TypeError:
                 raise TypeError("Parameter '{}' is a string".format(name))
         elif bs in parmapnames:
             try:
                 bytesmap = {bytes(x,'utf-8'):v for x,v in value.items()}
-                self._c_sys.setParMap(bs,bytesmap)
+                self._c_sys.setPar[ParMapType](bs,bytesmap)
             except TypeError:
                 raise TypeError("Parameter '{}' is a map".format(name))
         elif bs in parvectormapnames:
             try:
                 bytesmap = {bytes(x,'utf-8'):v for x,v in value.items()}
-                self._c_sys.setParVectorMap(bs,bytesmap)
+                self._c_sys.setPar[ParVectorMap](bs,bytesmap)
             except TypeError:
                 raise TypeError("Parameter '{}' is a vector map".format(name))
         elif bs in parmatrixnames:
             try:
-                self._c_sys.setParMatrix(bs,value)
+                self._c_sys.setPar[ParMatrixType](bs,value)
             except TypeError:
                 raise TypeError("Parameter '{}' is a matrix".format(name))
         elif bs in parvectornames:
             try:
-                self._c_sys.setParVector(bs,value)
+                self._c_sys.setPar[ParVectorType](bs,value)
             except TypeError:
                 raise TypeError("Parameter '{}' is a vector".format(name))
         else:

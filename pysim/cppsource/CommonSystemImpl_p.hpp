@@ -11,6 +11,13 @@
 
 namespace pysim {
 
+typedef std::string ParString;
+typedef std::vector<double> ParVector;
+typedef std::map<std::string, double> ParMap;
+typedef std::map<std::string, std::vector<double>> ParVectorMap;
+typedef std::vector<std::vector<double>> ParMatrix;
+
+
 template <class T>
 struct StateType {
     T stateValue;
@@ -23,11 +30,12 @@ struct CommonSystemImplPrivate {
     std::map<std::string, std::string> state_to_der_map_scalars;
     std::map<std::string, std::string> state_to_der_map_vectors;
 
-    std::map<std::string, std::string*> par_strings;
-    std::map<std::string, std::map<std::string, double>* > par_maps;
-    std::map<std::string, std::map<std::string, std::vector<double>>* > par_vector_maps;
-    std::map<std::string, std::vector<double>* > par_vectors;
-    std::map<std::string, std::vector<std::vector<double>>* > par_matrices;
+    std::map<std::string, ParString*> par_strings;
+    std::map< std::string, ParMap* > par_maps;
+    std::map<std::string, ParVectorMap* > par_vector_maps;
+    std::map<std::string, ParVector* > par_vectors;
+    std::map<std::string, ParMatrix* > par_matrices;
+
     std::map<std::string, pysim::matrix* > par_boost_matrices;
     std::map<std::string, std::string> par_descriptions;
 

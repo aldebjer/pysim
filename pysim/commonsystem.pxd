@@ -24,21 +24,9 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
         Variable ders
         ConnectionHandler connectionHandler
 
-        vector[string] getParStringNames()
-        vector[string] getParVectorNames()
-        vector[string] getParMatrixNames()
-        vector[string] getParMapNames()
-        vector[string] getParVectorMapNames()
-        void setParString(char*, string) except +
-        string getParString(char*) except +
-        vector[vector[double]] getParMatrix(char* name) except +
-        void setParMatrix(char* name, vector[vector[double]] value) except +
-        vector[double] getParVector(char* name) except +
-        void setParVector(char* name, vector[double] value) except +
-        map[string,double] getParMap(char* name) except +
-        void setParMap(char* name, map[string,double] value) except +
-        map[string,vector[double]] getParVectorMap(char* name) except +
-        void setParVectorMap(char* name, map[string,vector[double]] value) except +
+        vector[string] getParNames[T]()
+        T getPar[T](char*) except +
+        void setPar[T](char* name, T value) except +
         map[string,string] getParDescriptionMap() except +
 
         void store(char* name)
