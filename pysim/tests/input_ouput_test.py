@@ -289,7 +289,9 @@ def test_der_as_output():
 
     sim.simulate(1,0.1)
 
-    assert np.allclose(sys2.res.input_output_scalar, sys3.res.input_output_scalar)
+    output_from_der = sys2.res.input_output_scalar
+    output_from_output = sys3.res.input_output_scalar
+    assert np.allclose(output_from_der, output_from_output)
 
 if __name__ == "__main__":
     test_vector_scalar_conn(PythonInOutTestSystem,InOutTestSystem)
