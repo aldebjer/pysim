@@ -11,9 +11,9 @@ std::string ParameterTestSystem::getDocs(){
 
 ParameterTestSystem::ParameterTestSystem(void)
 {
-    INPUT(parameter_vector, "Parameter vector")
-    INPUT(parameter_matrix, "Parameter Matrix")
-    INPUT(parameter_map, "Parameter Map")
+    PAR(parameter_vector, "Parameter vector")
+    PAR(parameter_matrix, "Parameter Matrix")
+    PAR(parameter_map, "Parameter Map")
     PAR(parameter_vectormap, "Parameter Vector Map")
 
     OUTPUT(output_from_vector, "Value of first element in parameter_vector")

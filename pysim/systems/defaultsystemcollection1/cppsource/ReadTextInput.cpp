@@ -25,7 +25,7 @@ string ReadTextInput::getDocs(){
 ReadTextInput::ReadTextInput(void):
     filename("default.txt")
 {
-    INPUT(filename, "Name of the file containing the input data")
+    PAR(filename, "Name of the file containing the input data")
 
     for (size_t i = 1; i <= NUMBER_OF_COLUMNS; i++) {
         char name[100];
