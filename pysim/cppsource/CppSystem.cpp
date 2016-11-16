@@ -67,7 +67,7 @@ void CppSystem::input(double* var, const char* name, const char* description) {
     inputs.d_ptr->descriptions[str] = string(description);
 }
 
-void CppSystem::input(std::vector<double>* var, const char* name, const char* description) {
+void CppSystem::par(std::vector<double>* var, const char* name, const char* description) {
     //TODO:: Make parameter
     string str(name);
     boost::algorithm::trim(str);
@@ -75,7 +75,7 @@ void CppSystem::input(std::vector<double>* var, const char* name, const char* de
     d_ptr->par_descriptions[str] = string(description);
 }
 
-void CppSystem::input(std::vector<std::vector<double>>* var, const char* name, const char* description) {
+void CppSystem::par(std::vector<std::vector<double>>* var, const char* name, const char* description) {
     //TODO:: Make parameter
     string str(name);
     boost::algorithm::trim(str);
@@ -98,14 +98,14 @@ void CppSystem::input(boost::numeric::ublas::matrix<double>* var, const char* na
     d_ptr->par_descriptions[str] = string(description);
 }
 
-void CppSystem::input(string* var, const char* name, const char* description) {
+void CppSystem::par(string* var, const char* name, const char* description) {
     string str(name);
     boost::algorithm::trim(str);
     d_ptr->par_strings[str] = var;
     d_ptr->par_descriptions[str] = string(description);
 }
 
-void CppSystem::input(std::map<string, double>* var, const char* name, const char* description) {
+void CppSystem::par(std::map<string, double>* var, const char* name, const char* description) {
     string str(name);
     boost::algorithm::trim(str);
     d_ptr->par_maps[str] = var;

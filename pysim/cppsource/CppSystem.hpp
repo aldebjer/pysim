@@ -30,17 +30,29 @@ protected:
     //
     ///////////////////////////////////////
 
-    //To be pars
-    void input(std::vector<double>* vars, const char* name, const char* desc);
-    void input(std::vector<std::vector<double>>* vars, const char* name, const char* desc);
-    void input(pysim::matrix* vars, const char* name, const char* description);
-    void input(std::string*, const char* name, const char* description);
-    void input(std::map<std::string, double>*, const char* name, const char* description);
+    //To be pars only, here only for backwards compatability
+    void input(std::vector<double>* vars, const char* name, const char* description) {
+        par( vars, name, description);
+    };
+    void input(std::vector<std::vector<double>>* vars, const char* name, const char* description) {
+        par(vars, name, description);
+    };
+    void input(std::string* var, const char* name, const char* description){
+        par(var, name, description);
+    };
+    void input(std::map<std::string, double>* var, const char* name, const char* description) {
+        par(var, name, description);
+    };
 
+    void par(std::vector<double>* vars, const char* name, const char* desc);
+    void par(std::vector<std::vector<double>>* vars, const char* name, const char* desc);
+    void par(std::string*, const char* name, const char* description);
+    void par(std::map<std::string, double>*, const char* name, const char* description);
     void par(std::map<std::string, std::vector<double>>* var, const char* name, const char* description);
 
     void input(double* var, const char* name, const char* desc);
     void input(pysim::vector* vars, const char* name, const char* description);
+    void input(pysim::matrix* vars, const char* name, const char* description);
 
     void output(double* var, const char* name, const char* desc);
     void output(pysim::vector* vars, const char* name, const char* desc);
