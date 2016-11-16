@@ -31,15 +31,19 @@ protected:
     ///////////////////////////////////////
 
     //To be pars only, here only for backwards compatability
+    [[deprecated]]
     void input(std::vector<double>* vars, const char* name, const char* description) {
         par( vars, name, description);
     };
+    [[deprecated]]
     void input(std::vector<std::vector<double>>* vars, const char* name, const char* description) {
         par(vars, name, description);
     };
+    [[deprecated]]
     void input(std::string* var, const char* name, const char* description){
         par(var, name, description);
     };
+    [[deprecated]]
     void input(std::map<std::string, double>* var, const char* name, const char* description) {
         par(var, name, description);
     };
