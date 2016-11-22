@@ -10,6 +10,9 @@ environment:
     - PYTHON: "C:\\Python35-x64"
 
 install:
+  - curl -L -o eigen.zip http://bitbucket.org/eigen/eigen/get/3.3.0.zip
+  - 7z x eigen.zip
+  - SET EIGEN_ROOT=%CD%\eigen-eigen-26667be4f70b
   - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
   # We need wheel installed to build wheels later
   - "%PYTHON%\\python.exe -m pip install wheel"
