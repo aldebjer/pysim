@@ -130,7 +130,6 @@ std::vector<std::vector<double>> Variable::getMatrix(char* name) {
 
     //Check that matrix exist
     if (d_ptr->matrices.count(name) <= 0) {
-        MatrixXd* mp = d_ptr->matrices[name];
         std::string errstr = str(boost::format("Could not find: %1%") % name);
         throw std::invalid_argument(errstr);
     }
