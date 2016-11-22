@@ -20,6 +20,7 @@ if sys.platform == "win32":
 
 elif sys.platform in ("linux","darwin"):
     extracompileargs.append("-std=c++11")
+    extracompileargs.append("-I/usr/include/eigen3")
 
 config.add_installed_library("cppsystemlib",
                     ['pysim/cppsource/CppSystem.cpp',
