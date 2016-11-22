@@ -14,4 +14,4 @@ before_install:
  - docker pull aldebjer/pysim-build
 
 script:
- - docker run -v $PWD:/pysim -w /pysim aldebjer/pysim-build /bin/bash -c "sudo apt-get install libeigen3-dev; pip3 install -r requirements.txt; python3 setup.py pytest"
+ - docker run -v $PWD:/pysim -w /pysim aldebjer/pysim-build /bin/bash -c "apt-get -y install libeigen3-dev; pip3 install -r requirements.txt; python3 setup.py pytest"

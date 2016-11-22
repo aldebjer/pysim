@@ -52,6 +52,9 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">defaultsystemcollection1.cpp</Outputs>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\eigen.natvis" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{16F0A7F7-8AE6-4F5A-BC67-2B63CE324FD3}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -79,11 +82,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\props\boost.props" />
     <Import Project="..\props\python35.props" />
+    <Import Project="..\props\eigen.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\props\boost.props" />
     <Import Project="..\props\python35.props" />
+    <Import Project="..\props\eigen.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

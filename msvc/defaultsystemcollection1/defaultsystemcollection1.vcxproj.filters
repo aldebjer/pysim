@@ -119,4 +119,7 @@
       <Filter>cython</Filter>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\eigen.natvis" />
+  </ItemGroup>
 </Project>
