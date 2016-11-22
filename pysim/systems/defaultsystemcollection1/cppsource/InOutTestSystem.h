@@ -26,16 +26,23 @@ protected:
 
     double input_scalar;
     pysim::vector input_vector;
+    Eigen::MatrixXd input_matrix;
 
     double input_output_scalar;
     pysim::vector input_output_vector;
+    Eigen::MatrixXd input_output_matrix;
 
     double state_output_scalar;
     pysim::vector state_output_vector;
+    Eigen::MatrixXd state_output_matrix;
 
     double state_scalar;
     pysim::vector state_vector;
+    Eigen::MatrixXd state_matrix;
 
     double der_scalar;
     pysim::vector der_vector;
+    Eigen::MatrixXd der_matrix;
+
+    Eigen::Matrix3d testMatrix;
 };

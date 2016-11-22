@@ -246,6 +246,13 @@ std::vector<double*> CommonSystemImpl::getStatePointers() {
             out.push_back(&(v->operator()(i)));
         }
     }
+
+    for (auto const&p : states.d_ptr->matrices) {
+        for (int i = 0;i<p.second->size();++i){
+            double* d = p.second->data();
+            out.push_back(d++);
+        }
+    }
     return out;
 }
 
@@ -264,6 +271,15 @@ std::vector<double*> CommonSystemImpl::getDerPointers() {
         size_t size = v->size();
         for (size_t i = 0; i < size; ++i) {
             out.push_back(&(v->operator()(i)));
+        }
+    }
+
+    for (auto const&p : states.d_ptr->matrices) {
+        //the der that corresponds to the state
+        Eigen::MatrixXd* m = ders.d_ptr->matrices[d_ptr->state_to_der_map_matrices[p.first]];
+        for (int i = 0; i<m->size(); ++i) {
+            double* d = m->data();
+            out.push_back(d++);
         }
     }
     return out;

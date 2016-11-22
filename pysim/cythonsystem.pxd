@@ -10,8 +10,11 @@ cdef extern from "CythonSystemImpl.hpp" namespace "pysim":
     cdef cppclass CythonSystemImpl(CommonSystemImpl):
         void* sysp
         void add_input(string, size_t)
+        void add_input(string, size_t, size_t)
         void add_output(string, size_t)
+        void add_output(string, size_t, size_t)
         void add_state(string, string , size_t)
+        void add_state(string, string , size_t, size_t)
 
 
 cdef class Sys(CommonSystem):

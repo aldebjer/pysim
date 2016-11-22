@@ -7,6 +7,9 @@ from connections cimport ConnectionHandler
 
 cdef extern from "Variable.hpp" namespace "pysim":
     cdef cppclass Variable:
+        vector[string] getMatrixNames()
+        vector[vector[double]] getMatrix(char* name) except +
+        void setMatrix(char*, vector[vector[double]]) except +
         vector[string] getVectorNames()
         vector[double] getVector(char* name) except +
         void setVector(char*, vector[double]) except +

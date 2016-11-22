@@ -25,34 +25,45 @@ class PythonInOutTestSystem(pysim.cythonsystem.Sys):
     def __init__(self):
         self.add_input("input_scalar")
         self.add_input("input_vector",3)
+        self.add_input("input_matrix",3,3)
 
         self.add_state("state_scalar","der_scalar")
         self.add_state("state_vector","der_vector", 3)
+        self.add_state("state_matrix","der_matrix", 3, 3)
 
         self.add_output("input_output_scalar")
         self.add_output("input_output_vector",3)
+        self.add_output("input_output_matrix",3,3)
         self.add_output("state_output_scalar")
         self.add_output("state_output_vector",3)
+        self.add_output("state_output_matrix",3,3)
 
         self.inputs.input_scalar = 0.0
         self.inputs.input_vector = [0.0, 0.0, 0.0]
+        self.inputs.input_matrix = np.zeros((3,3))
 
         self.outputs.input_output_scalar = 0.0
         self.outputs.input_output_vector = [0.0, 0.0, 0.0]
+        self.outputs.input_output_matrix = np.zeros((3,3))
         self.outputs.state_output_scalar = 0.0
         self.outputs.state_output_vector = [0.0, 0.0, 0.0]
+        self.outputs.state_output_matrix = np.zeros((3,3))
 
         self.states.state_scalar = 1.23
         self.states.state_vector = np.ones(3)*4.56
+        self.states.state_matrix = np.ones((3,3))*7.89
         self.ders.der_scalar = 0
         self.ders.der_vector = np.zeros(3)
+        self.ders.der_matrix = np.zeros((3,3))
 
     def do_step(self,dummy):
         """During a timestep we set the outputs to their respective inputs"""
         self.outputs.input_output_scalar = self.inputs.input_scalar
         self.outputs.input_output_vector = self.inputs.input_vector
+        self.outputs.input_output_matrix = self.inputs.input_matrix
         self.outputs.state_output_scalar = self.states.state_scalar
         self.outputs.state_output_vector = self.states.state_vector
+        self.outputs.state_output_matrix = self.inputs.state_matrix
 
 class PythonAdder3D(pysim.cythonsystem.Sys):
     """Class used in testing, equivalent to the c++ Adder3D"""
@@ -158,6 +169,15 @@ def test_input_array_change(adder_class):
     x = sys.inputs.input1
     assert np.array_equal(x, refarray)
 
+@pytest.mark.parametrize("test_class",[InOutTestSystem,PythonInOutTestSystem])
+def test_input_matrix_change(test_class):
+    """Tests that it is possible to change input array"""
+    sys = test_class()
+    refarray = ((1.0, 2.0, 3.0),(4.0, 5.0, 6.0),(7.0, 8.0, 9.0))
+    sys.inputs.input_matrix = refarray
+    x = sys.inputs.input_matrix
+    assert np.array_equal(x, refarray)
+
 @pytest.mark.parametrize("adder_class",[Adder,PythonAdder])
 def test_input_scalar_change(adder_class):
     """Tests that it is possible to change input scalar"""
@@ -192,6 +212,14 @@ def test_output_vector_init(adder_class):
     refarray = np.array((0.0, 0.0, 0.0))
     assert np.array_equal(x, refarray)
 
+@pytest.mark.parametrize("test_class",[InOutTestSystem,PythonInOutTestSystem])
+def test_output_matrix_init(test_class):
+    """Tests that the output matrices are accessible and equal to 0"""
+    sys = test_class()
+    x = sys.outputs.input_output_matrix
+    refarray = np.zeros((3,3))
+    assert np.array_equal(x, refarray)
+
 @pytest.mark.parametrize("adder_class",[Adder,PythonAdder])
 def test_output_scalar_init(adder_class):
     """Tests that the output scalars are accessible and equal to 0"""
@@ -218,6 +246,7 @@ def test_output_change(adder_class):
     x2 = sys.outputs.output1
     assert np.array_equal(x2, inputarray)
 
+
 @pytest.mark.parametrize("adder_class1,adder_class2",
                          [(Adder3D,Adder3D),
                           (PythonAdder3D,PythonAdder3D),
@@ -237,6 +266,28 @@ def test_connected_system(adder_class1,adder_class2):
     assert np.all(sys2.outputs.output1 == [0.0, 0.0, 0.0])
     sim.simulate(1,0.1)
     assert np.all(sys2.outputs.output1 == [1.0, 2.0, 3.0])
+
+@pytest.mark.parametrize("test_class1,test_class2",
+                         [(InOutTestSystem,InOutTestSystem),
+                          (PythonInOutTestSystem,PythonInOutTestSystem),
+                          (InOutTestSystem,PythonInOutTestSystem),
+                          (PythonInOutTestSystem,InOutTestSystem),
+                         ])
+def test_connected_system(test_class1,test_class2):
+    """Check that it is possible to connect systems to each other 
+    with matrix outputs/inputs"""
+    sys1 = test_class1()
+    sys2 = test_class2()
+    refarray =  [[1,2,3],[4,5,6],[7,8,9]]
+    sys1.inputs.input_matrix = refarray
+    sys1.connections.add_connection("input_output_matrix",sys2,"input_matrix")
+    sim = Sim()
+    sim.add_system(sys1)
+    sim.add_system(sys2)
+    assert np.all(sys2.outputs.input_output_matrix == np.zeros((3,3)))
+    sim.simulate(1,0.1)
+    assert np.all(sys2.outputs.input_output_matrix == refarray)
+
 
 @pytest.mark.parametrize("sys1_class,sys2_class",
                          [(InOutTestSystem,InOutTestSystem),
@@ -294,4 +345,5 @@ def test_der_as_output():
     assert np.allclose(output_from_der, output_from_output)
 
 if __name__ == "__main__":
-    test_vector_scalar_conn(PythonInOutTestSystem,InOutTestSystem)
+   test_input_matrix_change(InOutTestSystem)
+

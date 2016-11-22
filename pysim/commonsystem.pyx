@@ -225,16 +225,21 @@ cdef class PysimVars:
         scalarnames_uc = [s.decode('utf-8') for s in scalarnames]
         vectornames = self._var_p.getVectorNames()
         vectornames_uc = [s.decode('utf-8') for s in vectornames]
-        return scalarnames_uc+vectornames_uc
+        matrixnames = self._var_p.getMatrixNames()
+        matrixnames_uc = [s.decode('utf-8') for s in matrixnames]
+        return scalarnames_uc+vectornames_uc+ matrixnames_uc
 
     def __getattr__(self,name):
         bs = bytes(name,'utf-8')
         allvectornames =  list(self._var_p.getVectorNames())
         allscalarnames =  list(self._var_p.getScalarNames())
+        allmatrixnames =  list(self._var_p.getMatrixNames())
         if bs in allvectornames:
             return self._var_p.getVector(bs)
         elif bs in allscalarnames:
             return self._var_p.getScalar(bs)
+        elif bs in allmatrixnames:
+            return self._var_p.getMatrix(bs)
         else:
             raise AttributeError("No variable {} in system".format(name))
 
@@ -242,6 +247,7 @@ cdef class PysimVars:
         bs = bytes(name,'utf-8')
         allvectornames =  list(self._var_p.getVectorNames())
         allscalarnames =  list(self._var_p.getScalarNames())
+        allmatrixnames =  list(self._var_p.getMatrixNames())
         if bs in allvectornames:
             try:
                 self._var_p.setVector(bs,value)
@@ -252,6 +258,11 @@ cdef class PysimVars:
                 self._var_p.setScalar(bs,value)
             except TypeError:
                 raise TypeError("Variable '{}' is a scalar".format(name))
+        elif bs in allmatrixnames:
+            try:
+                self._var_p.setMatrix(bs,value)
+            except TypeError:
+                raise TypeError("Variable '{}' is a Matrix".format(name))
         else:
             raise AttributeError("No variable {} in system".format(name))
 

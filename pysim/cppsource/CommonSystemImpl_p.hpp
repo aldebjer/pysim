@@ -29,6 +29,7 @@ struct CommonSystemImplPrivate {
 
     std::map<std::string, std::string> state_to_der_map_scalars;
     std::map<std::string, std::string> state_to_der_map_vectors;
+    std::map<std::string, std::string> state_to_der_map_matrices;
 
     std::map<std::string, ParString*> par_strings;
     std::map< std::string, ParMap* > par_maps;

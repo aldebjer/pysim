@@ -32,18 +32,27 @@ cdef class Sys:
     def __dealloc__(self):
         del self._c_sys
 
-    def add_state(self, statename, dername, size = 1):
+    def add_state(self, statename, dername, rows = 1, cols = 1):
         statename_bytes = bytes(statename,'utf-8')
         dername_bytes = bytes(dername,'utf-8')
-        self._c_sys.add_state(statename_bytes,dername_bytes,size)
+        if cols == 1:
+            self._c_sys.add_state(statename_bytes,dername_bytes,rows)
+        else:
+            self._c_sys.add_state(statename_bytes,dername_bytes,rows,cols)
 
-    def add_input(self, name, size = 1):
+    def add_input(self, name, rows = 1, cols = 1):
         bs = bytes(name,'utf-8')
-        self._c_sys.add_input(bs,size)
+        if cols == 1:
+            self._c_sys.add_input(bs,rows)
+        else:
+            self._c_sys.add_input(bs,rows, cols)
 
-    def add_output(self, name, size = 1):
+    def add_output(self, name, rows = 1, cols = 1):
         bs = bytes(name,'utf-8')
-        self._c_sys.add_output(bs,size)
+        if cols == 1:
+            self._c_sys.add_output(bs,rows)
+        else:
+            self._c_sys.add_output(bs,rows, cols)
 
     def do_step(self,time):
         print("stepping {}".format(time))

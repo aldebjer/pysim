@@ -25,9 +25,11 @@ public:
 
     //Python Interface
     void add_input(std::string name, size_t length);
+    void add_input(std::string name, size_t rows, size_t cols);
     void add_output(std::string name, size_t length);
+    void add_output(std::string name, size_t rows, size_t cols);
     void add_state(std::string statename, std::string dername, size_t length);
-
+    void add_state(std::string statename, std::string dername, size_t rows, size_t cols);
 };
 
 }

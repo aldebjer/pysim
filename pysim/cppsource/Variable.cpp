@@ -36,6 +36,14 @@ std::vector<std::string> Variable::getVectorNames() {
     return names;
 }
 
+std::vector<std::string> Variable::getMatrixNames() {
+    std::vector<std::string> names;
+    for (auto i = d_ptr->matrices.cbegin(); i != d_ptr->matrices.cend(); ++i) {
+        names.push_back(i->first);
+    }
+    return names;
+}
+
 void Variable::setScalar(char* name, double value) {
     if (d_ptr->scalars.count(name) < 1) {
         char errmsg[50];
@@ -59,6 +67,44 @@ void Variable::setVector(char* name, std::vector<double> value) {
     }
 }
 
+void Variable::setMatrix(char* name, std::vector<std::vector<double>> value) {
+    using namespace Eigen;
+
+    //Check that matrix exist
+    if (d_ptr->matrices.count(name) <= 0) {
+        MatrixXd* mp = d_ptr->matrices[name];
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+
+    //Local pointer to matrix
+    MatrixXd* mp = d_ptr->matrices[name];
+
+    //Check row size
+    if (mp->rows() != value.size()) {
+        std::string errstr = str(boost::format("Row size of %1% is %2%") % name % mp->rows());
+        throw std::invalid_argument(errstr);
+    }
+
+    //Check column sizes
+    for (std::vector<double> in_row : value) {
+        if (mp->cols() != in_row.size()) {
+            std::string errstr = str(boost::format("column size of %1% is %2%") % name % mp->cols());
+            throw std::invalid_argument(errstr);
+        }
+    }
+
+    //Copy values
+    size_t current_row = 0;
+    for (std::vector<double> in_row : value) {
+        size_t current_element = 0;
+        for (double element : in_row) {
+            mp->operator()(current_row, current_element++) = element;
+        }
+        ++current_row;
+    }
+}
+
 double Variable::getScalar(char* name) {
     if (d_ptr->scalars.count(name) < 1) {
         std::string errstr = str(boost::format("Could not find: %1%") % name);
@@ -77,6 +123,30 @@ std::vector<double> Variable::getVector(char* name) {
         std::string errstr = str(boost::format("Could not find: %1%") % name);
         throw std::invalid_argument(errstr);
     }
+}
+
+std::vector<std::vector<double>> Variable::getMatrix(char* name) {
+    using namespace Eigen;
+
+    //Check that matrix exist
+    if (d_ptr->matrices.count(name) <= 0) {
+        MatrixXd* mp = d_ptr->matrices[name];
+        std::string errstr = str(boost::format("Could not find: %1%") % name);
+        throw std::invalid_argument(errstr);
+    }
+
+    //Local pointer to matrix
+    MatrixXd* mp = d_ptr->matrices[name];
+
+    std::vector<std::vector<double>> out;
+    for (int i = 0; i < mp->rows(); ++i) {
+        std::vector<double> out_row;
+        for (int j = 0; j < mp->cols(); ++j) {
+            out_row.push_back(mp->operator()(i, j));
+        }
+        out.push_back(out_row);
+    }
+    return out;
 }
 
 std::map<std::string, std::string> Variable::getDescriptionMap() {
