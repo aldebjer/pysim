@@ -51,4 +51,3 @@ def test_vectormap_parameter():
 
 if __name__ == "__main__":
     test_map_parameter()
-

@@ -253,7 +253,7 @@ def test_output_change(adder_class):
                           (Adder3D,PythonAdder3D),
                           (PythonAdder3D,Adder3D),
                          ])
-def test_connected_system(adder_class1,adder_class2):
+def test_connected_adder_system(adder_class1,adder_class2):
     """Check that it is possible to connect systems to each other 
     with boost vector outputs/inputs"""
     sys1 = adder_class1()
@@ -345,5 +345,4 @@ def test_der_as_output():
     assert np.allclose(output_from_der, output_from_output)
 
 if __name__ == "__main__":
-   test_input_matrix_change(InOutTestSystem)
-
+    test_input_matrix_change(InOutTestSystem)
