@@ -35,7 +35,17 @@ void CythonSystemImpl::add_input(std::string name, size_t length){
     }
 }
 
-void CythonSystemImpl::add_input(std::string name, size_t rows, size_t cols) {
+void CythonSystemImpl::add_input_scalar(std::string name) {
+    inputs.d_ptr->scalars[name] = new double(0);
+    inputs.d_ptr->descriptions[name] = std::string("No Description"); //TODO add descriptions in call
+}
+
+void CythonSystemImpl::add_input_vector(std::string name, size_t length) {
+    inputs.d_ptr->vectors[name] = new pysim::vector(length, 0.0);
+    inputs.d_ptr->descriptions[name] = std::string("No Description"); //TODO add descriptions in call
+}
+
+void CythonSystemImpl::add_input_matrix(std::string name, size_t rows, size_t cols) {
     inputs.d_ptr->matrices[name] = new Eigen::MatrixXd(rows, cols);
     inputs.d_ptr->descriptions[name] = std::string("No Description"); //TODO add descriptions in call
 }
@@ -49,9 +59,19 @@ void CythonSystemImpl::add_output(std::string name, size_t length) {
     outputs.d_ptr->descriptions[name] = std::string("No Description"); //TODO add descriptions in call
 }
 
-void CythonSystemImpl::add_output(std::string name, size_t rows, size_t cols) {
+void CythonSystemImpl::add_output_scalar(std::string name, std::string desc) {
+    outputs.d_ptr->scalars[name] = new double(0);
+    outputs.d_ptr->descriptions[name] = desc;
+}
+
+void CythonSystemImpl::add_output_vector(std::string name, size_t rows, std::string desc) {
+    outputs.d_ptr->vectors[name] = new pysim::vector(rows);
+    outputs.d_ptr->descriptions[name] = desc;
+}
+
+void CythonSystemImpl::add_output_matrix(std::string name, size_t rows, size_t cols, std::string desc) {
     outputs.d_ptr->matrices[name] = new Eigen::MatrixXd(rows, cols);
-    outputs.d_ptr->descriptions[name] = std::string("No Description"); //TODO add descriptions in call
+    outputs.d_ptr->descriptions[name] = desc;
 }
 
 void CythonSystemImpl::add_state(std::string statename, std::string dername, size_t length) {

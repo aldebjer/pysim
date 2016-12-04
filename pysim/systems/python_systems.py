@@ -9,8 +9,8 @@ class VanDerPol(Sys):
     def __init__(self):
         self.add_state("x", "dx")
         self.add_state("y", "dy")
-        self.add_input("a")
-        self.add_input("b")
+        self.add_input_scalar("a")
+        self.add_input_scalar("b")
         self.inputs.a = 1.0
         self.inputs.b = 1.0
         self.states.x = 1.0

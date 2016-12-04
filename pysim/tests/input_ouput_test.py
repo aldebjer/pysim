@@ -23,20 +23,20 @@ class PythonInOutTestSystem(pysim.cythonsystem.Sys):
     with regards to the input output handling
     """
     def __init__(self):
-        self.add_input("input_scalar")
-        self.add_input("input_vector",3)
-        self.add_input("input_matrix",3,3)
+        self.add_input_scalar("input_scalar")
+        self.add_input_vector("input_vector",3)
+        self.add_input_matrix("input_matrix",3,3)
 
         self.add_state("state_scalar","der_scalar")
         self.add_state("state_vector","der_vector", 3)
         self.add_state("state_matrix","der_matrix", 3, 3)
 
-        self.add_output("input_output_scalar")
-        self.add_output("input_output_vector",3)
-        self.add_output("input_output_matrix",3,3)
-        self.add_output("state_output_scalar")
-        self.add_output("state_output_vector",3)
-        self.add_output("state_output_matrix",3,3)
+        self.add_output_scalar("input_output_scalar")
+        self.add_output_vector("input_output_vector",3)
+        self.add_output_matrix("input_output_matrix",3,3)
+        self.add_output_scalar("state_output_scalar")
+        self.add_output_vector("state_output_vector",3)
+        self.add_output_matrix("state_output_matrix",3,3)
 
         self.inputs.input_scalar = 0.0
         self.inputs.input_vector = [0.0, 0.0, 0.0]
@@ -69,11 +69,11 @@ class PythonAdder3D(pysim.cythonsystem.Sys):
     """Class used in testing, equivalent to the c++ Adder3D"""
 
     def __init__(self):
-        self.add_input("input1",3)
-        self.add_input("input2",3)
+        self.add_input_vector("input1",3)
+        self.add_input_vector("input2",3)
         self.inputs.input1 = [0.0, 0.0, 0.0]
         self.inputs.input2 = [0.0, 0.0, 0.0]
-        self.add_output("output1",3)
+        self.add_output_vector("output1",3)
         self.outputs.output1 = [0.0 ,0.0 ,0.0]
 
     def do_step(self,dummy):
@@ -88,11 +88,11 @@ class PythonAdder(pysim.cythonsystem.Sys):
     """Class used in testing, equivalent to the c++ Adder"""
 
     def __init__(self):
-        self.add_input("input1")
-        self.add_input("input2")
+        self.add_input_scalar("input1")
+        self.add_input_scalar("input2")
         self.inputs.input1 = 0.0
         self.inputs.input2 = 0.0
-        self.add_output("output1")
+        self.add_output_scalar("output1")
         self.outputs.output1 = 0.0
 
     def do_step(self,dummy):
