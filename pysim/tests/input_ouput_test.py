@@ -27,9 +27,9 @@ class PythonInOutTestSystem(pysim.cythonsystem.Sys):
         self.add_input_vector("input_vector",3)
         self.add_input_matrix("input_matrix",3,3)
 
-        self.add_state("state_scalar","der_scalar")
-        self.add_state("state_vector","der_vector", 3)
-        self.add_state("state_matrix","der_matrix", 3, 3)
+        self.add_state_scalar("state_scalar","der_scalar")
+        self.add_state_vector("state_vector","der_vector", 3)
+        self.add_state_matrix("state_matrix","der_matrix", 3, 3)
 
         self.add_output_scalar("input_output_scalar")
         self.add_output_vector("input_output_vector",3)

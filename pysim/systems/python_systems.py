@@ -7,8 +7,8 @@ class VanDerPol(Sys):
     """Simple example of a class representing a VanDerPol oscillator.
     """
     def __init__(self):
-        self.add_state("x", "dx")
-        self.add_state("y", "dy")
+        self.add_state_scalar("x", "dx")
+        self.add_state_scalar("y", "dy")
         self.add_input_scalar("a")
         self.add_input_scalar("b")
         self.inputs.a = 1.0
@@ -35,8 +35,8 @@ class MassSpringDamper(Sys):
     def __init__(self):
         """Setup two states (one dimensional vectors for now). Initial 
         conditions are simular to those in the build in c++ system"""
-        self.add_state("x1", "dx1")
-        self.add_state("x2", "dx2")
+        self.add_state_scalar("x1", "dx1")
+        self.add_state_scalar("x2", "dx2")
         self.states.x1 = 1
         self.states.x2 = 0
 
