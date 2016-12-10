@@ -7,14 +7,8 @@ PySim
 .. list-table::
     :stub-columns: 1
 
-    * - docs
-      - |docs|
     * - tests
       - | |travis| |appveyor|
-
-.. |docs| image:: https://readthedocs.org/projects/pysim/badge/?style=flat
-    :target: https://readthedocs.org/projects/pysim
-    :alt: Documentation Status
 
 .. |travis| image:: https://travis-ci.org/aldebjer/pysim.svg?branch=master
     :alt: Travis-CI Build Status
@@ -36,5 +30,5 @@ http://pys.im
 
 or the documentation at: 
 
-http://pysim.readthedocs.io/en/latest/
+http://pys.im/doc
 
