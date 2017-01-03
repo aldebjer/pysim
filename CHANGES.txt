@@ -1,6 +1,8 @@
 2.2
 ===
  - parameters can be map of vectors
+ - Using the Eigen library for matrices
+ - Tested with python 3.6
 
 2.1
 ===
