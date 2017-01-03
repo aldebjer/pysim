@@ -2,6 +2,4 @@ numpy
 cython>=0.21
 pytest
 pytest-runner
-Sphinx
-sphinx-rtd-theme
-sphinxcontrib-googleanalytics
+

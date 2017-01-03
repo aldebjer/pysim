@@ -14,6 +14,7 @@ install:
   - 7z x eigen.zip
   - SET EIGEN_ROOT=%CD%\eigen-eigen-26667be4f70b
   - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
+  - "%PYTHON%\\python.exe -m pip install -r requirements_docs.txt"
   # We need wheel installed to build wheels later
   - "%PYTHON%\\python.exe -m pip install wheel"
   - "%PYTHON%\\python.exe -m pip freeze > used_packages.txt"
