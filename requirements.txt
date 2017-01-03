@@ -4,3 +4,4 @@ pytest
 pytest-runner
 Sphinx
 sphinx-rtd-theme
+sphinxcontrib-googleanalytics
