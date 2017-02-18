@@ -135,14 +135,17 @@ setup(
     description = "Modeling and Simulation of Dynamical Systems",
     long_description=readme(),
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
+        'Intended Audience :: Science/Research',
         'Natural Language :: English',
         'License :: OSI Approved :: BSD License',
         'Operating System :: Microsoft :: Windows',
+        'Operating System :: POSIX :: Linux'
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
