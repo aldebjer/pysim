@@ -8,6 +8,8 @@ environment:
   matrix:
     - PYTHON: "C:\\Python35"
     - PYTHON: "C:\\Python35-x64"
+    - PYTHON: "C:\\Python36"
+    - PYTHON: "C:\\Python36-x64"
 
 install:
   - curl -L -o eigen.zip http://bitbucket.org/eigen/eigen/get/3.3.0.zip
