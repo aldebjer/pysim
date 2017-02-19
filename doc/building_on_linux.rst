@@ -6,6 +6,7 @@ To build PySim on Linux you need:
  * Cython
  * NumPy
  * The Boost libraries
+ * The Eigen c++ library
 
 To run the test you will need
  * pytest
@@ -27,12 +28,12 @@ which by default will clone the pysim repository into a pysim directory.
 
 Installing the compiler and libraries
 -------------------------------------
-You might already have the compilers and boost libraries installed, but to make
+You might already have the compilers, boost and eigen libraries installed, but to make
 sure type (on Ubuntu)
 
 .. code-block:: bash
 
-   sudo apt-get install build-essential libboost-all-dev
+   sudo apt-get install build-essential libboost-all-dev libeigen3-dev
 
 Installing the Python dependancies
 ----------------------------------

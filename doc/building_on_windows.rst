@@ -4,7 +4,8 @@ Building PySim on Windows
 To build PySim on windows you need:
  * Visual studio 2015 (community version works)
  * Boost Libraries
- * Python > 3.5
+ * Eigen libraries
+ * Python >= 3.5
  * Cython
  * NumPy
  * PyTest
@@ -24,6 +25,13 @@ You can download the Boost libraries from http://www.boost.org/.
 For PySim to find the boost libraries there must be a environment variable
 named ``BOOST_ROOT`` that is set to the directory where Boost is installed. This
 directory should have the boost include directory as subfolders.
+
+Install Eigen
+-------------
+You can find the Eigen library at http://eigen.tuxfamily.org. It is a 
+headers only library so it does not need to be compiled. Simply 
+unzip the download to a suitable directory and then set an environment
+variable named ``EIGEN_ROOT`` to that directory.
 
 Check out the Source
 --------------------

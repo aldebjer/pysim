@@ -4,6 +4,7 @@ Building PySim on Mac OS
 To build PySim on Mac you need:
  * gcc
  * The boost libraries
+ * The eigen libraries
  * Python 3
  * NumPy
  * Cython
@@ -13,12 +14,12 @@ Install a compiler and c++ dependancies
 For instructions how to install gcc and python please look at these instructions
 http://docs.python-guide.org/en/latest/starting/install/osx/
 
-Once you have gcc and python installed you will also need the boost libraries. To
-get these by using brew type:
+Once you have gcc and python installed you will also need the boost  and eigen
+libraries. To get these by using brew type:
 
 .. code-block:: bash
 
-   brew install boost
+   brew install boost eigen
 
 Get the PySim source
 --------------------
