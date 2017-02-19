@@ -5,6 +5,7 @@ Before running a simulation with a system it is possible to configure the
 system. The configuration generally involves:
 
 * Setting parameters for the simulation
+* Setting any non connected inputs
 * Setting start values for the states
 * Selecting what states and variables to store
 * Connecting the system to other systems involved in the simulation
@@ -20,6 +21,20 @@ vector, otherwise an exception will be thrown.
 or for a vector:
 
 >>> sys.pars.v = (2.0,1.0,0.0)
+
+Setting inputs
+--------------
+Inputs can be connected to other outputs (see connecting systems below), but
+they can also be set before the simulation. If they are not connected that set
+value will be used by the system during the simulation. To set an input type
+
+>>> sys.inputs.s = 2.0
+
+for a matrix
+
+>>> sys.pars.m = [[1,2],[3,4]]
+
+a vector is simply a column matrix and can be set in the same way as matrices.
 
 Setting start values
 --------------------

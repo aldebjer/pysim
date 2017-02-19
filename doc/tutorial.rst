@@ -4,9 +4,11 @@ PySim is a python extension that enables the user to create
 simulations based on differential equations.
 
 The differential equations are modelled as systems. Each system
-contains *statea* and their time-derivatives, *ders*. It can
-contain parameters, *pars*,to be set by the users. It can also
-contain *inputs* and *outputs*. These are  non-state variables
+contains *states* and their time-derivatives, *ders*. It can
+contain parameters, *pars*,to be set by the users. The pars can 
+only be set before the simulation is started, while *inputs* can
+be set at each timestep. The *inputs* can also be connected to
+to *outputs*. *Inputs* and *outputs* are  non-state variables
 that can be used to connect systems during a simulation. It is
 possible to store the *inputs*, *outputs* and *states* during the
 simulation and look at the results afterwards.
