@@ -84,7 +84,7 @@ the following code would be used
 
     #Connect variable "signal" from Square wave system to parameter f in
     #MassSpringDamper system.
-    wavesys.connect("signal",sys,"f")
+    wavesys.connections.add_connection("signal",sys,"f")
 
     #Add both systems to simulation
     sim.addSys(wavesys)
