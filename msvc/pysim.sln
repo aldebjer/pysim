@@ -46,13 +46,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commonsystem", "commonsyste
 		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sources", "sources\sources.vcxproj", "{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
-		{5E9A6A31-4D76-4927-A1DB-33254EAFADC6} = {5E9A6A31-4D76-4927-A1DB-33254EAFADC6}
-		{B3A85799-0C40-4905-849C-ED4DB0ED6688} = {B3A85799-0C40-4905-849C-ED4DB0ED6688}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "systems", "systems", "{598F86EA-24B5-4DF0-8E92-4E8E31E5D8B5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "compositesystem", "compositesystem\compositesystem.vcxproj", "{B5F49C9D-85C6-40DE-8082-0C9AF3940FF9}"
@@ -65,6 +58,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simulatablesystem", "simulatablesystem\simulatablesystem.vcxproj", "{D76C6AEB-E20A-4C10-82A8-C508CEDCDFC3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "connections", "connections\connections.vcxproj", "{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}"
+	ProjectSection(ProjectDependencies) = postProject
+		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -168,20 +164,6 @@ Global
 		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Release|Win32.ActiveCfg = Release|Win32
 		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Release|Win32.Build.0 = Release|Win32
 		{B3A85799-0C40-4905-849C-ED4DB0ED6688}.Release|x64.ActiveCfg = Release|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Debug|Win32.Build.0 = Debug|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Debug|x64.ActiveCfg = Debug|x64
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Debug|x64.Build.0 = Debug|x64
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Release|Any CPU.ActiveCfg = Release|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Release|Win32.ActiveCfg = Release|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Release|Win32.Build.0 = Release|Win32
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Release|x64.ActiveCfg = Release|x64
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E}.Release|x64.Build.0 = Release|x64
 		{B5F49C9D-85C6-40DE-8082-0C9AF3940FF9}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{B5F49C9D-85C6-40DE-8082-0C9AF3940FF9}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{B5F49C9D-85C6-40DE-8082-0C9AF3940FF9}.Debug|Mixed Platforms.Build.0 = Debug|Win32
@@ -230,6 +212,5 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{16F0A7F7-8AE6-4F5A-BC67-2B63CE324FD3} = {598F86EA-24B5-4DF0-8E92-4E8E31E5D8B5}
-		{3C0DB3D9-5BA9-4AD8-87C9-93BCF0FAC45E} = {598F86EA-24B5-4DF0-8E92-4E8E31E5D8B5}
 	EndGlobalSection
 EndGlobal

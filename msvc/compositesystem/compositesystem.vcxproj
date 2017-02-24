@@ -60,24 +60,28 @@
     <Import Project="..\props\boost.props" />
     <Import Project="..\props\python35.props" />
     <Import Project="..\props\numpy35.props" />
+    <Import Project="..\props\eigen.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\props\boost.props" />
     <Import Project="..\props\python35.props" />
     <Import Project="..\props\numpy35.props" />
+    <Import Project="..\props\eigen.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\props\boost.props" />
     <Import Project="..\props\python35.props" />
     <Import Project="..\props\numpy35.props" />
+    <Import Project="..\props\eigen.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\props\boost.props" />
     <Import Project="..\props\python35.props" />
     <Import Project="..\props\numpy35.props" />
+    <Import Project="..\props\eigen.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -153,6 +157,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\pysim\compositesystem.cpp" />
+    <ClCompile Include="..\..\pysim\cppsource\CompositeSystemImpl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\pysim\cppsource\CompositeSystemImpl.hpp" />
+    <ClInclude Include="..\..\pysim\cppsource\CompositeSystemImpl_p.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

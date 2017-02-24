@@ -23,13 +23,24 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\..\pysim\commonsystem.pyx">
+      <Filter>cython</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\pysim\cppsource\CommonSystemImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\pysim\commonsystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\pysim\commonsystem.pyx">
-      <Filter>cython</Filter>
-    </CustomBuild>
+    <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl_p.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

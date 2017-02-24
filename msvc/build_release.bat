@@ -1,0 +1,1 @@
+msbuild pysim.sln /p:Configuration=Release
