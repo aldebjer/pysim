@@ -53,3 +53,23 @@ cdef class CompositeSystem(SimulatableSystem):
         bs_args = [bytes(s,'utf-8') for s in string_args]
         self._c_sys.add_output_port(bs_args[0],bs_args[1],bs_args[2],bs_args[3])
 
+    def add_port_in_scalar(self, name, description):
+        bs_names =  bytes(name,'utf-8')
+        bs_desc = bytes(description,'utf-8')
+        self._c_sys.add_scalar_port_in(bs_names, bs_desc)
+
+    def add_port_in_vector(self, name, initialvalue, description):
+        bs_names =  bytes(name,'utf-8')
+        bs_desc = bytes(description,'utf-8')
+        self._c_sys.add_vector_inport(bs_names, initialvalue, bs_desc)
+
+    def add_port_in_matrix(self, name, initialvalue, description):
+        bs_names =  bytes(name,'utf-8')
+        bs_desc = bytes(description,'utf-8')
+        self._c_sys.add_matrix_inport(bs_names, initialvalue, bs_desc)
+
+    def connect_inputport(self, portname, CommonSystem receiving_system, inputname):
+        bs_portname =  bytes(portname,'utf-8')
+        bs_inputname = bytes(inputname,'utf-8')
+        self._c_sys.connect_port_in(bs_portname, receiving_system._c_s, bs_inputname)
+

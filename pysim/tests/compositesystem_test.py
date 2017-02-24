@@ -43,8 +43,9 @@ class CompositeSpring(CompositeSystem):
         msd.inputs.m = 50
         msd.inputs.f = 0
         self.add_subsystem(msd,"msd")
-
-        self.add_input_port("force","msd","f", "force acting on the mass")
+        self.add_port_in_scalar("force", "force acting on mass")
+        self.connect_inputport("force", msd, "f")
+        #self.add_input_port("force","msd","f", "force acting on the mass")
         self.add_output_port("position","msd","x1", "Position")
 
 class CompositeSquareWave(CompositeSystem):

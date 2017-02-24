@@ -59,6 +59,9 @@ void CompositeSystemImpl::preSim()
 
 void CompositeSystemImpl::doStep(double time)
 {
+    auto copyfunc = [](auto vi) {*(vi.second) = *(vi.first); };
+    for_each(d_ptr->connected_inport_scalars.cbegin(), d_ptr->connected_inport_scalars.cend(), copyfunc);
+
     for (CommonSystemImpl* s : d_ptr->subsystems_common) {
         s->doStep(time);
     }
@@ -140,12 +143,56 @@ void CompositeSystemImpl::add_subsystem(CommonSystemImpl* subsystem, string name
     d_ptr->subsystems_common.push_back(subsystem);
 }
 
+void CompositeSystemImpl::add_scalar_port_in(std::string name, std::string description) {
+    std::unique_ptr<double> ptr(new double(0));
+    d_ptr->scalar_inports.push_back(std::move(ptr));
+    inputs.d_ptr->scalars[name] = d_ptr->scalar_inports.back().get();
+    inputs.d_ptr->descriptions[name] = description;
+}
+
+
+void CompositeSystemImpl::add_vector_inport(std::string name, std::vector<double> initial_value, std::string description) {
+    pysim::vector pyvec(initial_value.size());
+    std::copy(initial_value.begin(), initial_value.end(), pyvec.begin());
+    
+    std::unique_ptr<pysim::vector> ptr(new pysim::vector(pyvec));
+    d_ptr->vector_inports.push_back(std::move(ptr));
+    inputs.d_ptr->vectors[name] = d_ptr->vector_inports.back().get();
+    inputs.d_ptr->descriptions[name] = description;
+}
+
+
+void CompositeSystemImpl::add_matrix_inport(std::string name, std::vector<std::vector<double>> initial_value, std::string description) {
+    int rows = initial_value.size();
+    int columns = initial_value.front().size();
+    Eigen::MatrixXd m(rows, columns);
+    for (int i = 0; i < rows; ++i) {
+        if (initial_value[i].size() != columns) {
+            throw std::invalid_argument("Matrix rows has different number of columns");
+        }
+        for (int j = 0; j < columns; ++j) {
+            m(i, j) = initial_value[i][j];
+        }
+    }
+
+    std::unique_ptr<Eigen::MatrixXd> ptr(new Eigen::MatrixXd(m));
+    d_ptr->matrix_inports.push_back(std::move(ptr));
+    inputs.d_ptr->matrices[name] = d_ptr->matrix_inports.back().get();
+    inputs.d_ptr->descriptions[name] = description;
+}
+
+void CompositeSystemImpl::connect_port_in(std::string portname, CommonSystemImpl* subsystem, std::string subsystem_input) {
+    double* port_p = inputs.d_ptr->scalars[portname];
+    //if (subsystem in sub_input_p = d_ptr->subsystems_common_map)
+    double* sub_input_p = subsystem->inputs.d_ptr->scalars[subsystem_input];
+    auto p = std::make_pair(port_p, sub_input_p);
+    d_ptr->connected_inport_scalars.push_back(p);
+}
+
 void CompositeSystemImpl::add_input_port(string name, string subsystemname, string subsystem_input, string description)
 {
-    double* ss_input_p = d_ptr->subsystems_common_map[subsystemname]->inputs.d_ptr->scalars[subsystem_input];
-
-    inputs.d_ptr->scalars[name] = ss_input_p;
-    inputs.d_ptr->descriptions[name] = description;
+    add_scalar_port_in(name, description);
+    connect_port_in(name, d_ptr->subsystems_common_map[subsystemname], subsystem_input);
 }
 
 void CompositeSystemImpl::add_output_port(string name, string subsystemname, string subsystem_output, string description)

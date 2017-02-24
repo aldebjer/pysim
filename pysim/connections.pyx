@@ -29,7 +29,8 @@ cdef class Connections:
         """Connect the outputs from this system to the inputs of another.
 
         The systems that are to be connected must be derived from a
-        CommonSystem, which is true for both CppSystems and CythonSystems.
+        CommonSystem, e.g. CppSystems and CythonSystems, or be a 
+        CompositeSystem.
 
         Parameters
         ----------
