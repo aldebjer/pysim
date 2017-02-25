@@ -1,3 +1,8 @@
+"""The simulation module contains a Sim object that represents the simulation.
+The systems added to the Sim object will be used when the simulation is used.
+The module also contains a number of solvers that the Sim object can use.
+"""
+
 from libcpp.vector cimport vector
 from libcpp cimport bool
 from commonsystem cimport CommonSystem
@@ -47,7 +52,16 @@ class Dormand_Prince_5:
 cdef class Sim:
     """This class represents an entire simulation. 
        Each simulation consists of one or more Systems that can be added
-       to this class"""
+       to this class
+       
+       Attributes
+       ----------
+       systems: OrderedDict
+                The systems added to the simulation
+                
+
+       
+       """
     cdef Simulation * _c_sim
     cdef readonly object systems_list
     cdef readonly object systems

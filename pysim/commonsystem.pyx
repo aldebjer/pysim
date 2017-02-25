@@ -1,6 +1,7 @@
 """ Systems used for simulation.
 
-Base classes for systems. They are inherited by CppSystems and CythonSystems.
+Base classes for systems. They are inherited by :obj:`CppSystems` and 
+:obj:`CythonSystems`.
 """
 
 from collections import namedtuple
@@ -31,14 +32,20 @@ cdef class CommonSystem:
 
     Attributes
     ----------
-    pars : Parameters
+    pars : :obj:`Parameters`
         The parameters, can be set before the simulation starts.
-    inputs : Inputs
+    inputs : :obj:`PysimVars`
         The inputs to the system, can be set and connected to outputs
-    outputs : Ouputs
+    outputs : :obj:`PysimVars`
         the outputs of the system, can be connected to inputs of other systems
-    states : States
+    states : :obj:`PysimVars`
         The states of the system
+    ders : :obj:`PysimVars`
+        The derivatives of the system
+    connections : :obj:`pysim.connections.Connections`
+        The connections from this system to other systems
+    res : :obj:`Results`
+        The stored values from the simulation.        
 
     """
     def store(self,name):
@@ -47,7 +54,7 @@ cdef class CommonSystem:
         Parameters
         ----------
         name : str
-            The first parameter.
+            Name of the variable to store.
         """
 
         bs = bytes(name,'utf-8')
@@ -72,19 +79,40 @@ cdef class CommonSystem:
 
     def add_break_greater(self,name,value):
         """Add a break that will be activated if the value of the variable
-        or state is larger than the value supplied as argument
+        or state is larger than the value supplied as argument.
+
+        Parameters
+        ----------
+        name : str
+             Name of the variable to watch.
+        value: float
+             If the variable is below this value then break
+  
         """
         bname = bytes(name,'utf-8')
         self._c_s.add_compare_greater(bname,value)
 
     def add_break_smaller(self,name,value):
         """Add a break that will be activated if the value of the variable
-        or state is smaller than the value supplied as argument
+        or state is smaller than the value supplied as argument.
+        
+        Parameters
+        ---------- 
+            name : str
+                Name of the variable to watch
+            value : double
+                If the variable is below this value then break
+
         """
         bname = bytes(name,'utf-8')
         self._c_s.add_compare_smaller(bname,value)
 
 cdef class Results:
+    """ Class containing the results of a simulation.
+
+    The results are stored as attributes and returned as numpy arrays. They
+    can be scalars, vectors or matrices.
+    """
 
     @staticmethod 
     cdef _create(StoreHandler* ptr):

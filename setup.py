@@ -105,13 +105,17 @@ extensions = [Extension("pysim.cppsystem",
 def readme():
     with open('README.rst') as f:
         return f.read()
+
+for e in extensions:
+    e.cython_directives = {"embedsignature": True}
+    
 setup(
     name="pysim",
     version=__version__,
     author="Linus Aldebjer",
     author_email="aldebjer@gmail.com",
     url="http://pys.im",
-    ext_modules=cythonize(extensions),
+    ext_modules=cythonize(extensions, compiler_directives={'embedsignature': True}),
 
     data_files=[('pysim/include',['pysim/cppsource/SimulatableSystem.hpp',
                                   'pysim/cppsource/CppSystem.hpp',

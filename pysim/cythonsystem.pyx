@@ -1,3 +1,8 @@
+"""This module contains functionality for creating a cython or python
+system for pysim. Both cython and python systems can inherit from the 
+Sys class in this module and then be added to a simulation.
+"""
+
 from collections import namedtuple
 from libcpp.vector cimport vector
 import warnings
@@ -7,14 +12,16 @@ cimport numpy as np
 from cythonsystem cimport CythonSystemImpl
 from commonsystem cimport PysimVars
 from commonsystem cimport Results
-#cimport simulatablesystem
 
 from connections cimport Connections
 
 np.import_array()
 
 cdef class Sys:
-
+    """This class is meant to be inherited by python and cython systems.
+    They can then be set up and after that used in a simulation together with
+    other systems, both c++, python and cython systems.
+    """
     def __cinit__(self):
         cdef CythonSystemImpl* _c_sys_local
         _c_sys_local = new CythonSystemImpl()

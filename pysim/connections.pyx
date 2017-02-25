@@ -16,7 +16,8 @@ np.import_array()
 
 cdef class Connections:
     """The connections of the system.
-    The connections are either from an output or a state of a system.
+    The connections are either from an output or a state of a system. To add
+    a new connection use the function add_connection.
     """
 
     @staticmethod 

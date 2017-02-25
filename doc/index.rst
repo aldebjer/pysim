@@ -9,6 +9,7 @@ PySim Documentation Contents
    using_pysim.rst
    creating_systems.rst
    building_pysim.rst
+   reference.rst
 
 
 Indices and tables
