@@ -1,3 +1,4 @@
+import warnings
 from collections import namedtuple
 from libcpp.vector cimport vector
 
@@ -22,13 +23,14 @@ cdef class CompositeSystem(SimulatableSystem):
         self.inputs = PysimVars._create(&_c_sys_local.inputs)
         self.outputs = PysimVars._create(&_c_sys_local.outputs)
         self.connections = Connections._create(&_c_sys_local.connectionHandler)
+        self.subsystems = {}
         self.res = Results._create(_c_sys_local.getStoreHandlerP())
 
     def __dealloc__(self):
         del self._c_sys
 
     def store(self,name):
-        """Store a input, output or state in the system.
+        """Store a input or output in the system.
 
         Parameters
         ----------
@@ -40,23 +42,27 @@ cdef class CompositeSystem(SimulatableSystem):
         self._c_sys.store(bs)
 
     def add_subsystem(self, CommonSystem subsystem, name):
+        self.subsystems[name] = subsystem
         bs = bytes(name,'utf-8')
         self._c_sys.add_subsystem(subsystem._c_s, bs)
 
     def add_input_port(self, name, subsystemname, subsystem_input, description):
-        string_args = [name, subsystemname,subsystem_input,description]
-        bs_args = [bytes(s,'utf-8') for s in string_args]
-        self._c_sys.add_input_port(bs_args[0],bs_args[1],bs_args[2],bs_args[3])
+        warnings.warn("Deprecated, use add_port_in_scalar-connect_port_in instead", DeprecationWarning)
+        cdef CommonSystem sys = self.subsystems[subsystemname]
+        self.add_port_in_scalar(name, 0.0, description)
+        self.connect_port_in(name, sys, subsystem_input)
 
     def add_output_port(self, name, subsystemname, subsystem_output, description):
-        string_args = [name, subsystemname,subsystem_output,description]
-        bs_args = [bytes(s,'utf-8') for s in string_args]
-        self._c_sys.add_output_port(bs_args[0],bs_args[1],bs_args[2],bs_args[3])
+        warnings.warn("Deprecated, use add_port_out_scalar-connect_port_out instead", DeprecationWarning)
+        cdef CommonSystem sys = self.subsystems[subsystemname]
+        self.add_port_out_scalar(name, 0.0, description)
+        self.connect_port_out(name, sys, subsystem_output)
 
-    def add_port_in_scalar(self, name, description):
+    #Add Input Ports
+    def add_port_in_scalar(self, name, initialvalue, description):
         bs_names =  bytes(name,'utf-8')
         bs_desc = bytes(description,'utf-8')
-        self._c_sys.add_scalar_port_in(bs_names, bs_desc)
+        self._c_sys.add_scalar_port_in(bs_names, initialvalue, bs_desc)
 
     def add_port_in_vector(self, name, initialvalue, description):
         bs_names =  bytes(name,'utf-8')
@@ -68,8 +74,31 @@ cdef class CompositeSystem(SimulatableSystem):
         bs_desc = bytes(description,'utf-8')
         self._c_sys.add_matrix_inport(bs_names, initialvalue, bs_desc)
 
-    def connect_inputport(self, portname, CommonSystem receiving_system, inputname):
+    # Add Output ports
+    def add_port_out_scalar(self, name, initialvalue, description):
+        cdef string bs_names =  bytes(name,'utf-8')
+        cdef string bs_desc = bytes(description,'utf-8')
+        cdef double d_initial = initialvalue
+        self._c_sys.add_outport(bs_names, d_initial, bs_desc)
+
+    def add_port_out_vector(self, name, initialvalue, description):
+        cdef string bs_names =  bytes(name,'utf-8')
+        cdef string bs_desc = bytes(description,'utf-8')
+        cdef vector[double] v_initial = initialvalue
+        self._c_sys.add_outport(bs_names, v_initial, bs_desc)
+
+    def add_port_out_matrix(self, name, initialvalue, description):
+        cdef string bs_names =  bytes(name,'utf-8')
+        cdef string bs_desc = bytes(description,'utf-8')
+        cdef vector[vector[double]] m_initial = initialvalue
+        self._c_sys.add_outport(bs_names, m_initial, bs_desc)
+
+    def connect_port_in(self, portname, CommonSystem receiving_system, inputname):
         bs_portname =  bytes(portname,'utf-8')
         bs_inputname = bytes(inputname,'utf-8')
         self._c_sys.connect_port_in(bs_portname, receiving_system._c_s, bs_inputname)
 
+    def connect_port_out(self, portname, CommonSystem output_system, output_name):
+        bs_portname =  bytes(portname,'utf-8')
+        bs_output_name = bytes(output_name,'utf-8')
+        self._c_sys.connect_port_out(bs_portname, output_system._c_s, bs_output_name)

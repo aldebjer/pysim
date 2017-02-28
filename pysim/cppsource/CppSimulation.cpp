@@ -43,7 +43,6 @@ void Simulation::doGenericStep(const std::vector< double > &state,
     for ( auto syst = systems.begin(); syst != systems.end(); ++syst ) {
         (*syst)->doStep(time);
         (*syst)->copyoutputs();
-        (*syst)->copyoutputs();
     }
 
     // Copy the systems derivate variables to the

@@ -24,14 +24,16 @@ cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
         #void connect(char*, CommonSystemImpl*, char* )
         void add_subsystem(CommonSystemImpl* , string) except +
 
-        void add_scalar_port_in(string name, string description) except +
+        void add_scalar_port_in(string name, double initial_value, string description) except +
         void add_vector_inport(string name, vector[double] initial_value, string description) except +
         void add_matrix_inport(string name, vector[vector[double]] initial_value, string description) except +
 
-        void connect_port_in(string portname, CommonSystemImpl* subsystem, string subsystem_input) except +
+        void add_outport(string name, double initial_value, string description) except +
+        void add_outport(string name, vector[double] initial_value, string description) except +
+        void add_outport(string name, vector[vector[double]] initial_value, string description) except +
 
-        void add_input_port(string, string, string, string) except +
-        void add_output_port(string, string, string, string) except +
+        void connect_port_in(string portname, CommonSystemImpl* subsystem, string subsystem_input) except +
+        void connect_port_out(string portname, CommonSystemImpl* subsystem, string subsystem_output) except +
 
         void store(char* name)
         StoreHandler* getStoreHandlerP()
