@@ -1,3 +1,5 @@
+from functools import partialmethod
+
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
@@ -28,12 +30,14 @@ cdef _setupSystem(pysim.cppsystem.Sys system,name):
     system._c_s = sp
     pysim.cppsystem.Sys._setupParVar(system)
 
-cdef setup_my_system(system):
+cdef _setup_my_system(system, cppsystemname):
     """function for preparing and set up a system"""
-    _setupSystem(system, system.__class__.__name__)
+    _setupSystem(system, cppsystemname)
 
 for name in _getSystemNames():
     docstring = _getSystemDocs(name)
     globals()[name] = type(name,
                            (pysim.cppsystem.Sys,),
-                           {'__init__': setup_my_system, "__doc__":docstring})
+                           {'__init__': partialmethod(_setup_my_system,cppsystemname=name),
+                            '__doc__':docstring,
+                           })

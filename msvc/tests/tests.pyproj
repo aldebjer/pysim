@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{aaeb434d-245c-4308-bb3d-3e1cfddca3b7}</ProjectGuid>
     <ProjectHome>..\..\pysim\tests\</ProjectHome>
-    <StartupFile>input_ouput_test.py</StartupFile>
+    <StartupFile>cppsystem_test.py</StartupFile>
     <SearchPath>../..</SearchPath>
     <WorkingDirectory>..\..</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -24,6 +24,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="compositesystem_test.py" />
+    <Compile Include="cppsystem_test.py" />
     <Compile Include="input_ouput_test.py" />
     <Compile Include="integration_test.py" />
     <Compile Include="parameter_test.py" />
