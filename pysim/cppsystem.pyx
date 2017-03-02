@@ -17,8 +17,8 @@ cdef class Sys:
        a simulation"""
 
 
-#    def __dealloc__(self):
-#        del self._c_sys
+    def __dealloc__(self):
+        del self._c_sys
 
     cdef _setupParVar(self):
         cdef CommonSystemImpl* sp = self._c_s
