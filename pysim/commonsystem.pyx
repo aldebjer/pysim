@@ -176,8 +176,7 @@ cdef class Parameters:
         parmapnames = list(self._c_sys.getParNames[ParMapType]())
         parvectormapnames = list(self._c_sys.getParNames[ParVectorMap]())
         parmatrixnames = list(self._c_sys.getParNames[ParMatrixType]())
-        print(parmatrixnames)
-        print(bs)
+
         if bs in parstringnames:
             try:
                 self._c_sys.setPar[string](bs,bytes(value,'utf-8'))
