@@ -37,6 +37,7 @@ def test_store_config(test_class):
     sim = Sim()
     sim.add_system(sys)
     sys.inputs.a = 1.234
+    sys.store("x")
 
     file = tempfile.NamedTemporaryFile(delete=False)
     file.close()
@@ -46,6 +47,7 @@ def test_store_config(test_class):
     simdict = json.load(file2)
     file2.close()
     assert simdict["systems"]["vanderpol"]["inputs"]["a"] == 1.234
+    assert "x" in simdict["systems"]["vanderpol"]["stores"]
 
 def test_load_config():
     """Tests the loading of a system configuration from file"""
@@ -203,4 +205,4 @@ def test_discrete_system():
 
 
 if __name__ == "__main__":
-    test_boost_vector_states()
+    test_store_config(VanDerPol)

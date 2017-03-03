@@ -30,3 +30,4 @@ cdef class Sys:
         self.ders = PysimVars._create(&sp.ders)
         self.connections = Connections._create(&sp.connectionHandler)
         self.res = Results._create(sp.getStoreHandlerP())
+        self.stores = []

@@ -52,6 +52,7 @@ cdef class CommonSystem:
 
         bs = bytes(name,'utf-8')
         self._c_s.store(bs)
+        self.stores.append(name)
 
     def set_store_interval(self, interval):
         """Set the store interval of this system. 

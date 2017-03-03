@@ -103,6 +103,8 @@ cdef class Sim:
                 inputdict[input_name] = getattr(system.inputs,input_name)
             systemdict["inputs"]=inputdict
 
+            systemdict["stores"] = system.stores
+
             systems_dict[name]=systemdict
 
         root_dict = {"systems":systems_dict}
