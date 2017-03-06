@@ -2,7 +2,18 @@
 
 #include "vector"
 
-pysim::CppSystem* getCppSystem(char* name);
+#ifdef WIN32
+    #ifdef DEFAULTSYSTEMCOLLECTION1_EXPORTS  
+        #define DEFAULTSYSTEMCOLLECTION1_API __declspec(dllexport)   
+    #else  
+        #define DEFAULTSYSTEMCOLLECTION1_API __declspec(dllimport)   
+    #endif
+#else
+    #define DEFAULTSYSTEMCOLLECTION1_API
+#endif
+
+DEFAULTSYSTEMCOLLECTION1_API pysim::CppSystem* __cdecl getCppSystem(char* name);
+
 std::string getCppSystemDocs(char* name);
 
 std::vector<std::string> getCppSystemNames();

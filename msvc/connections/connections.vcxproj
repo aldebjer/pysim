@@ -157,10 +157,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\pysim\connections.cpp" />
-    <ClCompile Include="..\..\pysim\cppsource\ConnectionHandler.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\pysim\cppsource\ConnectionHandler.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

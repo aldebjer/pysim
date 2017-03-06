@@ -22,11 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\pysim\commonsystem.cpp" />
-    <ClCompile Include="..\..\pysim\cppsource\CommonSystemImpl.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl.hpp" />
-    <ClInclude Include="..\..\pysim\cppsource\CommonSystemImpl_p.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B3A85799-0C40-4905-849C-ED4DB0ED6688}</ProjectGuid>
