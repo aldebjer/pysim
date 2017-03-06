@@ -11,6 +11,7 @@ import os
 
 from pysim import __version__
 
+
 config = Configuration()
 config.add_include_dirs(['pysim/cppsource', numpy.get_include()])
 
@@ -155,3 +156,23 @@ setup(
     ],
     **config.todict()
 )
+
+def build_exe():
+    from distutils import ccompiler
+
+    compiler = ccompiler.new_compiler()
+    compiler.set_include_dirs([os.environ['BOOST_ROOT'],
+                               os.environ['EIGEN_ROOT'],
+                               "pysim/cppsource",
+                               "pysim/systems/defaultsystemcollection1/cppsource",
+                              ]
+                              )
+    compiler.set_library_dirs(["pysim/lib",
+                               "pysim/systems"])
+    compiler.set_libraries(["defaultsystemcollection1.cp35-win32",
+                            "cppsystemlib"])
+    compiler.compile(["msvc/cpp_runner/main.cpp"])
+    compiler.link_executable(["msvc/cpp_runner/main.obj"],"cpp_runner")
+    
+build_exe()
+
