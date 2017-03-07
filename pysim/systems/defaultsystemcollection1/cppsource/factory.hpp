@@ -12,8 +12,9 @@
     #define DEFAULTSYSTEMCOLLECTION1_API
 #endif
 
+extern "C"{
 DEFAULTSYSTEMCOLLECTION1_API pysim::CppSystem* __cdecl getCppSystem(char* name);
-
+};
 std::string getCppSystemDocs(char* name);
 
 std::vector<std::string> getCppSystemNames();

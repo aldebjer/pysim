@@ -1,12 +1,26 @@
-#include <iostream>
 #include "CppSimulation.hpp"
 #include "CppSystem.hpp"
-#include "factory.hpp"
 #include "StoreHandler.hpp"
 
+#include <iostream>
+#include <windows.h>
+
+typedef pysim::CppSystem*(__cdecl *funcpt)(char* name);
+
 int main(int argc, char *argv[]) {
-    pysim::CppSystem* sys;
-    sys = getCppSystem("VanDerPol");
+    HINSTANCE hGetProcIDDLL = LoadLibrary("C:\\dev\\pysims\\pysim\\pysim\\systems\\defaultsystemcollection1.cp35-win32.pyd");
+    if (!hGetProcIDDLL) {
+        std::cout << "could not load the dynamic library" << std::endl;
+        return 1;
+    }
+
+    funcpt funci = (funcpt)GetProcAddress(hGetProcIDDLL, "getCppSystem");
+    if (!funci) {
+        std::cout << "could not locate the function" << std::endl;
+        return 1;
+    }
+
+    pysim::CppSystem* sys = funci("VanDerPol");
     sys->store("x");
     pysim::Simulation sim;
     sim.addSystem(sys);

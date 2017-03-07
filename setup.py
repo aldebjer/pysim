@@ -6,10 +6,47 @@ from numpy.distutils.misc_util import Configuration
 from distutils.extension import Extension
 from Cython.Build import cythonize
 import sys
+import sysconfig
 import numpy
 import os
+import distutils.cmd
 
 from pysim import __version__
+
+class BuildExeCommand(distutils.cmd.Command):
+    """A custom command to build the pysim c++ executable"""
+    description = 'Create the pure c++ pysim executable'
+    user_options = []
+
+
+    def initialize_options(self):
+        """Set default values for options."""
+        pass
+
+    def finalize_options(self):
+        """Post-process options."""
+        pass
+
+    def distutils_dir_name(self):
+        """Returns the name of a distutils build directory"""
+        f = "build/temp.{platform}-{version[0]}.{version[1]}"
+        return f.format(platform=sysconfig.get_platform(),
+                        version=sys.version_info)
+
+    def run(self):
+        from distutils import ccompiler
+        compiler = ccompiler.new_compiler()
+        compiler.set_include_dirs([os.environ['BOOST_ROOT'],
+                                   os.environ['EIGEN_ROOT'],
+                                   "pysim/cppsource",
+                                  ]
+                                 )
+        cpplibdir = self.distutils_dir_name()
+        compiler.set_library_dirs([cpplibdir])
+        compiler.set_libraries(["cppsystemlib"])
+        compiler.compile(["msvc/cpp_runner/main.cpp"])
+        compiler.link_executable(["msvc/cpp_runner/main.obj"],"cpp_runner")
+    
 
 
 config = Configuration()
@@ -116,7 +153,7 @@ setup(
     author_email="aldebjer@gmail.com",
     url="http://pys.im",
     ext_modules=cythonize(extensions),
-
+    cmdclass={'build_exe': BuildExeCommand},
     data_files=[('pysim/include',['pysim/cppsource/SimulatableSystem.hpp',
                                   'pysim/cppsource/CppSystem.hpp',
                                   'pysim/cppsource/PysimTypes.hpp',
@@ -157,22 +194,5 @@ setup(
     **config.todict()
 )
 
-def build_exe():
-    from distutils import ccompiler
 
-    compiler = ccompiler.new_compiler()
-    compiler.set_include_dirs([os.environ['BOOST_ROOT'],
-                               os.environ['EIGEN_ROOT'],
-                               "pysim/cppsource",
-                               "pysim/systems/defaultsystemcollection1/cppsource",
-                              ]
-                              )
-    compiler.set_library_dirs(["pysim/lib",
-                               "pysim/systems"])
-    compiler.set_libraries(["defaultsystemcollection1.cp35-win32",
-                            "cppsystemlib"])
-    compiler.compile(["msvc/cpp_runner/main.cpp"])
-    compiler.link_executable(["msvc/cpp_runner/main.obj"],"cpp_runner")
-    
-build_exe()
 
