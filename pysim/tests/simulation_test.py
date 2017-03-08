@@ -59,7 +59,7 @@ def test_load_config():
                 "a": 1.234,
                 "b": 1.0
             },
-            "module": "pysim.systems",
+            "module": "pysim.systems.defaultsystemcollection1",
             "type": "VanDerPol"
         },
        "vanderpol2": {
