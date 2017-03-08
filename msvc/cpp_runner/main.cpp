@@ -13,10 +13,11 @@
 
 namespace pt = boost::property_tree;
 
-typedef pysim::CppSystem*(__cdecl *funcpt)(char* name);
+typedef pysim::CppSystem*(__cdecl *funcpt)(const char* name);
 
 struct systeminfo {
     std::string name;
+    std::string type;
     std::string module;
     std::vector<std::pair<std::string, std::double_t>> inputs;
     std::vector<std::string> stores;
@@ -34,6 +35,7 @@ int main(int argc, char *argv[]) {
     for (pt::ptree::value_type &json_system : root.get_child("systems")) {
         systeminfo sys;
         sys.name = json_system.first;
+        sys.type = json_system.second.get_child("type").data();
         sys.module = json_system.second.get_child("module").data();
         for (pt::ptree::value_type & json_input : json_system.second.get_child("inputs")) {
             string key = json_input.first;
@@ -69,11 +71,11 @@ int main(int argc, char *argv[]) {
     }
 
     pysim::Simulation sim;
-    std::vector<pysim::CppSystem*> systems;
+    std::map<string, pysim::CppSystem*> systems;
 
     for (systeminfo& sys_info : system_infos) {
-        pysim::CppSystem* sys = factorymap[sys_info.module]("VanDerPol");
-        systems.push_back(sys);
+        pysim::CppSystem* sys = factorymap[sys_info.module](sys_info.type.c_str());
+        systems[sys_info.name] = sys;
         sim.addSystem(sys);
     }
 

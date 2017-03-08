@@ -4,11 +4,11 @@
 
 using namespace std;
 
-pysim::CppSystem* getCppSystem(char* name) {
+pysim::CppSystem* getCppSystem(const char* name) {
     return SystemFactory::Instance().Create(name);
 }
 
-string getCppSystemDocs(char* name) {
+string getCppSystemDocs(const char* name) {
     return SystemFactory::Instance().getDocs(name);
 }
 
@@ -33,7 +33,7 @@ void SystemFactory::RegisterMaker(const std::string& key, ISystemMaker* maker)
     _makers[key] = maker;
 }
 
-pysim::CppSystem* SystemFactory::Create(char* name) const
+pysim::CppSystem* SystemFactory::Create(const char* name) const
 {
     string key(name);
     auto i = _makers.find(key);
@@ -44,7 +44,7 @@ pysim::CppSystem* SystemFactory::Create(char* name) const
     return maker->Create();
 }
 
-std::string SystemFactory::getDocs(char* name) const
+std::string SystemFactory::getDocs(const char* name) const
 {
     string key(name);
     auto i = _makers.find(key);
