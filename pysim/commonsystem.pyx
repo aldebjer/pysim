@@ -137,7 +137,7 @@ cdef class Parameters:
 
     def __dir__(self):
         allnames = []
-        allnames.exten(self._c_sys.getParNames[string]())
+        allnames.extend(self._c_sys.getParNames[string]())
         allnames.extend(self._c_sys.getParNames[ParMapType]())
         allnames.extend(self._c_sys.getParNames[ParVectorMap]())
         allnames.extend(self._c_sys.getParNames[ParMatrixType]())
