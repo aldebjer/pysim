@@ -1,0 +1,18 @@
+// Place your settings in this file to overwrite default and user settings.
+{  // Configure glob patterns for excluding files and folders.
+  "files.exclude": {
+    "**/*.pyd": true,
+    "**/__pycache__": true,
+    "pysim.egg-info/": true,
+    "pysim/lib/":true,
+    "build/": true,
+    "dist/": true,
+    "pysim/compositesystem.cpp":true,
+    "pysim/commonsystem.cpp":true,
+    "pysim/connections.cpp":true,
+    "pysim/cppsystem.cpp":true,
+    "pysim/cythonsystem.cpp":true,
+    "pysim/simulatablesystem.cpp":true,
+    "pysim/simulation.cpp":true
+  }
+}
