@@ -27,8 +27,19 @@ int main(int argc, char *argv[]) {
     using std::string;
     using std::pair;
 
+    string simfilename;
+    string modulerootpath;
+    if (argc < 3) {
+        std::cout << "warning: using default filename and modulepath" << std::endl;
+        simfilename = "simplesim.json";
+        modulerootpath = "C:\\dev\\pysims\\pysim\\";
+    } else {
+        simfilename = string(argv[1]);
+        modulerootpath = string(argv[2]);
+    }
+
     pt::ptree root;
-    pt::read_json("simplesim.json", root);
+    pt::read_json(simfilename, root);
 
     std::vector<systeminfo> system_infos;
 
@@ -52,7 +63,7 @@ int main(int argc, char *argv[]) {
     for (systeminfo &sys : system_infos) {
         if (factorymap.count(sys.module) == 0) {
             std::stringstream ss;
-            ss << "C:\\dev\\pysims\\pysim\\";
+            ss << modulerootpath;
             string module(sys.module);
             boost::algorithm::replace_all(module, ".", "\\");
             ss << module << ".cp35-win32.pyd";
