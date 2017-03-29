@@ -58,7 +58,8 @@ int main(int argc, char *argv[]) {
             ss << module << ".cp35-win32.pyd";
             HINSTANCE hGetProcIDDLL = LoadLibrary(ss.str().c_str());
             if (!hGetProcIDDLL) {
-                std::cout << "could not load the dynamic library" << std::endl;
+                int errorcode = GetLastError();
+                std::cout << "could not load the dynamic library: " << errorcode << std::endl;
                 return 1;
             }
             funcpt funci = (funcpt)GetProcAddress(hGetProcIDDLL, "getCppSystem");
