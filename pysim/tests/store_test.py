@@ -130,3 +130,21 @@ def test_interval_store(test_class):
     reftime = np.linspace(0,2,11)
     simtime = sys.res.time
     assert np.all(np.abs(simtime-reftime) <= np.finfo(float).eps)
+	
+@pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
+def test_midsim_store(test_class):
+    """Check that it is possible to store a variable mid-simulation
+    and that the result array is properly aligned with the timesteps
+    and contains np.nan for locations where the variable was not stored.
+    """
+    sim = Sim()
+    sys = test_class()
+    
+    sim.add_system(sys)
+    sim.simulate(5, 1)
+    sys.store("a")
+    sim.simulate(5, 1)
+    ares = sys.res.a
+    assert np.all(np.isnan(ares[:6]))
+    assert not np.any(np.isnan(ares[6:]))
+

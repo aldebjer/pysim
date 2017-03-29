@@ -111,7 +111,7 @@ cdef class Results:
             bs = bytes(name,'utf-8')
             size = self.shp.getStoreSize()
             columns = self.shp.getStoreColumns(bs)
-            a_mat = np.zeros([size,columns],dtype=np.float64)
+            a_mat = np.ones([size,columns],dtype=np.float64)*np.nan
             self.shp.fillWithStore(bs,&a_mat[0,0],size,columns)
             if columns == 1:
                 return a_mat[:,0]
