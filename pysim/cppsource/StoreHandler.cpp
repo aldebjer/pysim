@@ -132,7 +132,7 @@ void StoreHandler::fillWithStore(char* name, double* p, int rows, int columns) {
         if (columns != 1) {
             throw std::runtime_error("Internal Pysim Error, invalid number of columns");
         }
-		ptemp += rows;
+        ptemp += rows;
         auto v = &(d_ptr->storemap[name]->storearray);
         int rowcounter = 0;
         for (auto i = v->rbegin(); i != v->rend(); ++i) {
@@ -142,7 +142,7 @@ void StoreHandler::fillWithStore(char* name, double* p, int rows, int columns) {
             *(--ptemp) = *i;
         }
     } else if (d_ptr->storeVectorMap.count(name) > 0) {
-		ptemp += rows*columns;
+        ptemp += rows*columns;
         auto mat = &(d_ptr->storeVectorMap[name]->storearray);
         int rowcounter = 0;
         for (auto row = mat->rbegin(); row != mat->rend(); ++row) {
