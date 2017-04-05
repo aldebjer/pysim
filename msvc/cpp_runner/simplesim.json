@@ -1,0 +1,16 @@
+{
+    "systems": {
+        "vanderpol": {
+            "inputs": {
+                "a": 1.0,
+                "b": 1.0
+            },
+            "module": "pysim.systems.defaultsystemcollection1",
+            "stores": [
+                "x",
+                "y"
+            ],
+            "type": "VanDerPol"
+        }
+    }
+}

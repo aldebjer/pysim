@@ -1,0 +1,12 @@
+{
+    "systems": {
+        "rrt": {
+            "inputs": {
+                "a": 0.0
+            },
+            "module": "seaman.systems.standard",
+            "stores": [],
+            "type": "Rudder"
+        }
+    }
+}
