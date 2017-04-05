@@ -3,6 +3,15 @@
  - parameters can be map of vectors
  - Using the Eigen library for matrices
  - Tested with python 3.6
+ - Separate doc requirements file for building docs
+ - Composite systems now have a "subsystem" dict containing the subsystems.
+ - Systems now have a "store" list containing the name of all stored variables.
+ - CppSystems are now deallocated correctly again
+ - New way of handling ports in composite systems (add_port_in_scalar_/connect_port_in)
+ - Bugfix of naming cpp systems that are inherited
+ - New way of adding inputs/outputs in python systems. (e.g. add_input_vector)
+ - Paramaters can be map of vectors
+ - Possible to start the storing when sim has already been running
 
 2.1
 ===
