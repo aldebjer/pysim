@@ -19,8 +19,8 @@ namespace pysim{
 
 
 CompositeSystemImpl::CompositeSystemImpl():
-    d_ptr(new CompositeSystemImplPrivate()),
-    connectionHandler(&outputs)
+    connectionHandler(&outputs),
+    d_ptr(new CompositeSystemImplPrivate())
 {
 }
 CompositeSystemImpl::~CompositeSystemImpl()
@@ -175,14 +175,14 @@ void CompositeSystemImpl::add_vector_inport(std::string name, std::vector<double
 
 
 void CompositeSystemImpl::add_matrix_inport(std::string name, std::vector<std::vector<double>> initial_value, std::string description) {
-    int rows = initial_value.size();
-    int columns = initial_value.front().size();
+    size_t rows = initial_value.size();
+    size_t columns = initial_value.front().size();
     Eigen::MatrixXd m(rows, columns);
-    for (int i = 0; i < rows; ++i) {
+    for (size_t i = 0; i < rows; ++i) {
         if (initial_value[i].size() != columns) {
             throw std::invalid_argument("Matrix rows has different number of columns");
         }
-        for (int j = 0; j < columns; ++j) {
+        for (size_t j = 0; j < columns; ++j) {
             m(i, j) = initial_value[i][j];
         }
     }
@@ -215,14 +215,14 @@ void CompositeSystemImpl::add_outport(std::string name, std::vector<double> init
 
 
 void CompositeSystemImpl::add_outport(std::string name, std::vector<std::vector<double>> initial_value, std::string description) {
-    int rows = initial_value.size();
-    int columns = initial_value.front().size();
+    size_t rows = initial_value.size();
+    size_t columns = initial_value.front().size();
     Eigen::MatrixXd m(rows, columns);
-    for (int i = 0; i < rows; ++i) {
+    for (size_t i = 0; i < rows; ++i) {
         if (initial_value[i].size() != columns) {
             throw std::invalid_argument("Matrix rows has different number of columns");
         }
-        for (int j = 0; j < columns; ++j) {
+        for (size_t j = 0; j < columns; ++j) {
             m(i, j) = initial_value[i][j];
         }
     }

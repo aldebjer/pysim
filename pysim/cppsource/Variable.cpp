@@ -72,7 +72,6 @@ void Variable::setMatrix(char* name, std::vector<std::vector<double>> value) {
 
     //Check that matrix exist
     if (d_ptr->matrices.count(name) <= 0) {
-        MatrixXd* mp = d_ptr->matrices[name];
         std::string errstr = str(boost::format("Could not find: %1%") % name);
         throw std::invalid_argument(errstr);
     }
@@ -81,14 +80,14 @@ void Variable::setMatrix(char* name, std::vector<std::vector<double>> value) {
     MatrixXd* mp = d_ptr->matrices[name];
 
     //Check row size
-    if (mp->rows() != value.size()) {
+    if (mp->rows() != (int)value.size()) {
         std::string errstr = str(boost::format("Row size of %1% is %2%") % name % mp->rows());
         throw std::invalid_argument(errstr);
     }
 
     //Check column sizes
     for (std::vector<double> in_row : value) {
-        if (mp->cols() != in_row.size()) {
+        if (mp->cols() != (int)in_row.size()) {
             std::string errstr = str(boost::format("column size of %1% is %2%") % name % mp->cols());
             throw std::invalid_argument(errstr);
         }
