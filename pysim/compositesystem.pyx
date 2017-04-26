@@ -73,6 +73,17 @@ cdef class CompositeSystem(SimulatableSystem):
         bs_names =  bytes(name,'utf-8')
         bs_desc = bytes(description,'utf-8')
         self._c_sys.add_matrix_inport(bs_names, initialvalue, bs_desc)
+        
+    def expand_single_input(self, portname, sys, sysport, initialvalue):
+        if type(initialvalue)==list:
+            self.add_port_in_vector(portname, initialvalue, '')
+            self.connect_port_in(portname, sys, sysport)
+        elif type(initialvalue)==int or type(initialvalue)==float:
+            self.add_port_in_scalar(portname, initialvalue, '')
+            self.connect_port_in(portname, sys, sysport)
+        else:
+            warning_text = 'Couldnt expand input port with portname {}'.format(portname)
+            raise ConnectionAbortedError(warning_text)
 
     # Add Output ports
     def add_port_out_scalar(self, name, initialvalue, description):
@@ -102,3 +113,22 @@ cdef class CompositeSystem(SimulatableSystem):
         bs_portname =  bytes(portname,'utf-8')
         bs_output_name = bytes(output_name,'utf-8')
         self._c_sys.connect_port_out(bs_portname, output_system._c_s, bs_output_name)
+        
+    def expand_single_output(self, portname, sys, sysport, initialvalue):
+        '''Method for expanding single output port'''
+        if type(initialvalue)==list:
+            self.add_port_out_vector(portname, initialvalue, '')
+            self.connect_port_out(portname, sys, sysport)
+        elif type(initialvalue)==int or type(initialvalue)==float:
+            self.add_port_out_scalar(portname, initialvalue, '')
+            self.connect_port_out(portname, sys, sysport)
+        else:
+            warning_text = 'Couldnt expand output port with portname {}'.format(portname)
+            raise ConnectionAbortedError(warning_text)
+        
+    #Help functions for setting up a composite system
+    def expand_single_port(self, name, system, initialvalue):
+        if name in dir(system.inputs):
+            self.expand_single_input(name, system, name, initialvalue)
+        else:
+            self.expand_single_output(name, system, name, initialvalue)
