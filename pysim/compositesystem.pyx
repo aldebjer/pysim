@@ -25,6 +25,7 @@ cdef class CompositeSystem(SimulatableSystem):
         self.connections = Connections._create(&_c_sys_local.connectionHandler)
         self.subsystems = {}
         self.res = Results._create(_c_sys_local.getStoreHandlerP())
+        self.pars = Par()
 
     def __dealloc__(self):
         del self._c_sys
@@ -144,3 +145,26 @@ cdef class CompositeSystem(SimulatableSystem):
             self.expand_single_input(name, system, name, initialvalue)
         else:
             self.expand_single_output(name, system, name, initialvalue)
+
+class Par():
+    '''Help class for emulating pars of composite systems
+    '''
+    def __init__(self):
+        self.__dict__['parameters'] = {}
+
+    def add_par(self, sys, variable):
+        '''Method for adding a par to be emulated
+        '''
+        self.parameters[variable] = sys
+
+    def __getattr__(self, variable):
+        '''Overriding __getattr__
+        '''
+        assert variable in self.parameters.keys()
+        getattr(self.parameters.get(variable).pars, variable)
+
+    def __setattr__(self, variable, value):
+        '''Overriding __setattr__
+        '''
+        assert variable in self.parameters.keys()
+        setattr(self.parameters.get(variable).pars, variable, value)
