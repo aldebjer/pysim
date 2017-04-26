@@ -54,6 +54,25 @@ cdef class CompositeSystem(SimulatableSystem):
             if name in vars:
                 sys.store(name)
                 
+    def store_all(self, sys=None):
+        '''Method for storing all inputs, states,
+        ders and outputs of the composite system
+        and its subsystems recursively.
+        '''
+        if not sys:
+            self.store_all(sys = self)
+            return
+
+        for input in dir(sys.inputs):
+            sys.store(input)
+
+        for output in dir(sys.outputs):
+            sys.store(output)
+
+        if isinstance(sys, CompositeSystem):
+            for subsystem in sys.subsystems.values():
+                subsystem.store_all()
+                
     def add_subsystem(self, CommonSystem subsystem, name):
         self.subsystems[name] = subsystem
         bs = bytes(name,'utf-8')
