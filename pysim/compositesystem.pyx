@@ -28,19 +28,31 @@ cdef class CompositeSystem(SimulatableSystem):
 
     def __dealloc__(self):
         del self._c_sys
-
+        
+    def __iter__(self):
+        """Iterating over subsystems
+        """
+        return iter(self.subsystems.values())
+        
     def store(self,name):
-        """Store a input or output in the system.
+        """Store a input or output in the composite system if existing and
+        an input, output, state or der in all subsystems if existing.
 
         Parameters
         ----------
         name : str
             The first parameter.
         """
+        vars = dir(self.inputs) + dir(self.outputs)
+        if name in vars:
+            bs = bytes(name,'utf-8')
+            self._c_sys.store(bs)
 
-        bs = bytes(name,'utf-8')
-        self._c_sys.store(bs)
-
+        for sys in self:
+            vars = dir(sys.inputs) + dir(sys.states) + dir(sys.ders) + dir(sys.outputs)
+            if name in vars:
+                sys.store(name)
+                
     def add_subsystem(self, CommonSystem subsystem, name):
         self.subsystems[name] = subsystem
         bs = bytes(name,'utf-8')
