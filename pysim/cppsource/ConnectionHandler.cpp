@@ -43,54 +43,65 @@ ConnectionHandler::ConnectionHandler(Variable* outputp, Variable* statep, Variab
 ConnectionHandler::~ConnectionHandler() {
 };
 
+bool ConnectionHandler::check_output_connect(double* input, VariablePrivate* output, char* outputname) {
+    if (output->scalars.count(outputname) > 0) {
+        auto outputvar = output->scalars[outputname];
+        d_ptr->connected_scalars.push_back(std::make_pair(outputvar, input));
+        return true;
+    }
+    return false;
+}
+
+bool ConnectionHandler::check_output_connect(pysim::vector* input, VariablePrivate* output, char* outputname) {
+    if (output->vectors.count(outputname) > 0) {
+        auto outputvar = output->vectors[outputname];
+        d_ptr->connected_vectors.push_back(std::make_pair(outputvar, input));
+        return true;
+    }
+    return false;
+}
+
+bool ConnectionHandler::check_output_connect(Eigen::MatrixXd* input, VariablePrivate* output, char* outputname) {
+    if (output->matrices.count(outputname) > 0) {
+        auto outputvar = output->matrices[outputname];
+        d_ptr->connected_matrices.push_back(std::make_pair(outputvar, input));
+        return true;
+    }
+    return false;
+}
+
+template <typename T>
+bool ConnectionHandler::check_input(std::map<std::string, T* > input, char* inputname, char* outputname) {
+    if (input.count(inputname) > 0) {
+        T* inputvar = input[inputname];
+        std::vector<VariablePrivate*> vec;
+        vec.push_back(d_ptr->outputp->d_ptr.get());
+        vec.push_back(d_ptr->statep->d_ptr.get());
+        for (auto v : vec) {
+            if (check_output_connect(inputvar, v, outputname)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+template bool ConnectionHandler::check_input(std::map<std::string, double* > input, char* inputname, char* outputname);
+template bool ConnectionHandler::check_input(std::map<std::string, pysim::vector* > input, char* inputname, char* outputname);
+template bool ConnectionHandler::check_input(std::map<std::string, Eigen::MatrixXd* > input, char* inputname, char* outputname);
+
+
 template <typename T>
 void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname) {
-    using std::make_pair;
-    if (inputsys->inputs.d_ptr->scalars.count(inputname) > 0) {
-        if (d_ptr->outputp->d_ptr->scalars.count(outputname) == 1) {
-            auto p = make_pair(d_ptr->outputp->d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
-            d_ptr->connected_scalars.push_back(p);
-        } else if ((d_ptr->statep != nullptr) && (d_ptr->statep->d_ptr->scalars.count(outputname) == 1)) {
-            auto p = make_pair(d_ptr->statep->d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
-            d_ptr->connected_scalar_states_.push_back(p);
-        } else if ((d_ptr->derp != nullptr) && (d_ptr->derp->d_ptr->scalars.count(outputname) == 1)) {
-            auto p = make_pair(d_ptr->derp->d_ptr->scalars[outputname], inputsys->inputs.d_ptr->scalars[inputname]);
-            d_ptr->connected_scalars.push_back(p);
-        } else {
-            std::string errtxt("Could not find matching state, der, or output to connect from");
-            throw std::invalid_argument(errtxt);
-        }
-    } else if (inputsys->inputs.d_ptr->vectors.count(inputname) > 0) {
-        if (d_ptr->outputp->d_ptr->vectors.count(outputname) == 1) {
-            auto p = make_pair(d_ptr->outputp->d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
-            d_ptr->connected_vectors.push_back(p);
-        } else if ((d_ptr->statep != nullptr) && (d_ptr->statep->d_ptr->vectors.count(outputname) == 1)) {
-            auto p = make_pair(d_ptr->statep->d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
-            d_ptr->connected_vector_states.push_back(p);
-        } else if ((d_ptr->derp != nullptr) && (d_ptr->derp->d_ptr->vectors.count(outputname) == 1)) {
-            auto p = make_pair(d_ptr->derp->d_ptr->vectors[outputname], inputsys->inputs.d_ptr->vectors[inputname]);
-            d_ptr->connected_vectors.push_back(p);
-        } else {
-            std::string errtxt("Could not find matching state, der or output to connect from");
-            throw std::invalid_argument(errtxt);
-        }
-    } else if (inputsys->inputs.d_ptr->matrices.count(inputname) > 0) {
-        if (d_ptr->outputp->d_ptr->matrices.count(outputname) == 1) {
-            auto p = make_pair(d_ptr->outputp->d_ptr->matrices[outputname], inputsys->inputs.d_ptr->matrices[inputname]);
-            d_ptr->connected_matrices.push_back(p);
-        } else if ((d_ptr->statep != nullptr) && (d_ptr->statep->d_ptr->matrices.count(outputname) == 1)) {
-            auto p = make_pair(d_ptr->statep->d_ptr->matrices[outputname], inputsys->inputs.d_ptr->matrices[inputname]);
-            d_ptr->connected_matrix_states.push_back(p);
-        } else if ((d_ptr->derp != nullptr) && (d_ptr->derp->d_ptr->matrices.count(outputname) == 1)) {
-            auto p = make_pair(d_ptr->derp->d_ptr->matrices[outputname], inputsys->inputs.d_ptr->matrices[inputname]);
-            d_ptr->connected_matrices.push_back(p);
-        } else {
-            std::string errtxt("Could not find matching state, der or output to connect from");
-            throw std::invalid_argument(errtxt);
-        }
-    } else {
-        throw std::invalid_argument("Could not find input to connect to");
+    if (check_input(inputsys->inputs.d_ptr->scalars, inputname, outputname)) {
+        return;
+    } else if (check_input(inputsys->inputs.d_ptr->vectors, inputname, outputname)) {
+        return;
+    } else if (check_input(inputsys->inputs.d_ptr->matrices, inputname, outputname)) {
+        return;
     }
+    throw std::invalid_argument("Could not find input to connect to");
+
 }
 
 template void ConnectionHandler::connect<CommonSystemImpl>(char* outputname, CommonSystemImpl* inputsys, char* inputname);
