@@ -51,17 +51,14 @@ std::map<std::string, T> get_output_map(VariablePrivate* var) {
     std::map<std::string, T> mymap;
     return mymap;
 }
-
 template<>
 std::map<std::string, double*> get_output_map<double*>(VariablePrivate* var) {
     return var->scalars;
 }
-
 template<>
 std::map<std::string, pysim::vector*> get_output_map<pysim::vector*>(VariablePrivate* var) {
     return var->vectors;
 }
-
 template<>
 std::map<std::string, Eigen::MatrixXd*> get_output_map<Eigen::MatrixXd*>(VariablePrivate* var) {
     return var->matrices;
@@ -72,17 +69,14 @@ std::vector<std::pair<T, T > > get_connections(ConnectionHandlerPrivate* var) {
     std::vector<std::pair<T, T > > connected;
     return connected;
 }
-
 template<>
 std::vector<std::pair<double*, double* > > get_connections(ConnectionHandlerPrivate* var) {
     return var->connected_scalars;
 }
-
 template<>
 std::vector<std::pair<pysim::vector*, pysim::vector* > > get_connections(ConnectionHandlerPrivate* var) {
     return var->connected_vectors;
 }
-
 template<>
 std::vector<std::pair<Eigen::MatrixXd*, Eigen::MatrixXd* > > get_connections(ConnectionHandlerPrivate* var) {
     return var->connected_matrices;
@@ -91,8 +85,6 @@ std::vector<std::pair<Eigen::MatrixXd*, Eigen::MatrixXd* > > get_connections(Con
 template <typename T>
 bool ConnectionHandler::check_input(std::map<std::string, T > input, char* inputname, char* outputname) {
     if (input.count(inputname) > 0) {
-        T inputvar = input[inputname];
-
         std::vector<VariablePrivate*> vec;
         vec.push_back(d_ptr->outputp->d_ptr.get());
         if (d_ptr->statep != nullptr) vec.push_back(d_ptr->statep->d_ptr.get());
