@@ -8,6 +8,9 @@
 #include <vector>
 #include <string>
 
+
+#include <Eigen/dense>
+
 #include "CommonSystemImpl_p.hpp"
 #include "CompositeSystemImpl_p.hpp"
 #include "Variable_p.hpp"
@@ -43,42 +46,64 @@ ConnectionHandler::ConnectionHandler(Variable* outputp, Variable* statep, Variab
 ConnectionHandler::~ConnectionHandler() {
 };
 
-bool ConnectionHandler::check_output_connect(double* input, VariablePrivate* output, char* outputname) {
-    if (output->scalars.count(outputname) > 0) {
-        auto outputvar = output->scalars[outputname];
-        d_ptr->connected_scalars.push_back(std::make_pair(outputvar, input));
-        return true;
-    }
-    return false;
+template<class T>
+std::map<std::string, T> get_output_map(VariablePrivate* var) {
+    std::map<std::string, T> mymap;
+    return mymap;
 }
 
-bool ConnectionHandler::check_output_connect(pysim::vector* input, VariablePrivate* output, char* outputname) {
-    if (output->vectors.count(outputname) > 0) {
-        auto outputvar = output->vectors[outputname];
-        d_ptr->connected_vectors.push_back(std::make_pair(outputvar, input));
-        return true;
-    }
-    return false;
+template<>
+std::map<std::string, double*> get_output_map<double*>(VariablePrivate* var) {
+    return var->scalars;
 }
 
-bool ConnectionHandler::check_output_connect(Eigen::MatrixXd* input, VariablePrivate* output, char* outputname) {
-    if (output->matrices.count(outputname) > 0) {
-        auto outputvar = output->matrices[outputname];
-        d_ptr->connected_matrices.push_back(std::make_pair(outputvar, input));
-        return true;
-    }
-    return false;
+template<>
+std::map<std::string, pysim::vector*> get_output_map<pysim::vector*>(VariablePrivate* var) {
+    return var->vectors;
+}
+
+template<>
+std::map<std::string, Eigen::MatrixXd*> get_output_map<Eigen::MatrixXd*>(VariablePrivate* var) {
+    return var->matrices;
+}
+
+template<class T>
+std::vector<std::pair<T, T > > get_connections(ConnectionHandlerPrivate* var) {
+    std::vector<std::pair<T, T > > connected;
+    return connected;
+}
+
+template<>
+std::vector<std::pair<double*, double* > > get_connections(ConnectionHandlerPrivate* var) {
+    return var->connected_scalars;
+}
+
+template<>
+std::vector<std::pair<pysim::vector*, pysim::vector* > > get_connections(ConnectionHandlerPrivate* var) {
+    return var->connected_vectors;
+}
+
+template<>
+std::vector<std::pair<Eigen::MatrixXd*, Eigen::MatrixXd* > > get_connections(ConnectionHandlerPrivate* var) {
+    return var->connected_matrices;
 }
 
 template <typename T>
-bool ConnectionHandler::check_input(std::map<std::string, T* > input, char* inputname, char* outputname) {
+bool ConnectionHandler::check_input(std::map<std::string, T > input, char* inputname, char* outputname) {
     if (input.count(inputname) > 0) {
-        T* inputvar = input[inputname];
+        T inputvar = input[inputname];
+
         std::vector<VariablePrivate*> vec;
         vec.push_back(d_ptr->outputp->d_ptr.get());
-        vec.push_back(d_ptr->statep->d_ptr.get());
+        if (d_ptr->statep != nullptr) vec.push_back(d_ptr->statep->d_ptr.get());
+        if (d_ptr->derp != nullptr) vec.push_back(d_ptr->derp->d_ptr.get());
+
         for (auto v : vec) {
-            if (check_output_connect(inputvar, v, outputname)) {
+            std::map<std::string, T> output = get_output_map<T>(v);
+            if (output.count(outputname) > 0) {
+                std::vector<std::pair<T, T > > connections = get_connections<T>(d_ptr.get());
+                auto p = std::make_pair(inputvar, output[outputname]);
+                connections.push_back(p);
                 return true;
             }
         }
@@ -86,18 +111,13 @@ bool ConnectionHandler::check_input(std::map<std::string, T* > input, char* inpu
     return false;
 }
 
-template bool ConnectionHandler::check_input(std::map<std::string, double* > input, char* inputname, char* outputname);
-template bool ConnectionHandler::check_input(std::map<std::string, pysim::vector* > input, char* inputname, char* outputname);
-template bool ConnectionHandler::check_input(std::map<std::string, Eigen::MatrixXd* > input, char* inputname, char* outputname);
-
-
 template <typename T>
 void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname) {
     if (check_input(inputsys->inputs.d_ptr->scalars, inputname, outputname)) {
         return;
     } else if (check_input(inputsys->inputs.d_ptr->vectors, inputname, outputname)) {
         return;
-    } else if (check_input(inputsys->inputs.d_ptr->matrices, inputname, outputname)) {
+    }else if (check_input(inputsys->inputs.d_ptr->matrices, inputname, outputname)) {
         return;
     }
     throw std::invalid_argument("Could not find input to connect to");

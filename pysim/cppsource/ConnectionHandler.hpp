@@ -8,7 +8,6 @@
 
 #include "PysimTypes.hpp"
 #include "Variable.hpp"
-#include <Eigen/Dense>
 
 namespace pysim {
 
@@ -31,12 +30,9 @@ public:
     void connect(char* outputname, T* inputsys, char* inputname, int output_index);
 
 protected:
-    bool check_output_connect(double* input, VariablePrivate* output, char* outputname);
-    bool check_output_connect(pysim::vector* input, VariablePrivate* output, char* outputname);
-    bool check_output_connect(Eigen::MatrixXd* input, VariablePrivate* output, char* outputname);
 
     template <typename T>
-    bool check_input(std::map<std::string, T* > input, char* inputname, char* outputname);
+    bool check_input(std::map<std::string, T > input, char* inputname, char* outputname);
 
 
 private:
