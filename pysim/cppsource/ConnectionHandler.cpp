@@ -102,7 +102,7 @@ bool ConnectionHandler::check_input(std::map<std::string, T > input, char* input
             std::map<std::string, T> output = get_output_map<T>(v);
             if (output.count(outputname) > 0) {
                 std::vector<std::pair<T, T > > connections = get_connections<T>(d_ptr.get());
-                auto p = std::make_pair(inputvar, output[outputname]);
+                auto p = std::make_pair(output[outputname],input[inputname]);
                 connections.push_back(p);
                 return true;
             }
