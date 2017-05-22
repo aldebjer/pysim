@@ -14,6 +14,7 @@
     <ClCompile Include="..\..\pysim\cppsource\CommonSystemImpl.cpp" />
     <ClCompile Include="..\..\pysim\cppsource\CompositeSystemImpl.cpp" />
     <ClCompile Include="..\..\pysim\cppsource\ConnectionHandler.cpp" />
+    <ClCompile Include="..\..\pysim\cppsource\CppSimulation.cpp" />
     <ClCompile Include="..\..\pysim\cppsource\CppSystem.cpp" />
     <ClCompile Include="..\..\pysim\cppsource\StoreHandler.cpp" />
     <ClCompile Include="..\..\pysim\cppsource\Variable.cpp" />
@@ -24,6 +25,7 @@
     <ClInclude Include="..\..\pysim\cppsource\CompositeSystemImpl.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\CompositeSystemImpl_p.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\ConnectionHandler.hpp" />
+    <ClInclude Include="..\..\pysim\cppsource\CppSimulation.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\CppSystem.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\PysimTypes.hpp" />
     <ClInclude Include="..\..\pysim\cppsource\SimulatableSystem.hpp" />

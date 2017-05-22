@@ -40,4 +40,5 @@ for name in _getSystemNames():
                            (pysim.cppsystem.Sys,),
                            {'__init__': partialmethod(_setup_my_system,cppsystemname=name),
                             '__doc__':docstring,
+                            '__module__':'pysim.systems.defaultsystemcollection1',
                            })

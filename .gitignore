@@ -23,7 +23,7 @@ pysim/simulatablesystem.cpp
 pysim/systems/defaultsystemcollection1/defaultsystemcollection1.cpp
 
 *.sdf
-
+*.exe
 
 /msvc/cythonsystem/cythonsystem.vcxproj.user
 /pysim/connections.cpp

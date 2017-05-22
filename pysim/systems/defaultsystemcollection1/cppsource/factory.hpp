@@ -2,8 +2,21 @@
 
 #include "vector"
 
-pysim::CppSystem* getCppSystem(char* name);
-std::string getCppSystemDocs(char* name);
+#ifdef WIN32
+    #ifdef DEFAULTSYSTEMCOLLECTION1_EXPORTS  
+        #define DEFAULTSYSTEMCOLLECTION1_API __declspec(dllexport)   
+    #else  
+        #define DEFAULTSYSTEMCOLLECTION1_API __declspec(dllimport)   
+    #endif
+#else
+    #define DEFAULTSYSTEMCOLLECTION1_API
+#endif
+
+extern "C"{
+DEFAULTSYSTEMCOLLECTION1_API pysim::CppSystem* __cdecl getCppSystem(const char* name);
+};
+
+std::string getCppSystemDocs(const char* name);
 
 std::vector<std::string> getCppSystemNames();
 
@@ -15,8 +28,8 @@ class SystemFactory {
 public:
     void RegisterMaker(const std::string& key, ISystemMaker * maker);
     static SystemFactory& Instance();
-    pysim::CppSystem* Create(char* name) const;
-    std::string getDocs(char* name) const;
+    pysim::CppSystem* Create(const char* name) const;
+    std::string getDocs(const char* name) const;
     std::vector<std::string> getNames();
 
 private:
