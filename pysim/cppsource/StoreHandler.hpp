@@ -26,8 +26,8 @@ public:
     int getStoreColumns(char* name);
     void setStoreInterval(double interval);
     std::vector<std::string> getStoreNames();
-    void store_scalar(char* name, double* pointer);
-    void store_vector(char* name, pysim::vector* pointer);
+    void store_scalar(const char* name, double* pointer);
+    void store_vector(const char* name, pysim::vector* pointer);
 
 protected:
 

@@ -292,7 +292,7 @@ void CommonSystemImpl::doStoreStep(double time) {
 //Put the state, der, input or output named "name" in the vector of pointers 
 //to be stored. If none with "name" is found the function raises an invalid_argument
 //exception.
-void  CommonSystemImpl::store(char* name) {
+void  CommonSystemImpl::store(const char* name) {
     if (states.d_ptr->scalars.count(name) == 1) {
         d_ptr->storeHandler.store_scalar(name, states.d_ptr->scalars[name]);
     } else if (ders.d_ptr->scalars.count(name) == 1) {

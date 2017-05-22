@@ -84,12 +84,12 @@ void StoreHandler::doStoreStep(double time) {
 //Put the state, der, input or output named "name" in the vector of pointers 
 //to be stored. If none with "name" is found the function raises an invalid_argument
 //exception.
-void  StoreHandler::store_scalar(char* name, double* value_p) {
+void  StoreHandler::store_scalar(const char* name, double* value_p) {
     shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(value_p));
     d_ptr->storemap[name] = p;
 }
 
-void  StoreHandler::store_vector(char* name, pysim::vector* value_p) {
+void  StoreHandler::store_vector(const char* name, pysim::vector* value_p) {
     shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(value_p));
     d_ptr->storeVectorMap[name] = p;
 }

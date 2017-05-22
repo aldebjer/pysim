@@ -32,7 +32,7 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
         void setPar[T](char* name, T value) except +
         map[string,string] getParDescriptionMap() except +
 
-        void store(char* name)
+        void store(const char* name)
         StoreHandler* getStoreHandlerP()
 
         void add_compare_greater(char* comparename, double comparevalue) except +

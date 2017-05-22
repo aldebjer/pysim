@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
     for (systeminfo& sys_info : system_infos) {
         pysim::CppSystem* sys = factorymap[sys_info.module](sys_info.type.c_str());
         for (std::string name: sys_info.stores){
-            sys->store("x");
+            sys->store(name.c_str());
         }
         systems[sys_info.name] = sys;
         sim.addSystem(sys);

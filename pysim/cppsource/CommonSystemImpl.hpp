@@ -38,7 +38,7 @@ public:
     //////////////////////////////////////////////////////////////////////////
     //      Interface used from python
     //////////////////////////////////////////////////////////////////////////
-    void store(char* name);
+    void store(const char* name);
     StoreHandler* getStoreHandlerP();
 
     void add_compare_greater(char* comparename, double comparevalue);
