@@ -64,6 +64,7 @@ std::map<std::string, Eigen::MatrixXd*> get_output_map<Eigen::MatrixXd*>(Variabl
     return var->matrices;
 }
 
+//Overloaded function 'get_connection' for getting the correect variable for each type
 template<class T>
 std::vector<std::pair<T, T > >* get_connections(ConnectionHandlerPrivate* var) {
     std::vector<std::pair<T, T > > connected;
@@ -85,11 +86,14 @@ std::vector<std::pair<Eigen::MatrixXd*, Eigen::MatrixXd* > >* get_connections(Co
 template <typename T>
 bool ConnectionHandler::check_input(std::map<std::string, T > input, char* inputname, char* outputname) {
     if (input.count(inputname) > 0) {
+
+        //Create a vector vec with all possible sources: outputs, states and ders
         std::vector<VariablePrivate*> vec;
         vec.push_back(d_ptr->outputp->d_ptr.get());
         if (d_ptr->statep != nullptr) vec.push_back(d_ptr->statep->d_ptr.get());
         if (d_ptr->derp != nullptr) vec.push_back(d_ptr->derp->d_ptr.get());
 
+        //For each possible source check if there is a corresponding name. If so create the connection.
         for (auto v : vec) {
             std::map<std::string, T> output = get_output_map<T>(v);
             if (output.count(outputname) > 0) {
