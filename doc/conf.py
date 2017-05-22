@@ -37,7 +37,6 @@ extensions = [
 #    'sphinx.ext.imgmath',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
-	'sphinxcontrib.googleanalytics'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -56,7 +55,6 @@ master_doc = 'index'
 project = 'PySim'
 copyright = '2014-2016, SSPA Sweden AB'
 
-googleanalytics_id = 'UA-78877465-1'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
