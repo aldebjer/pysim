@@ -9,7 +9,7 @@
 #include <string>
 
 
-#include <Eigen/dense>
+#include <Eigen/Dense>
 
 #include "CommonSystemImpl_p.hpp"
 #include "CompositeSystemImpl_p.hpp"
