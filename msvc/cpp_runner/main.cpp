@@ -87,14 +87,18 @@ int main(int argc, char *argv[]) {
 
     for (systeminfo& sys_info : system_infos) {
         pysim::CppSystem* sys = factorymap[sys_info.module](sys_info.type.c_str());
+        for (std::string name: sys_info.stores){
+            //sys->store(name.c_str());
+        }
         systems[sys_info.name] = sys;
         sim.addSystem(sys);
     }
 
 
     sim.simulate(200, 0.1,"rk4",0.1,0.1,false);
-    //std::vector<double> v;
-    //v = sys->getStoreHandlerP()->getStoreVector("x");
-    //std::cout << v.at(20) << std::endl;
+    std::vector<double> v;
+    pysim::CppSystem* sys = systems["vanderpol"];
+    v = sys->getStoreHandlerP()->getStoreVector("x");
+    std::cout << v.at(20) << std::endl;
 
 }
