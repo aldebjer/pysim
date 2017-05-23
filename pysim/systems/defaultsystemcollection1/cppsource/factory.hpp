@@ -13,7 +13,7 @@
 #endif
 
 extern "C"{
-DEFAULTSYSTEMCOLLECTION1_API pysim::CppSystem* __cdecl getCppSystem(const char* name);
+DEFAULTSYSTEMCOLLECTION1_API pysim::CppSystem* getCppSystem(const char* name);
 };
 
 std::string getCppSystemDocs(const char* name);
