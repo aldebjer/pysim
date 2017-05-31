@@ -2,10 +2,9 @@
 
 #include "factory.hpp"
 
-REGISTER_SYSTEM({{systemname}});
-
-string {{systemname}}::getDocs(){
-    return string("");
+std::string {{systemname}}::getDocs(){
+    return std::string("");
+}
 
 {{systemname}}::{{systemname}}(void):{% set comma = joiner(",") %}{% for state in states %}{{comma()}}
     {{state.state_name}}({{state.init_text}}),
