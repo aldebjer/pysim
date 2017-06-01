@@ -1,6 +1,10 @@
 // Place your settings in this file to overwrite default and user settings.
 {  // Configure glob patterns for excluding files and folders.
   "files.exclude": {
+    "**/*.exp":true,
+    "**/*.lib":true,
+    "**/*.ilk":true,
+    "**/*.pdb":true,
     "**/*.pyd": true,
     "**/__pycache__": true,
     "pysim.egg-info/": true,
