@@ -27,7 +27,7 @@
     <ProjectGuid>{5E9A6A31-4D76-4927-A1DB-33254EAFADC6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>cppsystem</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -48,17 +48,17 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\props\python35.props" />
-    <Import Project="..\props\numpy35.props" />
+    <Import Project="..\props\python36-32.props" />
+    <Import Project="..\props\numpy36-32.props" />
     <Import Project="..\props\boost.props" />
     <Import Project="..\props\eigen.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\props\python35.props" />
-    <Import Project="..\props\numpy35.props" />
     <Import Project="..\props\boost.props" />
     <Import Project="..\props\eigen.props" />
+    <Import Project="..\props\numpy36-32.props" />
+    <Import Project="..\props\python36-32.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

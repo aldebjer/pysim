@@ -1,8 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "systems", "systems", "{598F86EA-24B5-4DF0-8E92-4E8E31E5D8B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{54875CA5-5351-4924-A1F0-69CFEEDAA29B}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppsystem", "cppsystem\cppsystem.vcxproj", "{5E9A6A31-4D76-4927-A1DB-33254EAFADC6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
@@ -46,8 +50,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commonsystem", "commonsyste
 		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "systems", "systems", "{598F86EA-24B5-4DF0-8E92-4E8E31E5D8B5}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "compositesystem", "compositesystem\compositesystem.vcxproj", "{B5F49C9D-85C6-40DE-8082-0C9AF3940FF9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
@@ -66,8 +68,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpp_runner", "cpp_runner\cp
 	ProjectSection(ProjectDependencies) = postProject
 		{63A6122D-0888-4CE9-9BB8-5BB33C9846FD} = {63A6122D-0888-4CE9-9BB8-5BB33C9846FD}
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{54875CA5-5351-4924-A1F0-69CFEEDAA29B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

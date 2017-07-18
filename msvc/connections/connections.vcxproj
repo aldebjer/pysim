@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{852BF0B5-FC7B-4884-BA8A-23D0E0C26C07}</ProjectGuid>
     <RootNamespace>connections</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -57,30 +57,26 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\props\python35.props" />
     <Import Project="..\props\boost.props" />
-    <Import Project="..\props\numpy35.props" />
     <Import Project="..\props\eigen.props" />
+    <Import Project="..\props\python36-32.props" />
+    <Import Project="..\props\numpy36-32.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\props\python35.props" />
     <Import Project="..\props\boost.props" />
-    <Import Project="..\props\numpy35.props" />
     <Import Project="..\props\eigen.props" />
+    <Import Project="..\props\python36-32.props" />
+    <Import Project="..\props\numpy36-32.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\props\python35.props" />
     <Import Project="..\props\boost.props" />
-    <Import Project="..\props\numpy35.props" />
     <Import Project="..\props\eigen.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\props\python35.props" />
     <Import Project="..\props\boost.props" />
-    <Import Project="..\props\numpy35.props" />
     <Import Project="..\props\eigen.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
