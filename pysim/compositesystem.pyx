@@ -29,31 +29,39 @@ cdef class CompositeSystem(SimulatableSystem):
 
     def __dealloc__(self):
         del self._c_sys
-        
+
     def store(self,name):
+        """Store a input or output in the system.
+
+        Parameters
+        ----------
+        name : str
+            Name of the variable to store.
+        """
+        bs = bytes(name,'utf-8')
+        self._c_sys.store(bs)
+
+    def store_recursively(self,name):
         """Store a input or output in the composite system if existing and
         an input, output, state or der in all subsystems if existing.
 
         Parameters
         ----------
         name : str
-            The first parameter.
+            Name of the variable to store.
         """
-        vars = dir(self.inputs) + dir(self.outputs)
-        if name in vars:
-            bs = bytes(name,'utf-8')
-            self._c_sys.store(bs)
+        self.store(self, name)
 
-        for sys in self:
-            vars = dir(sys.inputs) + dir(sys.states) + dir(sys.ders) + dir(sys.outputs)
-            if name in vars:
-                sys.store(name)
-                
+        for subsystem in self.subsystems.values():
+            if type(subsystem) is CompositeSystem:
+                subsystem.store_recursive()
+            else:
+                subsystem.store()
+
     def store_all(self):
-        '''Method for storing all inputs, states,
-        ders and outputs of the composite system
-        and its subsystems recursively.
-        '''
+        """Method for storing all inputs, states,
+        ders and outputs of the composite system.
+        """
 
         for input in dir(self.inputs):
             self.store(input)
@@ -61,9 +69,19 @@ cdef class CompositeSystem(SimulatableSystem):
         for output in dir(self.outputs):
             self.store(output)
 
-        for subsystem in sys.subsystems.values():
-            subsystem.store_all()
-                
+    def store_all_recursively(self):
+        '''Method for storing all inputs, states,
+        ders and outputs of the composite system
+        and its subsystems recursively.
+        '''
+        self.store_all()
+
+        for subsystem in self.subsystems.values():
+            if type(subsystem) is CompositeSystem:
+                subsystem.store_all_recursive()
+            else:
+                subsystem.store_all()
+
     def add_subsystem(self, CommonSystem subsystem, name):
         self.subsystems[name] = subsystem
         bs = bytes(name,'utf-8')
