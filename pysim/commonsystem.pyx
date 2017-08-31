@@ -60,6 +60,21 @@ cdef class CommonSystem:
         bs = bytes(name,'utf-8')
         self._c_s.store(bs)
         self.stores.append(name)
+        
+    def store_all(self):
+        """Store all inputs, outputs, states and ders in the system.
+        """
+        for input in dir(self.inputs):
+            self.store(input)
+
+        for state in dir(self.states):
+            self.store(state)
+
+        for der in dir(self.ders):
+            self.store(der)
+
+        for output in dir(self.outputs):
+            self.store(output)
 
     def set_store_interval(self, interval):
         """Set the store interval of this system. 
