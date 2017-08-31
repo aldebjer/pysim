@@ -49,6 +49,18 @@ class CompositeSpring(CompositeSystem):
         self.connect_port_in("force", msd, "f")
         self.add_output_port("position","msd","x1", "Position")
 
+class NestedCompositeSpring(CompositeSystem):
+    """Nested composite system for testing purposes
+    The system contains only a CompositeSpring system. It is used to 
+    test nesting of composite systems. 
+    """
+    def __init__(self):
+        composite_spring = CompositeSpring()
+        self.add_subsystem(composite_spring,"composite_spring")
+        self.add_port_in_scalar("force", 0, "force acting on mass")
+        self.connect_port_in("force", composite_spring, "force")
+        self.add_output_port("position","composite_spring","position", "Position")
+
 class CompositeSquareWave(CompositeSystem):
     """Composite system representating a square wave, used for testing."""
     def __init__(self):
@@ -145,13 +157,15 @@ def test_connection_from_composite():
     sim.simulate(2, 0.1)
     assert np.abs(msd.states.x1 - 0.3240587706226495) < 1e-10
     
-def test_connection_to_composite():
+import pytest
+@pytest.mark.parametrize("spring_class",[CompositeSpring,NestedCompositeSpring])
+def test_connection_to_composite(spring_class):
     """Test that it is possible to connect from an ordinary system to
     a composite
     """
     sim = Sim()
 
-    msd = CompositeSpring()
+    msd = spring_class()
     sim.add_system(msd)
 
     sw = SquareWave()
@@ -179,4 +193,6 @@ def test_system_store():
 
 
 if __name__ == "__main__":
-    test_connected_subsystems()
+    #test_connected_subsystems()
+    test_connection_from_composite()
+    #test_connection_to_composite()

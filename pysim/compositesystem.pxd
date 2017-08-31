@@ -7,6 +7,8 @@ from simulatablesystem cimport SimulatableSystemInterface
 from simulatablesystem cimport SimulatableSystem
 
 from commonsystem cimport CommonSystemImpl
+from compositesystem cimport CommonSystemImpl
+
 
 from commonsystem cimport Variable
 from commonsystem cimport PysimVars
@@ -23,6 +25,7 @@ cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
 
         #void connect(char*, CommonSystemImpl*, char* )
         void add_subsystem(CommonSystemImpl* , string) except +
+        void add_subsystem(CompositeSystemImpl*, string) except +
 
         void add_scalar_port_in(string name, double initial_value, string description) except +
         void add_vector_inport(string name, vector[double] initial_value, string description) except +

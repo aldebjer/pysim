@@ -155,6 +155,15 @@ void CompositeSystemImpl::add_subsystem(CommonSystemImpl* subsystem, string name
     d_ptr->subsystems_common.push_back(subsystem);
 }
 
+void CompositeSystemImpl::add_subsystem(CompositeSystemImpl* subsystem, string name)
+{
+    if (subsystem->getDiscrete()) {
+        throw std::invalid_argument("Discrete systems not supported as subsystems");
+    }
+    d_ptr->subsystems_composite_map[name] = subsystem;
+    d_ptr->subsystems_composite.push_back(subsystem);
+}
+
 void CompositeSystemImpl::add_scalar_port_in(std::string name, double initial_value, std::string description) {
     std::unique_ptr<double> ptr(new double(initial_value));
     d_ptr->scalar_inports.push_back(std::move(ptr));

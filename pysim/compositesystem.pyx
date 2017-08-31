@@ -87,6 +87,12 @@ cdef class CompositeSystem(SimulatableSystem):
         bs = bytes(name,'utf-8')
         self._c_sys.add_subsystem(subsystem._c_s, bs)
 
+    def add_subsystem(self, CompositeSystem subsystem, name):
+        self.subsystems[name] = subsystem
+        bs = bytes(name,'utf-8')
+        self._c_sys.add_subsystem(subsystem._c_s, bs)
+
+
     def add_input_port(self, name, subsystemname, subsystem_input, description):
         warnings.warn("Deprecated, use add_port_in_scalar-connect_port_in instead", DeprecationWarning)
         cdef CommonSystem sys = self.subsystems[subsystemname]

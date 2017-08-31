@@ -39,6 +39,8 @@ public:
     StoreHandler* getStoreHandlerP();
 
     void add_subsystem(CommonSystemImpl* subsystem, std::string name);
+    void add_subsystem(CompositeSystemImpl* subsystem, std::string name);
+
     void add_scalar_port_in(std::string name, double initial_value, std::string description);
     void add_vector_inport(std::string name, std::vector<double> initial_value, std::string description);
     void add_matrix_inport(std::string name, std::vector<std::vector<double>> initial_value, std::string description);
