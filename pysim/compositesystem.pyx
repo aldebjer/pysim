@@ -1,5 +1,5 @@
 import warnings
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 from libcpp.vector cimport vector
 
 import numpy as np
@@ -23,17 +23,12 @@ cdef class CompositeSystem(SimulatableSystem):
         self.inputs = PysimVars._create(&_c_sys_local.inputs)
         self.outputs = PysimVars._create(&_c_sys_local.outputs)
         self.connections = Connections._create(&_c_sys_local.connectionHandler)
-        self.subsystems = {}
+        self.subsystems = OrderedDict()
         self.res = Results._create(_c_sys_local.getStoreHandlerP())
         self.pars = Par()
 
     def __dealloc__(self):
         del self._c_sys
-        
-    def __iter__(self):
-        """Iterating over subsystems
-        """
-        return iter(self.subsystems.values())
         
     def store(self,name):
         """Store a input or output in the composite system if existing and
@@ -54,24 +49,20 @@ cdef class CompositeSystem(SimulatableSystem):
             if name in vars:
                 sys.store(name)
                 
-    def store_all(self, sys=None):
+    def store_all(self):
         '''Method for storing all inputs, states,
         ders and outputs of the composite system
         and its subsystems recursively.
         '''
-        if not sys:
-            self.store_all(sys = self)
-            return
 
-        for input in dir(sys.inputs):
-            sys.store(input)
+        for input in dir(self.inputs):
+            self.store(input)
 
-        for output in dir(sys.outputs):
-            sys.store(output)
+        for output in dir(self.outputs):
+            self.store(output)
 
-        if isinstance(sys, CompositeSystem):
-            for subsystem in sys.subsystems.values():
-                subsystem.store_all()
+        for subsystem in sys.subsystems.values():
+            subsystem.store_all()
                 
     def add_subsystem(self, CommonSystem subsystem, name):
         self.subsystems[name] = subsystem
@@ -107,6 +98,10 @@ cdef class CompositeSystem(SimulatableSystem):
         self._c_sys.add_matrix_inport(bs_names, initialvalue, bs_desc)
         
     def expand_single_input(self, portname, sys, sysport, initialvalue):
+        ''' Method for expanding an input port, i.e. setting an input port 
+        of a subsystem as and input port to the Compositesystem and 
+        connecting them.
+        '''
         if type(initialvalue)==list:
             self.add_port_in_vector(portname, initialvalue, '')
             self.connect_port_in(portname, sys, sysport)
@@ -115,7 +110,7 @@ cdef class CompositeSystem(SimulatableSystem):
             self.connect_port_in(portname, sys, sysport)
         else:
             warning_text = 'Couldnt expand input port with portname {}'.format(portname)
-            raise ConnectionAbortedError(warning_text)
+            raise ValueError(warning_text)
 
     # Add Output ports
     def add_port_out_scalar(self, name, initialvalue, description):
@@ -156,14 +151,7 @@ cdef class CompositeSystem(SimulatableSystem):
             self.connect_port_out(portname, sys, sysport)
         else:
             warning_text = 'Couldnt expand output port with portname {}'.format(portname)
-            raise ConnectionAbortedError(warning_text)
-        
-    #Help functions for setting up a composite system
-    def expand_single_port(self, name, system, initialvalue):
-        if name in dir(system.inputs):
-            self.expand_single_input(name, system, name, initialvalue)
-        else:
-            self.expand_single_output(name, system, name, initialvalue)
+            raise ValueError(warning_text)
 
 class Par():
     '''Help class for emulating pars of composite systems
