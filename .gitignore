@@ -28,3 +28,5 @@ pysim/systems/defaultsystemcollection1/defaultsystemcollection1.cpp
 /msvc/cythonsystem/cythonsystem.vcxproj.user
 /pysim/connections.cpp
 /msvc/UpgradeLog.htm
+*.sqlite
+*.db
