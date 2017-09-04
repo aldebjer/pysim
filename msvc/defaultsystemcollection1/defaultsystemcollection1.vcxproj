@@ -97,13 +97,13 @@
     <LinkIncremental>true</LinkIncremental>
     <TargetExt>.pyd</TargetExt>
     <OutDir>$(ProjectDir)..\..\pysim\systems\</OutDir>
-    <TargetName>$(ProjectName).cp35-win32</TargetName>
+    <TargetName>$(ProjectName).cp36-win32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.pyd</TargetExt>
     <OutDir>$(ProjectDir)..\..\pysim\systems\</OutDir>
-    <TargetName>$(ProjectName).cp35-win32</TargetName>
+    <TargetName>$(ProjectName).cp36-win32</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

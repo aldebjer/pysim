@@ -81,13 +81,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <TargetName>$(ProjectName).cp35-win32</TargetName>
+    <TargetName>$(ProjectName).cp36-win32</TargetName>
     <TargetExt>.pyd</TargetExt>
     <OutDir>$(ProjectDir)..\..\pysim\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\Intermediate</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <TargetName>$(ProjectName).cp35-win32</TargetName>
+    <TargetName>$(ProjectName).cp36-win32</TargetName>
     <TargetExt>.pyd</TargetExt>
     <OutDir>$(ProjectDir)..\..\pysim\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\Intermediate</IntDir>

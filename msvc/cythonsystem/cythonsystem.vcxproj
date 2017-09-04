@@ -82,12 +82,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)..\..\pysim\</OutDir>
-    <TargetName>$(ProjectName).cp35-win32</TargetName>
+    <TargetName>$(ProjectName).cp36-win32</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)..\..\pysim\</OutDir>
-    <TargetName>$(ProjectName).cp35-win32</TargetName>
+    <TargetName>$(ProjectName).cp36-win32</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
