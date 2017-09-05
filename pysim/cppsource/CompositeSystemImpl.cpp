@@ -33,7 +33,7 @@ CompositeSystemImpl::~CompositeSystemImpl()
 
 std::vector<double*> CompositeSystemImpl::getStatePointers() {
     std::vector<double*> states;
-    for (CommonSystemImpl* s : d_ptr->subsystems_common) {
+    for (SimulatableSystemInterface* s : d_ptr->subsystems) {
         std::vector<double*> subs_states = s->getStatePointers();
         std::copy(subs_states.begin(), subs_states.end(), std::back_inserter(states));
     }
@@ -42,7 +42,7 @@ std::vector<double*> CompositeSystemImpl::getStatePointers() {
 
 std::vector<double*> CompositeSystemImpl::getDerPointers() {
     std::vector<double*> ders;
-    for (CommonSystemImpl* s : d_ptr->subsystems_common) {
+    for (SimulatableSystemInterface* s : d_ptr->subsystems) {
         std::vector<double*> subs_ders = s->getDerPointers();
         std::copy(subs_ders.begin(), subs_ders.end(), std::back_inserter(ders));
     }
@@ -52,7 +52,7 @@ std::vector<double*> CompositeSystemImpl::getDerPointers() {
 
 void CompositeSystemImpl::preSim()
 {
-    for (CommonSystemImpl* s : d_ptr->subsystems_common) {
+    for (SimulatableSystemInterface* s : d_ptr->subsystems) {
         s->preSim();
     }
 }
@@ -64,17 +64,18 @@ void CompositeSystemImpl::doStep(double time)
     for_each(d_ptr->connected_inport_vectors.cbegin(), d_ptr->connected_inport_vectors.cend(), copyfunc);
     for_each(d_ptr->connected_inport_matrices.cbegin(), d_ptr->connected_inport_matrices.cend(), copyfunc);
 
-    for (CommonSystemImpl* s : d_ptr->subsystems_common) {
+    for (SimulatableSystemInterface* s : d_ptr->subsystems) {
         s->doStep(time);
         s->copyoutputs();
         s->copystateoutputs();
     }
+
 }
 
 void CompositeSystemImpl::doStoreStep(double time) {
     d_ptr->storeHandler.doStoreStep(time);
 
-    for (CommonSystemImpl* s : d_ptr->subsystems_common) {
+    for (SimulatableSystemInterface* s : d_ptr->subsystems) {
         s->doStoreStep(time);
     }
 
@@ -88,7 +89,7 @@ double CompositeSystemImpl::getNextUpdateTime()
 bool CompositeSystemImpl::do_comparison()
 {
     bool comparison_trigged = false;
-    for (CommonSystemImpl* s : d_ptr->subsystems_common) {
+    for (SimulatableSystemInterface* s : d_ptr->subsystems) {
         comparison_trigged = comparison_trigged || s->do_comparison();
     }
     return comparison_trigged;
@@ -101,8 +102,8 @@ bool CompositeSystemImpl::do_comparison()
 ////////////////////////////////////
 
 void CompositeSystemImpl::copystateoutputs() {
-    for (auto syst: d_ptr->subsystems_common) {
-        syst->copystateoutputs();
+    for (SimulatableSystemInterface* s : d_ptr->subsystems) {
+        s->copystateoutputs();
     }
 }
 
@@ -151,8 +152,8 @@ void CompositeSystemImpl::add_subsystem(CommonSystemImpl* subsystem, string name
     if (subsystem->getDiscrete()) {
         throw std::invalid_argument("Discrete systems not supported as subsystems");
     }
-    d_ptr->subsystems_common_map[name] = subsystem;
-    d_ptr->subsystems_common.push_back(subsystem);
+    d_ptr->subsystems_map[name] = subsystem;
+    d_ptr->subsystems.push_back(subsystem);
 }
 
 void CompositeSystemImpl::add_composite_subsystem(CompositeSystemImpl* subsystem, string name)
@@ -160,8 +161,8 @@ void CompositeSystemImpl::add_composite_subsystem(CompositeSystemImpl* subsystem
     if (subsystem->getDiscrete()) {
         throw std::invalid_argument("Discrete systems not supported as subsystems");
     }
-    d_ptr->subsystems_composite_map[name] = subsystem;
-    d_ptr->subsystems_composite.push_back(subsystem);
+    d_ptr->subsystems_map[name] = subsystem;
+    d_ptr->subsystems.push_back(subsystem);
 }
 
 void CompositeSystemImpl::add_scalar_port_in(std::string name, double initial_value, std::string description) {

@@ -71,18 +71,31 @@ class CompositeSquareWave(CompositeSystem):
         wave_sys.inputs.freq = 0.1
         self.add_subsystem(wave_sys,"wave_sys")
 
-        self.add_input_port("freq",
-                            "wave_sys",
-                            "freq",
-                            "frequency of wave")
-        self.add_input_port("amplitude",
-                            "wave_sys",
-                            "amplitude",
-                            "amplitude of wave")
-        self.add_output_port("signal",
-                             "wave_sys",
-                             "signal",
-                             "signal from wave")
+        self.add_port_in_scalar("freq", 0, "frequency of wave")
+        self.connect_port_in("freq", wave_sys, "freq")
+
+        self.add_port_in_scalar("amplitude", 0, "amplitude of wave")
+        self.connect_port_in("amplitude", wave_sys, "amplitude")
+
+        self.add_port_out_scalar("signal", 0, "signal from wave")
+        self.connect_port_out("signal", wave_sys, "signal")
+
+class NestedCompositeSquareWave(CompositeSystem):
+    """Composite system representating a square wave, used for testing."""
+    def __init__(self):
+        wave_sys = CompositeSquareWave()
+        wave_sys.inputs.amplitude = 50
+        wave_sys.inputs.freq = 0.1
+        self.add_subsystem(wave_sys,"wave_sys")
+
+        self.add_port_in_scalar("freq", 0, "frequency of wave")
+        self.connect_port_in("freq", wave_sys, "freq")
+
+        self.add_port_in_scalar("amplitude", 0, "amplitude of wave")
+        self.connect_port_in("amplitude", wave_sys, "amplitude")
+
+        self.add_port_out_scalar("signal", 0, "signal from wave")
+        self.connect_port_out("signal", wave_sys, "signal")
 
 class CompositeTestSystem(CompositeSystem):
     """Composite system used for testing composite systems."""
@@ -138,7 +151,8 @@ def test_connected_subsystems():
     sim.simulate(2, 0.1)
     assert np.abs(cd.outputs.out-0.32406429942202225) < 1e-10
 
-def test_connection_from_composite():
+@pytest.mark.parametrize("sw_class",[CompositeSquareWave,NestedCompositeSquareWave])
+def test_connection_from_composite(sw_class):
     """Test that it is possible to connect from a composite system to an
     ordinary.
     """
@@ -150,7 +164,7 @@ def test_connection_from_composite():
     msd.inputs.f = 0
     sim.add_system(msd)
 
-    sw = CompositeSquareWave()
+    sw = sw_class()
     sw.inputs.amplitude = 50
     sw.inputs.freq = 0.1
     sim.add_system(sw)
