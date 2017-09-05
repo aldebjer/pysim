@@ -316,6 +316,48 @@ def test_vector_scalar_conn(sys1_class,sys2_class):
     assert sys2.outputs.input_output_scalar == 2.0
     assert sys3.outputs.input_output_scalar == 5.0
 
+@pytest.mark.parametrize("sys1_class,sys2_class",
+                         [(InOutTestSystem,InOutTestSystem),
+                          (PythonInOutTestSystem,PythonInOutTestSystem),
+                          (InOutTestSystem,PythonInOutTestSystem),
+                          (PythonInOutTestSystem,InOutTestSystem),
+                         ])
+def test_nan_connection_scalar(sys1_class,sys2_class):
+    """Check that an exception is thrown if a scalar NaN is being copied to another system.
+    """
+    sys1 = sys1_class()
+    sys2 = sys2_class()
+
+    sys1.inputs.input_scalar = float('nan')
+    sys1.connections.add_connection("input_output_scalar",sys2,"input_scalar")
+
+    sim = Sim()
+    sim.add_system(sys1)
+    sim.add_system(sys2)
+    with pytest.raises(RuntimeError):
+        sim.simulate(0.1,0.1)
+
+@pytest.mark.parametrize("sys1_class,sys2_class",
+                         [(InOutTestSystem,InOutTestSystem),
+                          (PythonInOutTestSystem,PythonInOutTestSystem),
+                          (InOutTestSystem,PythonInOutTestSystem),
+                          (PythonInOutTestSystem,InOutTestSystem),
+                         ])
+def test_nan_connection_matrix(sys1_class,sys2_class):
+    """Check that an exception is thrown if a scalar NaN is being copied to another system.
+    """
+    sys1 = sys1_class()
+    sys2 = sys2_class()
+
+    sys1.inputs.input_matrix= [[float('nan'),0,0],[0,0,0],[0,0,0]]
+    sys1.connections.add_connection("input_output_matrix",sys2,"input_matrix")
+
+    sim = Sim()
+    sim.add_system(sys1)
+    sim.add_system(sys2)
+    with pytest.raises(RuntimeError):
+        sim.simulate(0.1,0.1)
+
 def test_der_as_output():
     """Test that it is possible to connect a derivative as output
     

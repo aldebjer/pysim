@@ -8,7 +8,6 @@
 #include <vector>
 #include <string>
 
-
 #include <Eigen/Dense>
 
 #include "CommonSystemImpl_p.hpp"
@@ -154,18 +153,46 @@ void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname, 
 template void ConnectionHandler::connect<CommonSystemImpl>(char* outputname, CommonSystemImpl* inputsys, char* inputname, int output_index);
 template void ConnectionHandler::connect<CompositeSystemImpl>(char* outputname, CompositeSystemImpl* inputsys, char* inputname, int output_index);
 
+void check_copy(std::pair<double *,double *> vi){
+    if (std::isnan(*(vi.first))){
+        throw std::runtime_error("Output from system is NaN");
+    }
+    *(vi.second) = *(vi.first);
+}
+
+void copy(std::pair<pysim::vector *,pysim::vector *> vi){
+    *(vi.second) = *(vi.first);
+}
+
+void check_copy(std::pair<Eigen::MatrixXd *,Eigen::MatrixXd *> vi){
+    if (vi.first->hasNaN()){
+        throw std::runtime_error("Output from system is NaN");
+    }
+    *(vi.second) = *(vi.first);
+}
+
 void ConnectionHandler::copyoutputs() {
-    auto copyfunc = [] (auto vi){*(vi.second) = *(vi.first);};
-    for_each(d_ptr->connected_scalars.cbegin(),d_ptr->connected_scalars.cend(),copyfunc);
-    for_each(d_ptr->connected_vectors.cbegin(),d_ptr->connected_vectors.cend(),copyfunc);
-    for_each(d_ptr->connected_matrices.cbegin(),d_ptr->connected_matrices.cend(),copyfunc);
+    for( auto connection: d_ptr->connected_scalars){
+        check_copy(connection);
+    }
+    for( auto connection: d_ptr->connected_vectors){
+        copy(connection);
+    }
+    for( auto connection: d_ptr->connected_matrices){
+        check_copy(connection);
+    }
 }
 
 void ConnectionHandler::copystateoutputs() {
-    auto copyfunc = [] (auto vi){*(vi.second) = *(vi.first);};
-    for_each(d_ptr->connected_scalar_states_.cbegin(),d_ptr->connected_scalar_states_.cend(),copyfunc);
-    for_each(d_ptr->connected_vector_states.cbegin(),d_ptr->connected_vector_states.cend(),copyfunc);
-    for_each(d_ptr->connected_matrix_states.cbegin(),d_ptr->connected_matrix_states.cend(),copyfunc);
+    for( auto connection: d_ptr->connected_scalar_states_){
+        check_copy(connection);
+    }
+    for( auto connection: d_ptr->connected_vector_states){
+        copy(connection);
+    }
+    for( auto connection: d_ptr->connected_matrix_states){
+        check_copy(connection);
+    }
 }
 
 
