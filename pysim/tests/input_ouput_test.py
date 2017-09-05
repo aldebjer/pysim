@@ -323,7 +323,8 @@ def test_vector_scalar_conn(sys1_class,sys2_class):
                           (PythonInOutTestSystem,InOutTestSystem),
                          ])
 def test_nan_connection_scalar(sys1_class,sys2_class):
-    """Check that an exception is thrown if a scalar NaN is being copied to another system.
+    """Check that an exception is thrown if a scalar NaN is being copied
+     to another system.
     """
     sys1 = sys1_class()
     sys2 = sys2_class()
@@ -344,7 +345,8 @@ def test_nan_connection_scalar(sys1_class,sys2_class):
                           (PythonInOutTestSystem,InOutTestSystem),
                          ])
 def test_nan_connection_matrix(sys1_class,sys2_class):
-    """Check that an exception is thrown if a scalar NaN is being copied to another system.
+    """Check that an exception is thrown if a scalar NaN is being copied
+     to another system.
     """
     sys1 = sys1_class()
     sys2 = sys2_class()

@@ -1,9 +1,9 @@
-import pytest
+"""Module for testing functionality specific to CppSystem"""
 
 from pysim.systems import InOutTestSystem
-from pysim.simulation import Sim
 
 class InheritanceTester(InOutTestSystem):
+    """Test class whose sole purpose is to inherit from InOutTestSystem"""
     pass
 
 def test_inheritance():

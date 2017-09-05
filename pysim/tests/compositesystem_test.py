@@ -101,28 +101,58 @@ class CompositeTestSystem(CompositeSystem):
     """Composite system used for testing composite systems."""
     def __init__(self):
         self.new_subsystems = [InOutTestSystem(),
-                           InOutTestSystem()]
+                               InOutTestSystem()]
 
         for i in range(len(self.new_subsystems)):
             self.add_subsystem(self.new_subsystems[i],"subsystem_{}".format(i))
 
-            self.add_port_in_scalar("scalar_in_{}".format(i), -1, "input scalar {}".format(i))
-            self.connect_port_in("scalar_in_{}".format(i), self.new_subsystems[i], "input_scalar")
+            self.add_port_in_scalar("scalar_in_{}".format(i),
+                                    -1,
+                                    "input scalar {}".format(i))
+            self.connect_port_in("scalar_in_{}".format(i),
+                                 self.new_subsystems[i],
+                                 "input_scalar")
+
             portoutname = "output_scalar_{}".format(i)
-            self.add_port_out_scalar(portoutname,-1,"Test scalar output from composite system {}".format(i))
-            self.connect_port_out(portoutname, self.new_subsystems[i], "input_output_scalar")
+            podesc = "Test scalar output from composite system {}".format(i)
+            self.add_port_out_scalar(portoutname,
+                                     -1,
+                                     podesc)
+            self.connect_port_out(portoutname,
+                                  self.new_subsystems[i],
+                                  "input_output_scalar")
 
-            self.add_port_in_vector("vector_in_{}".format(i), (1,2,3), "input vector {}".format(i))
-            self.connect_port_in("vector_in_{}".format(i), self.new_subsystems[i], "input_vector")
+            self.add_port_in_vector("vector_in_{}".format(i),
+                                    (1,2,3),
+                                    "input vector {}".format(i))
+            self.connect_port_in("vector_in_{}".format(i),
+                                 self.new_subsystems[i],
+                                 "input_vector")
+
             portoutname = "output_vector_{}".format(i)
-            self.add_port_out_vector(portoutname,(-1, -1, -1),"Test vector output from composite system {}".format(i))
-            self.connect_port_out(portoutname, self.new_subsystems[i], "input_output_vector")
+            podesc = "Test vector output from composite system {}".format(i)
+            self.add_port_out_vector(portoutname,
+                                     (-1, -1, -1),
+                                     podesc)
+            self.connect_port_out(portoutname,
+                                  self.new_subsystems[i],
+                                  "input_output_vector")
 
-            self.add_port_in_matrix("matrix_in_{}".format(i), ((1,2),(3,4)), "input matrix {}".format(i))
-            self.connect_port_in("matrix_in_{}".format(i), self.new_subsystems[i], "input_matrix")
+            self.add_port_in_matrix("matrix_in_{}".format(i),
+                                    ((1,2),(3,4)),
+                                    "input matrix {}".format(i))
+            self.connect_port_in("matrix_in_{}".format(i),
+                                 self.new_subsystems[i],
+                                 "input_matrix")
+
             portoutname = "output_matrix_{}".format(i)
-            self.add_port_out_matrix(portoutname,((-1,-1),(-1,-1)),"Test matrix output from composite system {}".format(i))
-            self.connect_port_out(portoutname, self.new_subsystems[i], "input_output_matrix")
+            podesc = "Test matrix output from composite system {}".format(i)
+            self.add_port_out_matrix(portoutname,
+                                     ((-1,-1),(-1,-1)),
+                                     podesc)
+            self.connect_port_out(portoutname,
+                                  self.new_subsystems[i],
+                                  "input_output_matrix")
 
 def test_port_connections():
     """Test the port connections to and from subsystems"""
@@ -151,7 +181,8 @@ def test_connected_subsystems():
     sim.simulate(2, 0.1)
     assert np.abs(cd.outputs.out-0.32406429942202225) < 1e-10
 
-@pytest.mark.parametrize("sw_class",[CompositeSquareWave,NestedCompositeSquareWave])
+@pytest.mark.parametrize("sw_class",
+                         [CompositeSquareWave,NestedCompositeSquareWave])
 def test_connection_from_composite(sw_class):
     """Test that it is possible to connect from a composite system to an
     ordinary.
@@ -209,5 +240,5 @@ def test_system_store():
 
 if __name__ == "__main__":
     #test_connected_subsystems()
-    test_connection_from_composite()
+    test_connection_from_composite(CompositeSquareWave)
     #test_connection_to_composite()

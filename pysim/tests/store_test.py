@@ -147,4 +147,3 @@ def test_midsim_store(test_class):
     ares = sys.res.a
     assert np.all(np.isnan(ares[:6]))
     assert not np.any(np.isnan(ares[6:]))
-
