@@ -23,8 +23,9 @@ struct VariableContainer {
 };
 
 struct CompositeSystemImplPrivate {
-    std::vector<CommonSystemImpl*> subsystems_common;
-    std::map<std::string, CommonSystemImpl*> subsystems_common_map;
+
+    std::vector<SimulatableSystemInterface*> subsystems;
+    std::map<std::string, SimulatableSystemInterface*> subsystems_map;
 
     std::vector<std::unique_ptr<double>> scalar_inports;
     std::vector<std::unique_ptr<pysim::vector>> vector_inports;

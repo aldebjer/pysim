@@ -6,11 +6,16 @@ import numpy as np
 cimport numpy as np
 
 from compositesystem cimport CompositeSystemImpl
+from compositesystem cimport CompositeSystem
 from commonsystem cimport Results
 from commonsystem cimport CommonSystem
 from simulatablesystem cimport SimulatableSystem
 
 np.import_array()
+
+ctypedef fused NestableSystem:
+    CompositeSystem
+    CommonSystem
 
 cdef class CompositeSystem(SimulatableSystem):
 
@@ -82,10 +87,13 @@ cdef class CompositeSystem(SimulatableSystem):
             else:
                 subsystem.store_all()
 
-    def add_subsystem(self, CommonSystem subsystem, name):
+    def add_subsystem(self, NestableSystem subsystem, name):
         self.subsystems[name] = subsystem
         bs = bytes(name,'utf-8')
-        self._c_sys.add_subsystem(subsystem._c_s, bs)
+        if NestableSystem is CommonSystem:
+            self._c_sys.add_subsystem(<CommonSystemImpl*>subsystem._c_s, bs)
+        elif NestableSystem is CompositeSystem:
+            self._c_sys.add_composite_subsystem(<CompositeSystemImpl*>subsystem._c_sys, bs)
 
     def add_input_port(self, name, subsystemname, subsystem_input, description):
         warnings.warn("Deprecated, use add_port_in_scalar-connect_port_in instead", DeprecationWarning)
@@ -149,15 +157,21 @@ cdef class CompositeSystem(SimulatableSystem):
         cdef vector[vector[double]] m_initial = initialvalue
         self._c_sys.add_outport(bs_names, m_initial, bs_desc)
 
-    def connect_port_in(self, portname, CommonSystem receiving_system, inputname):
+    def connect_port_in(self, portname, NestableSystem receiving_system, inputname):
         bs_portname =  bytes(portname,'utf-8')
         bs_inputname = bytes(inputname,'utf-8')
-        self._c_sys.connect_port_in(bs_portname, receiving_system._c_s, bs_inputname)
+        if NestableSystem is CommonSystem:
+            self._c_sys.connect_port_in(bs_portname, receiving_system._c_s, bs_inputname)
+        elif NestableSystem is CompositeSystem:
+            self._c_sys.connect_port_in_composite(bs_portname, receiving_system._c_sys, bs_inputname)
 
-    def connect_port_out(self, portname, CommonSystem output_system, output_name):
+    def connect_port_out(self, portname, NestableSystem output_system, output_name):
         bs_portname =  bytes(portname,'utf-8')
         bs_output_name = bytes(output_name,'utf-8')
-        self._c_sys.connect_port_out(bs_portname, output_system._c_s, bs_output_name)
+        if NestableSystem is CommonSystem:
+            self._c_sys.connect_port_out(bs_portname, output_system._c_s, bs_output_name)
+        elif NestableSystem is CompositeSystem:
+            self._c_sys.connect_port_out_composite(bs_portname, output_system._c_sys, bs_output_name)
         
     def expand_single_output(self, portname, sys, sysport, initialvalue):
         '''Method for expanding single output port'''

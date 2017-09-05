@@ -2,6 +2,7 @@
 """
 import numpy as np
 from numpy.testing import assert_array_almost_equal
+import pytest
 
 from pysim.simulation import Sim
 from pysim.systems import MassSpringDamper
@@ -49,6 +50,19 @@ class CompositeSpring(CompositeSystem):
         self.connect_port_in("force", msd, "f")
         self.add_output_port("position","msd","x1", "Position")
 
+class NestedCompositeSpring(CompositeSystem):
+    """Nested composite system for testing purposes
+    The system contains only a CompositeSpring system. It is used to 
+    test nesting of composite systems. 
+    """
+    def __init__(self):
+        composite_spring = CompositeSpring()
+        self.add_subsystem(composite_spring,"composite_spring")
+        self.add_port_in_scalar("force", 0, "force acting on mass")
+        self.connect_port_in("force", composite_spring, "force")
+        self.add_port_out_scalar("position",0,"Position of the mass")
+        self.connect_port_out("position",composite_spring,"position")
+
 class CompositeSquareWave(CompositeSystem):
     """Composite system representating a square wave, used for testing."""
     def __init__(self):
@@ -57,18 +71,31 @@ class CompositeSquareWave(CompositeSystem):
         wave_sys.inputs.freq = 0.1
         self.add_subsystem(wave_sys,"wave_sys")
 
-        self.add_input_port("freq",
-                            "wave_sys",
-                            "freq",
-                            "frequency of wave")
-        self.add_input_port("amplitude",
-                            "wave_sys",
-                            "amplitude",
-                            "amplitude of wave")
-        self.add_output_port("signal",
-                             "wave_sys",
-                             "signal",
-                             "signal from wave")
+        self.add_port_in_scalar("freq", 0, "frequency of wave")
+        self.connect_port_in("freq", wave_sys, "freq")
+
+        self.add_port_in_scalar("amplitude", 0, "amplitude of wave")
+        self.connect_port_in("amplitude", wave_sys, "amplitude")
+
+        self.add_port_out_scalar("signal", 0, "signal from wave")
+        self.connect_port_out("signal", wave_sys, "signal")
+
+class NestedCompositeSquareWave(CompositeSystem):
+    """Composite system representating a square wave, used for testing."""
+    def __init__(self):
+        wave_sys = CompositeSquareWave()
+        wave_sys.inputs.amplitude = 50
+        wave_sys.inputs.freq = 0.1
+        self.add_subsystem(wave_sys,"wave_sys")
+
+        self.add_port_in_scalar("freq", 0, "frequency of wave")
+        self.connect_port_in("freq", wave_sys, "freq")
+
+        self.add_port_in_scalar("amplitude", 0, "amplitude of wave")
+        self.connect_port_in("amplitude", wave_sys, "amplitude")
+
+        self.add_port_out_scalar("signal", 0, "signal from wave")
+        self.connect_port_out("signal", wave_sys, "signal")
 
 class CompositeTestSystem(CompositeSystem):
     """Composite system used for testing composite systems."""
@@ -124,7 +151,8 @@ def test_connected_subsystems():
     sim.simulate(2, 0.1)
     assert np.abs(cd.outputs.out-0.32406429942202225) < 1e-10
 
-def test_connection_from_composite():
+@pytest.mark.parametrize("sw_class",[CompositeSquareWave,NestedCompositeSquareWave])
+def test_connection_from_composite(sw_class):
     """Test that it is possible to connect from a composite system to an
     ordinary.
     """
@@ -136,7 +164,7 @@ def test_connection_from_composite():
     msd.inputs.f = 0
     sim.add_system(msd)
 
-    sw = CompositeSquareWave()
+    sw = sw_class()
     sw.inputs.amplitude = 50
     sw.inputs.freq = 0.1
     sim.add_system(sw)
@@ -144,14 +172,15 @@ def test_connection_from_composite():
     sw.connections.add_connection("signal",msd,"f")
     sim.simulate(2, 0.1)
     assert np.abs(msd.states.x1 - 0.3240587706226495) < 1e-10
-    
-def test_connection_to_composite():
+
+@pytest.mark.parametrize("spring_class",[CompositeSpring,NestedCompositeSpring])
+def test_connection_to_composite(spring_class):
     """Test that it is possible to connect from an ordinary system to
     a composite
     """
     sim = Sim()
 
-    msd = CompositeSpring()
+    msd = spring_class()
     sim.add_system(msd)
 
     sw = SquareWave()
@@ -179,4 +208,6 @@ def test_system_store():
 
 
 if __name__ == "__main__":
-    test_connected_subsystems()
+    #test_connected_subsystems()
+    test_connection_from_composite()
+    #test_connection_to_composite()
