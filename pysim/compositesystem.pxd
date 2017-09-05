@@ -25,7 +25,7 @@ cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
 
         #void connect(char*, CommonSystemImpl*, char* )
         void add_subsystem(CommonSystemImpl* , string) except +
-        void add_subsystem(CompositeSystemImpl*, string) except +
+        void add_composite_subsystem(CompositeSystemImpl*, string) except +
 
         void add_scalar_port_in(string name, double initial_value, string description) except +
         void add_vector_inport(string name, vector[double] initial_value, string description) except +
@@ -36,7 +36,9 @@ cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
         void add_outport(string name, vector[vector[double]] initial_value, string description) except +
 
         void connect_port_in(string portname, CommonSystemImpl* subsystem, string subsystem_input) except +
+        void connect_port_in_composite(string portname, CompositeSystemImpl* subsystem, string subsystem_input) except +
         void connect_port_out(string portname, CommonSystemImpl* subsystem, string subsystem_output) except +
+        void connect_port_out_composite(string portname, CompositeSystemImpl* subsystem, string subsystem_output) except +
 
         void store(char* name)
         StoreHandler* getStoreHandlerP()

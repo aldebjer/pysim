@@ -155,7 +155,7 @@ void CompositeSystemImpl::add_subsystem(CommonSystemImpl* subsystem, string name
     d_ptr->subsystems_common.push_back(subsystem);
 }
 
-void CompositeSystemImpl::add_subsystem(CompositeSystemImpl* subsystem, string name)
+void CompositeSystemImpl::add_composite_subsystem(CompositeSystemImpl* subsystem, string name)
 {
     if (subsystem->getDiscrete()) {
         throw std::invalid_argument("Discrete systems not supported as subsystems");
@@ -264,6 +264,28 @@ void CompositeSystemImpl::connect_port_in(std::string portname, CommonSystemImpl
     }
 }
 
+void CompositeSystemImpl::connect_port_in_composite(std::string portname, CompositeSystemImpl* subsystem, std::string subsystem_input) {
+    
+        if (inputs.d_ptr->scalars.count(portname) > 0) {
+            double* port_p = inputs.d_ptr->scalars.at(portname);
+            double* sub_input_p = subsystem->inputs.d_ptr->scalars.at(subsystem_input);
+            auto p = std::make_pair(port_p, sub_input_p);
+            d_ptr->connected_inport_scalars.push_back(p);
+        } else if (inputs.d_ptr->vectors.count(portname) > 0) {
+            pysim::vector* port_p = inputs.d_ptr->vectors.at(portname);
+            pysim::vector* sub_input_p = subsystem->inputs.d_ptr->vectors.at(subsystem_input);
+            auto p = std::make_pair(port_p, sub_input_p);
+            d_ptr->connected_inport_vectors.push_back(p);
+        } else if (inputs.d_ptr->matrices.count(portname) > 0) {
+            Eigen::MatrixXd* port_p = inputs.d_ptr->matrices.at(portname);
+            Eigen::MatrixXd* sub_input_p = subsystem->inputs.d_ptr->matrices.at(subsystem_input);
+            auto p = std::make_pair(port_p, sub_input_p);
+            d_ptr->connected_inport_matrices.push_back(p);
+        } else {
+            throw std::invalid_argument("Port not created");
+        }
+    }
+
 
 
 void CompositeSystemImpl::connect_port_out(std::string portname, CommonSystemImpl* subsystem, std::string subsystem_output) {
@@ -298,5 +320,36 @@ void CompositeSystemImpl::connect_port_out(std::string portname, CommonSystemImp
         throw std::invalid_argument("Port not created");
     }
 }
+
+void CompositeSystemImpl::connect_port_out_composite(std::string portname, CompositeSystemImpl* subsystem, std::string subsystem_output) {
+    
+        if (outputs.d_ptr->scalars.count(portname) > 0) {
+            double* port_p = outputs.d_ptr->scalars.at(portname);
+    
+            std::vector<std::map<std::string, double* >*> v;
+            v.push_back(&subsystem->outputs.d_ptr->scalars);
+            for (auto item : v) {
+                if (item->count(subsystem_output)) {
+                    double* sub_output_p = item->at(subsystem_output);
+                    auto p = std::make_pair(sub_output_p, port_p);
+                    d_ptr->outports.connected_scalars.push_back(p);
+                    return;
+                }
+            }
+            throw std::invalid_argument("Could not find matching state, der, or output to connect from");
+        } else if (outputs.d_ptr->vectors.count(portname) > 0) {
+            pysim::vector* port_p = outputs.d_ptr->vectors.at(portname);
+            pysim::vector* sub_output_p = subsystem->outputs.d_ptr->vectors.at(subsystem_output);
+            auto p = std::make_pair(sub_output_p, port_p);
+            d_ptr->outports.connected_vectors.push_back(p);
+        } else if (outputs.d_ptr->matrices.count(portname) > 0) {
+            Eigen::MatrixXd* port_p = outputs.d_ptr->matrices.at(portname);
+            Eigen::MatrixXd* sub_output_p = subsystem->outputs.d_ptr->matrices.at(subsystem_output);
+            auto p = std::make_pair(sub_output_p, port_p);
+            d_ptr->outports.connected_matrices.push_back(p);
+        } else {
+            throw std::invalid_argument("Port not created");
+        }
+    }
 
 } //End namespace pysim
