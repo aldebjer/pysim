@@ -154,7 +154,7 @@ template void ConnectionHandler::connect<CommonSystemImpl>(char* outputname, Com
 template void ConnectionHandler::connect<CompositeSystemImpl>(char* outputname, CompositeSystemImpl* inputsys, char* inputname, int output_index);
 
 void check_copy(std::pair<double *,double *> vi){
-    if (isnan(*(vi.first))){
+    if (std::isnan(*(vi.first))){
         throw std::runtime_error("Output from system is NaN");
     }
     *(vi.second) = *(vi.first);
