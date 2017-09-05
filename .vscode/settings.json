@@ -18,8 +18,5 @@
     "pysim/cythonsystem.cpp":true,
     "pysim/simulatablesystem.cpp":true,
     "pysim/simulation.cpp":true
-  },
-  "files.associations": {
-    "xstring": "cpp"
   }
 }
