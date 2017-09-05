@@ -1,6 +1,11 @@
 2.3
 ===
- - Template for creating c++ system
+ - Template for creating c++ system.
+ - CompositeSystem can now be a subsystem of CompositeSystem.
+ - Adding Adder6D system.
+ - Adding function store_all for all systems and store_all_recursive for 
+   CompositeSystem.
+ - First version of a standalone c++ only simulation runner.
 
 2.2
 ===
