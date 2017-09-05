@@ -8,7 +8,6 @@
 #include <vector>
 #include <string>
 
-
 #include <Eigen/Dense>
 
 #include "CommonSystemImpl_p.hpp"
@@ -154,8 +153,21 @@ void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname, 
 template void ConnectionHandler::connect<CommonSystemImpl>(char* outputname, CommonSystemImpl* inputsys, char* inputname, int output_index);
 template void ConnectionHandler::connect<CompositeSystemImpl>(char* outputname, CompositeSystemImpl* inputsys, char* inputname, int output_index);
 
-template<typename T>
-void check_copy(T vi){
+void check_copy(std::pair<double *,double *> vi){
+    if (isnan(*(vi.first))){
+        throw std::runtime_error("Output from system is NaN");
+    }
+    *(vi.second) = *(vi.first);
+}
+
+void copy(std::pair<pysim::vector *,pysim::vector *> vi){
+    *(vi.second) = *(vi.first);
+}
+
+void check_copy(std::pair<Eigen::MatrixXd *,Eigen::MatrixXd *> vi){
+    if (vi.first->hasNaN()){
+        throw std::runtime_error("Output from system is NaN");
+    }
     *(vi.second) = *(vi.first);
 }
 
@@ -164,7 +176,7 @@ void ConnectionHandler::copyoutputs() {
         check_copy(connection);
     }
     for( auto connection: d_ptr->connected_vectors){
-        check_copy(connection);
+        copy(connection);
     }
     for( auto connection: d_ptr->connected_matrices){
         check_copy(connection);
@@ -176,7 +188,7 @@ void ConnectionHandler::copystateoutputs() {
         check_copy(connection);
     }
     for( auto connection: d_ptr->connected_vector_states){
-        check_copy(connection);
+        copy(connection);
     }
     for( auto connection: d_ptr->connected_matrix_states){
         check_copy(connection);
