@@ -40,9 +40,9 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
 
 cdef extern from "StoreHandler.hpp" namespace "pysim":
     cdef cppclass StoreHandler:
-        int getStoreSize()  except +
-        int getStoreColumns(char* name) except +
-        void fillWithStore(char* name, double* p, int rows, int columns) except +
+        size_t getStoreSize()  except +
+        size_t getStoreColumns(char* name) except +
+        void fillWithStore(char* name, double* p, size_t rows, size_t columns) except +
         void fillWithTime(double* p) except +
         vector[string] getStoreNames()
         void setStoreInterval(double interval)

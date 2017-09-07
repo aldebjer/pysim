@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
             ss << modulerootpath;
             string module(sys.module);
             boost::algorithm::replace_all(module, ".", "\\");
-            ss << module << ".cp35-win32.pyd";
+            ss << module << ".cp36-win_amd64.pyd";
             HINSTANCE hGetProcIDDLL = LoadLibrary(ss.str().c_str());
             if (!hGetProcIDDLL) {
                 int errorcode = GetLastError();

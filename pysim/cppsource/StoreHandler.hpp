@@ -20,10 +20,10 @@ public:
 
     //Store handling
     const std::vector<double>& getStoreVector(char* name);
-    void fillWithStore(char* name, double* p,int rows, int columns);
+    void fillWithStore(char* name, double* p, size_t rows, size_t columns);
     void fillWithTime(double* p);
-    int getStoreSize();
-    int getStoreColumns(char* name);
+    size_t getStoreSize();
+    size_t getStoreColumns(char* name);
     void setStoreInterval(double interval);
     std::vector<std::string> getStoreNames();
     void store_scalar(const char* name, double* pointer);
