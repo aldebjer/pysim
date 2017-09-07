@@ -98,15 +98,15 @@ const std::vector<double>& StoreHandler::getStoreVector(char* name) {
     return d_ptr->storemap[name]->storearray;
 };
 
-int StoreHandler::getStoreSize() {
+size_t StoreHandler::getStoreSize() {
     return d_ptr->storetimes.size();
 }
 
-int StoreHandler::getStoreColumns(char* name) {
+size_t StoreHandler::getStoreColumns(char* name) {
     if (d_ptr->storemap.count(name) > 0) {
         return 1;
     } else if (d_ptr->storeVectorMap.count(name) > 0) {
-        int columns = d_ptr->storeVectorMap[name]->storearray.back().size();
+        size_t columns = d_ptr->storeVectorMap[name]->storearray.back().size();
         return columns;
     }else{
         throw std::invalid_argument("Could not find column for stored value");
@@ -125,7 +125,7 @@ std::vector<string> StoreHandler::getStoreNames() {
     return out;
 }
 
-void StoreHandler::fillWithStore(char* name, double* p, int rows, int columns) {
+void StoreHandler::fillWithStore(char* name, double* p, size_t rows, size_t columns) {
     double* ptemp = p;
 
     if (d_ptr->storemap.count(name) > 0) {
