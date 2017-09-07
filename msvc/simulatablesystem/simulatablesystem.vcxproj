@@ -170,6 +170,10 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">simulatablesystem.cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulatablesystem.pyx</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulatablesystem.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulatablesystem.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\simulatablesystem.pyx</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">simulatablesystem.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">simulatablesystem.cpp</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

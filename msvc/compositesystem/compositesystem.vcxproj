@@ -177,6 +177,10 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compositesystem.cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\compositesystem.pyx</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">compositesystem.cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\compositesystem.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\compositesystem.pyx</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compositesystem.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compositesystem.cpp</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

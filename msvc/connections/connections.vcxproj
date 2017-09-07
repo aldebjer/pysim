@@ -177,6 +177,10 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">connections.cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\connections.pyx</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">connections.cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\connections.pyx</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">py -m cython -I $(ProjectDir)..\..\ --cplus $(ProjectDir)..\..\pysim\connections.pyx</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">connections.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">connections.cpp</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
