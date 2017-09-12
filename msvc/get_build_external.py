@@ -3,6 +3,7 @@ from io import BytesIO
 import zipfile
 import subprocess
 import platform
+import shutil
 
 def download_unpack(url):
     """Download and unpack from url"""
@@ -25,6 +26,9 @@ def download_all():
            ]
     for url in urls:
         download_unpack(url)
+        
+    shutil.copy("cppzmq-4.2.2/zmq.hpp", "zeromq-4.2.2/include/zmq.hpp")
+    shutil.copy("cppzmq-4.2.2/zmq_addon.hpp", "zeromq-4.2.2/include/zmq_addon.hpp")
 
 def build_all():
     if platform.architecture()[0] == '64bit':
