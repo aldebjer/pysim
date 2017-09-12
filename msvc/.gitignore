@@ -7,4 +7,5 @@
 *.opendb
 *.suo
 eigen-eigen-26667be4f70b/
+zeromq-4.2.2/
 cppzmq-4.2.2/
