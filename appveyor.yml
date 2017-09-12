@@ -13,7 +13,7 @@ environment:
 
 install:
   - cd msvc
-  - "%PYTHON%\\python.exe get_external.py"
+  - "%PYTHON%\\python.exe get_build_external.py"
   - SET EIGEN_ROOT=%CD%\eigen-eigen-26667be4f70b
   - cd ..
   - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
