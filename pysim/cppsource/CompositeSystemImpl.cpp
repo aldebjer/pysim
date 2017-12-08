@@ -128,19 +128,14 @@ void CompositeSystemImpl::copyoutputs() {
 //to be stored. If none with "name" is found the function raises an invalid_argument
 //exception.
 void  CompositeSystemImpl::store(char* name) {
-    if (inputs.d_ptr->scalars.count(name) == 1) {
-        d_ptr->storeHandler.store_scalar(name, inputs.d_ptr->scalars.at(name));
-    } else if (outputs.d_ptr->scalars.count(name) == 1) {
-        d_ptr->storeHandler.store_scalar(name, outputs.d_ptr->scalars.at(name));
-    } else if (inputs.d_ptr->vectors.count(name) == 1) {
-        d_ptr->storeHandler.store_vector(name, inputs.d_ptr->vectors.at(name));
-    } else if (outputs.d_ptr->vectors.count(name) == 1) {
-        d_ptr->storeHandler.store_vector(name, outputs.d_ptr->vectors.at(name));
-    } else {
-        char errmsg[50];
-        snprintf(errmsg, sizeof(errmsg), "Could not store: %s, no such variable", name);
-        throw std::invalid_argument(errmsg);
-    }
+    StoreHandler* shp = &d_ptr->storeHandler;
+    if (shp->checkAndStore(name, outputs)) return;
+    if (shp->checkAndStore(name, inputs)) return;
+
+    char errmsg[50];
+    snprintf(errmsg, sizeof(errmsg), "Could not store: %s, no such variable", name);
+    throw std::invalid_argument(errmsg);
+
 }
 
 StoreHandler* CompositeSystemImpl::getStoreHandlerP() {

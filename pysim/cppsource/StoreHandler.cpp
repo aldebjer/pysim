@@ -1,7 +1,7 @@
 #define _SCL_SECURE_NO_WARNINGS
 
 #include "StoreHandler.hpp"
-
+#include "Variable_p.hpp"
 
 #include <memory>
 #include <boost/algorithm/string.hpp>
@@ -27,10 +27,12 @@ public:
 
 typedef map<string, shared_ptr<StoreStruct<double>>> StoreMap;
 typedef map<string, shared_ptr<StoreStruct<pysim::vector>>> StoreVectorMap;
+typedef map<string, shared_ptr<StoreStruct<Eigen::MatrixXd>>> StoreMatrixMap;
 
 struct StoreHandlerPrivate {
     StoreMap storemap;
     StoreVectorMap storeVectorMap;
+    StoreMatrixMap storeMatrixMap;
     std::vector<double> storetimes;
 
     double storeInterval;
@@ -79,19 +81,40 @@ void StoreHandler::doStoreStep(double time) {
         pysim::vector val = *(i->second->valueP);
         i->second->storearray.push_back(val);
     }
+    for (auto i = d_ptr->storeMatrixMap.cbegin(); i != d_ptr->storeMatrixMap.cend(); ++i) {
+        Eigen::MatrixXd val = *(i->second->valueP);
+        i->second->storearray.push_back(val);
+    }
 }
 
 //Put the state, der, input or output named "name" in the vector of pointers 
 //to be stored. If none with "name" is found the function raises an invalid_argument
 //exception.
-void  StoreHandler::store_scalar(const char* name, double* value_p) {
+void  StoreHandler::store(const char* name, double* value_p) {
     shared_ptr<StoreStruct<double>> p(new StoreStruct<double>(value_p));
     d_ptr->storemap[name] = p;
 }
 
-void  StoreHandler::store_vector(const char* name, pysim::vector* value_p) {
+void  StoreHandler::store(const char* name, pysim::vector* value_p) {
     shared_ptr<StoreStruct<pysim::vector>> p(new StoreStruct<pysim::vector>(value_p));
     d_ptr->storeVectorMap[name] = p;
+}
+
+void  StoreHandler::store(const char* name, Eigen::MatrixXd* value_p) {
+    shared_ptr<StoreStruct<Eigen::MatrixXd>> p(new StoreStruct<Eigen::MatrixXd>(value_p));
+    d_ptr->storeMatrixMap[name] = p;
+}
+
+bool StoreHandler::checkAndStore(const char* name, const Variable& v) {
+    if (v.d_ptr->scalars.count(name) == 1) {
+        store(name, v.d_ptr->scalars[name]);
+        return true;
+    }
+    else if (v.d_ptr->vectors.count(name) == 1) {
+        store(name, v.d_ptr->vectors[name]);
+        return true;
+    }
+    return false;
 }
 
 const std::vector<double>& StoreHandler::getStoreVector(char* name) {
@@ -122,6 +145,14 @@ std::vector<string> StoreHandler::getStoreNames() {
         out.push_back(i->first);
     }
 
+    return out;
+}
+
+std::vector<string> StoreHandler::getStoreMatricesNames() {
+    std::vector<string> out;
+    for (auto i = d_ptr->storeMatrixMap.cbegin(); i != d_ptr->storeMatrixMap.cend(); ++i) {
+        out.push_back(i->first);
+    }
     return out;
 }
 

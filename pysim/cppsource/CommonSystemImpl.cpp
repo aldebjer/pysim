@@ -289,31 +289,22 @@ void CommonSystemImpl::doStoreStep(double time) {
     d_ptr->storeHandler.doStoreStep(time);
 }
 
+
+
 //Put the state, der, input or output named "name" in the vector of pointers 
 //to be stored. If none with "name" is found the function raises an invalid_argument
 //exception.
 void  CommonSystemImpl::store(const char* name) {
-    if (states.d_ptr->scalars.count(name) == 1) {
-        d_ptr->storeHandler.store_scalar(name, states.d_ptr->scalars[name]);
-    } else if (ders.d_ptr->scalars.count(name) == 1) {
-        d_ptr->storeHandler.store_scalar(name, ders.d_ptr->scalars[name]);
-    } else if (inputs.d_ptr->scalars.count(name) == 1) {
-        d_ptr->storeHandler.store_scalar(name, inputs.d_ptr->scalars[name]);
-    } else if (outputs.d_ptr->scalars.count(name) == 1) {
-        d_ptr->storeHandler.store_scalar(name, outputs.d_ptr->scalars[name]);
-    } else if (states.d_ptr->vectors.count(name) == 1) {
-        d_ptr->storeHandler.store_vector(name, states.d_ptr->vectors[name]);
-    } else if (ders.d_ptr->vectors.count(name) == 1) {
-        d_ptr->storeHandler.store_vector(name, ders.d_ptr->vectors[name]);
-    } else if (inputs.d_ptr->vectors.count(name) == 1) {
-        d_ptr->storeHandler.store_vector(name, inputs.d_ptr->vectors[name]);
-    } else if (outputs.d_ptr->vectors.count(name) == 1) {
-        d_ptr->storeHandler.store_vector(name, outputs.d_ptr->vectors[name]);
-    } else {
-        char errmsg[50];
-        snprintf(errmsg, sizeof(errmsg), "Could not store: %s, no such variable", name);
-        throw std::invalid_argument(errmsg);
-    }
+    StoreHandler* shp = &d_ptr->storeHandler;
+    if (shp->checkAndStore(name, outputs)) return;
+    if (shp->checkAndStore(name, states)) return;
+    if (shp->checkAndStore(name, ders)) return;
+    if (shp->checkAndStore(name, inputs)) return;
+
+    char errmsg[50];
+    snprintf(errmsg, sizeof(errmsg), "Could not store: %s, no such variable", name);
+    throw std::invalid_argument(errmsg);
+
 }
 
 void CommonSystemImpl::add_compare_greater(char* comparename, double comparevalue) {

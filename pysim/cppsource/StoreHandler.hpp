@@ -6,10 +6,12 @@
 #include <string>
 
 #include "PysimTypes.hpp"
+#include <Eigen/Dense>
 
 namespace pysim {
 
 struct StoreHandlerPrivate;
+class Variable;
 
 class StoreHandler{
 public:
@@ -26,8 +28,11 @@ public:
     size_t getStoreColumns(char* name);
     void setStoreInterval(double interval);
     std::vector<std::string> getStoreNames();
-    void store_scalar(const char* name, double* pointer);
-    void store_vector(const char* name, pysim::vector* pointer);
+    std::vector<std::string> getStoreMatricesNames();
+    void store(const char* name, double* pointer);
+    void store(const char* name, pysim::vector* pointer);
+    void store(const char* name, Eigen::MatrixXd* pointer);
+    bool checkAndStore(const char* name, const Variable& v);
 
 protected:
 
