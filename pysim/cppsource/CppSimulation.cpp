@@ -8,7 +8,7 @@
 
 namespace pysim{
 
-class EarlyBreakException : public std::exception {
+struct EarlyBreakException : public std::exception {
     virtual const char* what() const throw() {
         return "A comparison resulted in an early break of the simulation";
     }
@@ -201,7 +201,7 @@ void Simulation::setup_odeint(double endtime,
             throw std::invalid_argument(errmsg);
         }
     } catch (EarlyBreakException &eb) {
-        printf("Simulation comparison tripped, early stop\n");
+        printf(eb.what());
     }
 }
 
