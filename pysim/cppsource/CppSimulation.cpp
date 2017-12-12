@@ -201,7 +201,7 @@ void Simulation::setup_odeint(double endtime,
             throw std::invalid_argument(errmsg);
         }
     } catch (EarlyBreakException &eb) {
-        printf(eb.what());
+        printf("%s\n",eb.what());
     }
 }
 
