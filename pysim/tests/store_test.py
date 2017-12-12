@@ -7,6 +7,7 @@ import pytest
 from pysim.simulation import Sim
 from pysim.systems import VanDerPol, SquareWave, RigidBody, InOutTestSystem
 from pysim.systems.python_systems import VanDerPol as PythonVanDerPol
+from pysim.systems.python_systems import InOutTestSystem as PythonInOutTestSystem
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
@@ -81,10 +82,11 @@ def test_store_vector():
     diff = sys.res.position[-1,:]-sys.states.position
     assert np.all(diff == np.array([0.0, 0.0, 0.0]))
 
-def test_store_matrix():
+@pytest.mark.parametrize("test_class",[InOutTestSystem,PythonInOutTestSystem])
+def test_store_matrix(test_class):
     """Test that it is possible to store a matrix"""
     sim = Sim()
-    sys = InOutTestSystem()
+    sys = test_class()
     ref_mat = np.array([[1,0,0],
                         [0,2,0],
                         [0,0,3]])
