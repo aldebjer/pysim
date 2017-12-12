@@ -1,6 +1,7 @@
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.map cimport map
+from libcpp.pair cimport pair
 
 cimport simulatablesystem
 from connections cimport ConnectionHandler
@@ -32,7 +33,7 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
         void setPar[T](char* name, T value) except +
         map[string,string] getParDescriptionMap() except +
 
-        void store(const char* name)
+        void store(const char* name) except +
         StoreHandler* getStoreHandlerP()
 
         void add_compare_greater(char* comparename, double comparevalue) except +
@@ -42,9 +43,12 @@ cdef extern from "StoreHandler.hpp" namespace "pysim":
     cdef cppclass StoreHandler:
         size_t getStoreSize()  except +
         size_t getStoreColumns(char* name) except +
+        pair[size_t, size_t] getStoreRowColumns(char* name) except +
         void fillWithStore(char* name, double* p, size_t rows, size_t columns) except +
         void fillWithTime(double* p) except +
+        void fillWithMatrices(char* name, double* p, size_t timesteps, size_t rows, size_t columns) except +
         vector[string] getStoreNames()
+        vector[string] getStoreMatricesNames()
         void setStoreInterval(double interval)
 
 

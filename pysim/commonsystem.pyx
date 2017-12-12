@@ -137,22 +137,26 @@ cdef class Results:
 
     def __dir__(self):
         names = self.shp.getStoreNames()
+        matnames = self.shp.getStoreMatricesNames()
         unicodenames = [s.decode('utf-8') for s in names]
-        return ["time"]+unicodenames
+        unicodematnames = [s.decode('utf-8') for s in matnames]
+        return ["time"]+unicodenames + unicodematnames
 
     def __getattr__(self,name):
         cdef np.ndarray[np.double_t,ndim=1, mode='c'] a
         cdef np.ndarray[np.double_t,ndim=2, mode='c'] a_mat
+        cdef np.ndarray[np.double_t,ndim=3, mode='c'] a_vecmat
         names = self.shp.getStoreNames()
         unicodenames = [s.decode('utf-8') for s in names]
+        matnames = self.shp.getStoreMatricesNames()
+        unicodematnames = [s.decode('utf-8') for s in matnames]
+        size = self.shp.getStoreSize()
+        bs = bytes(name,'utf-8')
         if name == "time":
-            size = self.shp.getStoreSize()
             a = np.zeros(size, dtype=np.float64) 
             self.shp.fillWithTime(&a[0])
             return a
         elif name in unicodenames:
-            bs = bytes(name,'utf-8')
-            size = self.shp.getStoreSize()
             columns = self.shp.getStoreColumns(bs)
             a_mat = np.ones([size,columns],dtype=np.float64)*np.nan
             self.shp.fillWithStore(bs,&a_mat[0,0],size,columns)
@@ -160,6 +164,11 @@ cdef class Results:
                 return a_mat[:,0]
             else:
                 return a_mat
+        elif name in unicodematnames:
+            rowcols = self.shp.getStoreRowColumns(bs)
+            a_vecmat = np.ones([size, rowcols.first, rowcols.second],dtype=np.float64)*np.nan
+            self.shp.fillWithMatrices(bs, &a_vecmat[0,0,0], size, rowcols.first, rowcols.second)
+            return a_vecmat
         else:
             raise AttributeError("No stored {} in system".format(name))
 

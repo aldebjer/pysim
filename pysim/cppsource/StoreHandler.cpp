@@ -109,9 +109,11 @@ bool StoreHandler::checkAndStore(const char* name, const Variable& v) {
     if (v.d_ptr->scalars.count(name) == 1) {
         store(name, v.d_ptr->scalars[name]);
         return true;
-    }
-    else if (v.d_ptr->vectors.count(name) == 1) {
+    }else if (v.d_ptr->vectors.count(name) == 1) {
         store(name, v.d_ptr->vectors[name]);
+        return true;
+    }else if (v.d_ptr->matrices.count(name) == 1) {
+        store(name, v.d_ptr->matrices[name]);
         return true;
     }
     return false;
@@ -132,6 +134,22 @@ size_t StoreHandler::getStoreColumns(char* name) {
         size_t columns = d_ptr->storeVectorMap[name]->storearray.back().size();
         return columns;
     }else{
+        throw std::invalid_argument("Could not find column for stored value");
+    }
+}
+
+std::pair<size_t, size_t> StoreHandler::getStoreRowColumns(char* name) {
+    if (d_ptr->storemap.count(name) > 0) {
+        return std::pair<size_t, size_t>(1,1);
+    } else if (d_ptr->storeVectorMap.count(name) > 0) {
+        size_t rows = d_ptr->storeVectorMap[name]->storearray.back().size();
+        return std::pair<size_t, size_t>(rows, 1);
+    } else if (d_ptr->storeMatrixMap.count(name) > 0) {
+        size_t rows = d_ptr->storeMatrixMap[name]->storearray.back().rows();
+        size_t columns = d_ptr->storeMatrixMap[name]->storearray.back().cols();
+        return std::pair<size_t, size_t>(rows, columns);
+    }
+    else {
         throw std::invalid_argument("Could not find column for stored value");
     }
 }
@@ -186,6 +204,68 @@ void StoreHandler::fillWithStore(char* name, double* p, size_t rows, size_t colu
                     throw std::runtime_error("Internal Pysim Error, invalid number of columns");
                 }
                 *(--ptemp) = *i;
+            }
+        }
+    }
+}
+
+void StoreHandler::fillWithScalars(char* name, double* p, size_t timesteps) {
+    if (d_ptr->storemap.count(name) <= 0) {
+        throw std::invalid_argument("No such stored variable");
+    }
+    double* ptemp = p + timesteps;
+
+    auto v = &(d_ptr->storemap[name]->storearray);
+    if (v->size() != timesteps) {
+        throw std::runtime_error("Internal Pysim Error, invalid number of timesteps");
+    }
+
+    for (auto i = v->rbegin(); i != v->rend(); ++i) {
+        *(--ptemp) = *i;
+    }
+}
+
+void StoreHandler::fillWithVectors(char* name, double* p, size_t timesteps, size_t rows) {
+    double* ptemp = p + timesteps * rows;
+
+    auto v = &(d_ptr->storeVectorMap[name]->storearray);
+    if (v->size() != timesteps) {
+        throw std::runtime_error("Internal Pysim Error, invalid number of timesteps");
+    }
+
+    for (auto ts = v->rbegin(); ts != v->rend(); ++ts) {
+        if (ts->size() != rows) {
+            throw std::runtime_error("Internal Pysim Error, invalid number of columns");
+        }
+        for (auto i = ts->rbegin(); i != ts->rend(); ++i) {
+            *(--ptemp) = *i;
+        }
+    }
+}
+
+void StoreHandler::fillWithMatrices(char* name, double* p, size_t avail_size, size_t rows, size_t columns) {
+
+    auto v = &(d_ptr->storeMatrixMap[name]->storearray);
+    if (v->size() > avail_size) {
+        throw std::runtime_error("Internal Pysim Error, invalid number of timesteps");
+    }
+
+    //If available timestems are smaller than timesteps to fill then dont
+    //fill the first ones
+    size_t skippedSteps = avail_size - v->size();
+    double* ptemp = p+skippedSteps;
+
+    for (auto ts = v->begin(); ts != v->end(); ++ts) {
+        if (ts->rows() != rows) {
+            throw std::runtime_error("Internal Pysim Error, invalid number of rows");
+        }
+        if (ts->cols() != columns) {
+            throw std::runtime_error("Internal Pysim Error, invalid number of columns");
+        }
+
+        for (size_t i = 0; i < rows; ++i) {
+            for (size_t j = 0; j < columns; ++j) {
+                *(ptemp++) = ts->operator()(i,j);
             }
         }
     }

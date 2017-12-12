@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <utility>
 
 #include "PysimTypes.hpp"
 #include <Eigen/Dense>
@@ -23,9 +24,13 @@ public:
     //Store handling
     const std::vector<double>& getStoreVector(char* name);
     void fillWithStore(char* name, double* p, size_t rows, size_t columns);
+    void fillWithScalars(char* name, double* p, size_t timesteps);
+    void fillWithVectors(char* name, double* p, size_t timesteps, size_t rows);
+    void fillWithMatrices(char* name, double* p, size_t timesteps, size_t rows, size_t columns);
     void fillWithTime(double* p);
     size_t getStoreSize();
     size_t getStoreColumns(char* name);
+    std::pair<size_t, size_t> getStoreRowColumns(char* name);
     void setStoreInterval(double interval);
     std::vector<std::string> getStoreNames();
     std::vector<std::string> getStoreMatricesNames();

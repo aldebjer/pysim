@@ -5,10 +5,18 @@ import numpy as np
 import pytest
 
 from pysim.simulation import Sim
-from pysim.systems import VanDerPol, SquareWave, RigidBody
+from pysim.systems import VanDerPol, SquareWave, RigidBody, InOutTestSystem
 from pysim.systems.python_systems import VanDerPol as PythonVanDerPol
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
+
+@pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
+def test_missing_storename(test_class):
+    """Test that an exception is raised when trying to store a non-existing
+    variable."""
+    sys = test_class()
+    with pytest.raises(ValueError):
+        sys.store("xyxyxy")
 
 @pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
 def test_store_state(test_class):
@@ -72,6 +80,19 @@ def test_store_vector():
     sim.simulate(20,0.01)
     diff = sys.res.position[-1,:]-sys.states.position
     assert np.all(diff == np.array([0.0, 0.0, 0.0]))
+
+def test_store_matrix():
+    """Test that it is possible to store a matrix"""
+    sim = Sim()
+    sys = InOutTestSystem()
+    ref_mat = np.array([[1,0,0],
+                        [0,2,0],
+                        [0,0,3]])
+    sys.store("input_output_matrix")
+    sys.inputs.input_matrix =ref_mat
+    sim.add_system(sys)
+    sim.simulate(2,0.1)
+    assert np.all(sys.res.input_output_matrix[-1]==ref_mat)
 
 @pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol])
 def test_store_after_added_system(test_class):
@@ -147,3 +168,7 @@ def test_midsim_store(test_class):
     ares = sys.res.a
     assert np.all(np.isnan(ares[:6]))
     assert not np.any(np.isnan(ares[6:]))
+
+
+if __name__ == "__main__":
+    test_store_matrix()

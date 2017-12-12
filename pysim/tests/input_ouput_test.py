@@ -16,54 +16,7 @@ from pysim.systems import MassSpringDamper
 from pysim.systems import ReadTextInput
 from pysim.systems import InOutTestSystem
 
-class PythonInOutTestSystem(pysim.cythonsystem.Sys):
-    """Python representation of the cpp InOutTestSystem
-
-    Used for testing that the cpp system behaves as the python system
-    with regards to the input output handling
-    """
-    def __init__(self):
-        self.add_input_scalar("input_scalar")
-        self.add_input_vector("input_vector",3)
-        self.add_input_matrix("input_matrix",3,3)
-
-        self.add_state_scalar("state_scalar","der_scalar")
-        self.add_state_vector("state_vector","der_vector", 3)
-        self.add_state_matrix("state_matrix","der_matrix", 3, 3)
-
-        self.add_output_scalar("input_output_scalar")
-        self.add_output_vector("input_output_vector",3)
-        self.add_output_matrix("input_output_matrix",3,3)
-        self.add_output_scalar("state_output_scalar")
-        self.add_output_vector("state_output_vector",3)
-        self.add_output_matrix("state_output_matrix",3,3)
-
-        self.inputs.input_scalar = 0.0
-        self.inputs.input_vector = [0.0, 0.0, 0.0]
-        self.inputs.input_matrix = np.zeros((3,3))
-
-        self.outputs.input_output_scalar = 0.0
-        self.outputs.input_output_vector = [0.0, 0.0, 0.0]
-        self.outputs.input_output_matrix = np.zeros((3,3))
-        self.outputs.state_output_scalar = 0.0
-        self.outputs.state_output_vector = [0.0, 0.0, 0.0]
-        self.outputs.state_output_matrix = np.zeros((3,3))
-
-        self.states.state_scalar = 1.23
-        self.states.state_vector = np.ones(3)*4.56
-        self.states.state_matrix = np.ones((3,3))*7.89
-        self.ders.der_scalar = 0
-        self.ders.der_vector = np.zeros(3)
-        self.ders.der_matrix = np.zeros((3,3))
-
-    def do_step(self,dummy):
-        """During a timestep we set the outputs to their respective inputs"""
-        self.outputs.input_output_scalar = self.inputs.input_scalar
-        self.outputs.input_output_vector = self.inputs.input_vector
-        self.outputs.input_output_matrix = self.inputs.input_matrix
-        self.outputs.state_output_scalar = self.states.state_scalar
-        self.outputs.state_output_vector = self.states.state_vector
-        self.outputs.state_output_matrix = self.inputs.state_matrix
+from pysim.systems.python_systems import InOutTestSystem as PythonInOutTestSystem
 
 class PythonAdder3D(pysim.cythonsystem.Sys):
     """Class used in testing, equivalent to the c++ Adder3D"""
