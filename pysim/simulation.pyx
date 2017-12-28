@@ -101,6 +101,28 @@ cdef class Sim:
         currentTime = self._c_sim.getCurrentTime()
         return currentTime
 
+    def _save_system(self,system):
+        systemdict = collections.OrderedDict()
+
+        if isinstance(system, CompositeSystem):
+            systemdict["type"] = "CompositeSystem"
+            subsystems = {}
+            for subname,subsys in system.subsystems.items():
+                subsystems[subname] = self._save_system(subsys)
+            systemdict["subsystems"] = subsystems
+        else:
+            systemdict["type"] = type(system).__name__
+            systemdict["module"] = type(system).__module__
+
+        inputdict = collections.OrderedDict()
+        for input_name in dir(system.inputs):
+            inputdict[input_name] = getattr(system.inputs,input_name)
+        systemdict["inputs"]=inputdict
+
+        systemdict["stores"] = system.stores
+
+        return systemdict
+
     def save_config(self,filepath):
         """Stores the simulations systems and their input values to a file.
         The path for the file to be stored at is given by the arguement'
@@ -108,18 +130,7 @@ cdef class Sim:
         """
         systems_dict = collections.OrderedDict()
         for name,system in self.systems.items():
-            systemdict = collections.OrderedDict()
-            systemdict["type"] = type(system).__name__
-            systemdict["module"] = type(system).__module__
-
-            inputdict = collections.OrderedDict()
-            for input_name in dir(system.inputs):
-                inputdict[input_name] = getattr(system.inputs,input_name)
-            systemdict["inputs"]=inputdict
-
-            systemdict["stores"] = system.stores
-
-            systems_dict[name]=systemdict
+            systems_dict[name] = self._save_system(system)
 
         root_dict = {"systems":systems_dict}
 

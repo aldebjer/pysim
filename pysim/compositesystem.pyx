@@ -31,6 +31,7 @@ cdef class CompositeSystem(SimulatableSystem):
         self.subsystems = OrderedDict()
         self.res = Results._create(_c_sys_local.getStoreHandlerP())
         self.pars = Par()
+        self.stores = []
 
     def __dealloc__(self):
         del self._c_sys
@@ -45,6 +46,7 @@ cdef class CompositeSystem(SimulatableSystem):
         """
         bs = bytes(name,'utf-8')
         self._c_sys.store(bs)
+        self.stores.append(name)
 
     def store_recursively(self,name):
         """Store a input or output in the composite system if existing and

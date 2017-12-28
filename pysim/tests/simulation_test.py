@@ -1,8 +1,7 @@
 ﻿"""Tests various aspects of the Sim object that is not tested in other
 places
 """
-import tempfile
-import json
+
 import numpy as np
 import pytest
 
@@ -27,60 +26,6 @@ def test_gettime(test_class):
     sim.simulate(integrationlength, 0.1)
     assert sim.get_time() == integrationlength
 
-@pytest.mark.parametrize("test_class",[VanDerPol,PyVanDerPol])
-def test_store_config(test_class):
-    """Test that it is possible to store the simulation to a file.
-    In this test a temp file is used, it should be deleted automatically
-    after the test.
-    """
-    sys = test_class()
-    sim = Sim()
-    sim.add_system(sys)
-    sys.inputs.a = 1.234
-    sys.store("x")
-
-    file = tempfile.NamedTemporaryFile(delete=False)
-    file.close()
-    sim.save_config(file.name)
-
-    file2 = open(file.name)
-    simdict = json.load(file2)
-    file2.close()
-    assert simdict["systems"]["vanderpol"]["inputs"]["a"] == 1.234
-    assert "x" in simdict["systems"]["vanderpol"]["stores"]
-
-def test_load_config():
-    """Tests the loading of a system configuration from file"""
-
-    configstring = """{
-    "systems": {
-        "vanderpol1": {
-            "inputs": {
-                "a": 1.234,
-                "b": 1.0
-            },
-            "module": "pysim.systems.defaultsystemcollection1",
-            "type": "VanDerPol"
-        },
-       "vanderpol2": {
-            "inputs": {
-                "a": 1.0,
-                "b": 3.456
-            },
-            "module": "pysim.systems.python_systems",
-            "type": "VanDerPol"
-        }
-    }
-}
-"""
-
-    sim = Sim()
-    file = tempfile.NamedTemporaryFile(delete=False, mode="w+")
-    file.write(configstring)
-    file.close()
-    sim.load_config(file.name)
-    assert sim.systems["vanderpol1"].inputs.a == 1.234
-    assert sim.systems["vanderpol2"].inputs.b == 3.456
 
 def test_connected_system():
     """Check that the time for stored values in a discrete system is
@@ -201,8 +146,3 @@ def test_discrete_system():
         x.append(r*x[-1]*(1-x[-1]))
 
     assert np.all(np.abs(lm.res.x[1::10]-x)<1e-18)
-
-
-
-if __name__ == "__main__":
-    test_store_config(VanDerPol)
