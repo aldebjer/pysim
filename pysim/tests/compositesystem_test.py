@@ -239,6 +239,7 @@ def test_system_store():
 
 
 if __name__ == "__main__":
-    #test_connected_subsystems()
+    test_connected_subsystems()
     test_connection_from_composite(CompositeSquareWave)
-    #test_connection_to_composite()
+    test_connection_to_composite(NestedCompositeSpring)
+    test_port_connections()
