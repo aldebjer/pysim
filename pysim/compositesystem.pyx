@@ -32,6 +32,8 @@ cdef class CompositeSystem(SimulatableSystem):
         self.res = Results._create(_c_sys_local.getStoreHandlerP())
         self.pars = Par()
         self.stores = []
+        self.out_ports = {}
+        self.in_ports = {}
 
     def __dealloc__(self):
         del self._c_sys
@@ -114,16 +116,31 @@ cdef class CompositeSystem(SimulatableSystem):
         bs_names =  bytes(name,'utf-8')
         bs_desc = bytes(description,'utf-8')
         self._c_sys.add_scalar_port_in(bs_names, initialvalue, bs_desc)
+        self.in_ports[name] = {"type": "scalar",
+                                "value":initialvalue,
+                                "description": description,
+                                "connections": []
+                               }
 
     def add_port_in_vector(self, name, initialvalue, description):
         bs_names =  bytes(name,'utf-8')
         bs_desc = bytes(description,'utf-8')
         self._c_sys.add_vector_inport(bs_names, initialvalue, bs_desc)
+        self.in_ports[name] = {"type": "vector",
+                                "value":initialvalue,
+                                "description": description,
+                                "connections": []
+                               }
 
     def add_port_in_matrix(self, name, initialvalue, description):
         bs_names =  bytes(name,'utf-8')
         bs_desc = bytes(description,'utf-8')
         self._c_sys.add_matrix_inport(bs_names, initialvalue, bs_desc)
+        self.in_ports[name] = {"type": "matrix",
+                                "value":initialvalue,
+                                "description": description,
+                                "connections": []
+                               }
         
     def expand_single_input(self, portname, sys, sysport, initialvalue):
         ''' Method for expanding an input port, i.e. setting an input port 
@@ -146,18 +163,39 @@ cdef class CompositeSystem(SimulatableSystem):
         cdef string bs_desc = bytes(description,'utf-8')
         cdef double d_initial = initialvalue
         self._c_sys.add_outport(bs_names, d_initial, bs_desc)
+        self.out_ports[name] = {"type": "scalar",
+                                "value":initialvalue,
+                                "description": description,
+                                "connections": []
+                               }
 
     def add_port_out_vector(self, name, initialvalue, description):
         cdef string bs_names =  bytes(name,'utf-8')
         cdef string bs_desc = bytes(description,'utf-8')
         cdef vector[double] v_initial = initialvalue
         self._c_sys.add_outport(bs_names, v_initial, bs_desc)
+        self.out_ports[name] = {"type": "vector",
+                                "value":initialvalue,
+                                "description": description,
+                                "connections": []
+                               }
 
     def add_port_out_matrix(self, name, initialvalue, description):
         cdef string bs_names =  bytes(name,'utf-8')
         cdef string bs_desc = bytes(description,'utf-8')
         cdef vector[vector[double]] m_initial = initialvalue
         self._c_sys.add_outport(bs_names, m_initial, bs_desc)
+        self.out_ports[name] = {"type": "matrix",
+                                "value":initialvalue,
+                                "description": description,
+                                "connections": []
+                               }
+
+    def _get_subsystem_name(self, NestableSystem system):
+        for name,subsys in self.subsystems.items():
+            if id(subsys) == id(system):
+                return name
+        raise ValueError('argument is not a system')
 
     def connect_port_in(self, portname, NestableSystem receiving_system, inputname):
         bs_portname =  bytes(portname,'utf-8')
@@ -166,6 +204,10 @@ cdef class CompositeSystem(SimulatableSystem):
             self._c_sys.connect_port_in(bs_portname, receiving_system._c_s, bs_inputname)
         elif NestableSystem is CompositeSystem:
             self._c_sys.connect_port_in_composite(bs_portname, receiving_system._c_sys, bs_inputname)
+        con = {"subsystem": self._get_subsystem_name(receiving_system),
+               "input": inputname,
+              }
+        self.in_ports[portname]["connections"].append(con)
 
     def connect_port_out(self, portname, NestableSystem output_system, output_name):
         bs_portname =  bytes(portname,'utf-8')
@@ -174,7 +216,11 @@ cdef class CompositeSystem(SimulatableSystem):
             self._c_sys.connect_port_out(bs_portname, output_system._c_s, bs_output_name)
         elif NestableSystem is CompositeSystem:
             self._c_sys.connect_port_out_composite(bs_portname, output_system._c_sys, bs_output_name)
-        
+        con = {"subsystem": self._get_subsystem_name(output_system),
+               "output": output_name,
+              }
+        self.out_ports[portname]["connections"].append(con)
+
     def expand_single_output(self, portname, sys, sysport, initialvalue):
         '''Method for expanding single output port'''
         if type(initialvalue)==list:

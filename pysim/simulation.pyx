@@ -106,6 +106,8 @@ cdef class Sim:
 
         if isinstance(system, CompositeSystem):
             systemdict["type"] = "CompositeSystem"
+            systemdict["ports"] = {"in": system.in_ports, "out": system.out_ports}
+
             subsystems = {}
             for subname,subsys in system.subsystems.items():
                 subsystems[subname] = self._save_system(subsys)

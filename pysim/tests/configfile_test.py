@@ -7,7 +7,7 @@ import pytest
 from pysim.simulation import Sim
 from pysim.systems import VanDerPol
 from pysim.systems.python_systems import VanDerPol as PyVanDerPol
-from pysim.tests.compositesystem_test import NestedCompositeSpring
+from pysim.tests.compositesystem_test import NestedCompositeSpring, CompositeSpring
 
 __copyright__ = 'Copyright (c) 2014-2017 SSPA Sweden AB'
 
@@ -33,15 +33,14 @@ def test_store_config(test_class):
     assert simdict["systems"]["vanderpol"]["inputs"]["a"] == 1.234
     assert "x" in simdict["systems"]["vanderpol"]["stores"]
 
-def test_store_config_composite():
-    """Test that it is possible to store the simulation with composite systems
+def test_store_config_composite_ports():
+    """Test that it is possible to store the ports of a composite systems
     to a file.
     """
-    sys = NestedCompositeSpring()
+
+    sys = CompositeSpring()
     sim = Sim()
-    sim.add_system(sys, "composite1")
-    sys.inputs.force = 1.234
-    sys.store("position")
+    sim.add_system(sys, "composite_root")
 
     # In this test a temp file is used, it should be deleted automatically
     # after the test.
@@ -52,8 +51,22 @@ def test_store_config_composite():
     file2 = open(file.name)
     simdict = json.load(file2)
     file2.close()
-    assert simdict["systems"]["composite1"]["inputs"]["force"] == 1.234
-    assert "position" in simdict["systems"]["composite1"]["stores"]
+    print(simdict)
+
+    ports = simdict["systems"]["composite_root"]["ports"]
+    forceport = ports["in"]["force"]
+    assert forceport["type"] == "scalar"
+    assert forceport["value"] == 0
+    assert forceport["description"] == "force acting on mass"
+    assert forceport["connections"][0]["subsystem"] == "msd"
+    assert forceport["connections"][0]["input"] == "f"
+
+    posport = ports["out"]["position"]
+    assert posport["type"] == "scalar"
+    assert posport["value"] == 0
+    assert posport["description"] == "Position"
+    assert posport["connections"][0]["subsystem"] == "msd"
+    assert posport["connections"][0]["output"] == "x1"
 
 def test_load_config():
     """Tests the loading of a system configuration from file"""
@@ -89,4 +102,4 @@ def test_load_config():
     assert sim.systems["vanderpol2"].inputs.b == 3.456
 
 if __name__ == "__main__":
-    test_store_config_composite()
+    test_store_config_composite_ports()
