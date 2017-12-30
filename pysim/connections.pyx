@@ -26,6 +26,9 @@ cdef class Connections:
         p._c_connectionHandler = ptr
         return p
 
+    def __init__(self):
+        self.connection_list = []
+
     def add_connection(self,outputname, inputsys,inputname, output_element = None):
         """Connect the outputs from this system to the inputs of another.
 
@@ -64,3 +67,5 @@ cdef class Connections:
                 self._c_connectionHandler.connect[CompositeSystemImpl](bsout,(<CompositeSystem>inputsys)._c_sys,bsin, output_element)
             else:
                 self._c_connectionHandler.connect[CompositeSystemImpl](bsout,(<CompositeSystem>inputsys)._c_sys,bsin)
+
+        self.connection_list.append((outputname, inputsys, inputname))

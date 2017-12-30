@@ -49,6 +49,12 @@ class Dormand_Prince_5:
         self.relative_error = 1e-4
         self.dense_output = True
 
+def _get_system_name(systemdict, system):
+    for name,subsys in systemdict.items():
+        if id(subsys) == id(system):
+            return name
+    raise ValueError('argument is not a system')
+
 cdef class Sim:
     """This class represents an entire simulation. 
        Each simulation consists of one or more Systems that can be added
@@ -101,16 +107,17 @@ cdef class Sim:
         currentTime = self._c_sim.getCurrentTime()
         return currentTime
 
-    def _save_system(self,system):
+    def _save_system(self,system, namedict):
         systemdict = collections.OrderedDict()
 
         if isinstance(system, CompositeSystem):
             systemdict["type"] = "CompositeSystem"
+            systemdict["module"] = "pysim.compositesystem"
             systemdict["ports"] = {"in": system.in_ports, "out": system.out_ports}
 
             subsystems = {}
             for subname,subsys in system.subsystems.items():
-                subsystems[subname] = self._save_system(subsys)
+                subsystems[subname] = self._save_system(subsys, system.subsystems)
             systemdict["subsystems"] = subsystems
         else:
             systemdict["type"] = type(system).__name__
@@ -120,6 +127,12 @@ cdef class Sim:
         for input_name in dir(system.inputs):
             inputdict[input_name] = getattr(system.inputs,input_name)
         systemdict["inputs"]=inputdict
+
+        cons = []
+        for c in system.connections.connection_list:
+            sysname = _get_system_name(namedict, c[1])
+            cons.append((c[0],sysname, c[2]))
+        systemdict["connections"] = cons
 
         systemdict["stores"] = system.stores
 
@@ -132,7 +145,7 @@ cdef class Sim:
         """
         systems_dict = collections.OrderedDict()
         for name,system in self.systems.items():
-            systems_dict[name] = self._save_system(system)
+            systems_dict[name] = self._save_system(system, self.systems)
 
         root_dict = {"systems":systems_dict}
 
@@ -143,6 +156,46 @@ cdef class Sim:
                       indent=4,
                       separators=(',', ': '))
 
+    def _setup_system(self, sys_dict):
+        typename = sys_dict["type"]
+        modulename = sys_dict["module"]
+        mod = importlib.import_module(modulename)
+        system = getattr(mod,typename)()
+
+        if "ports" in sys_dict.keys():
+            for name, value in sys_dict["ports"]["in"].items():
+                if value["type"] == "scalar":
+                    system.add_port_in_scalar(name, value["value"], value["description"])
+            for name, value in sys_dict["ports"]["out"].items():
+                if value["type"] == "scalar":
+                    system.add_port_out_scalar(name, value["value"], value["description"])
+
+        for iname,ivalue in sys_dict["inputs"].items():
+            setattr(system.inputs,iname,ivalue)
+        if "subsystems" in sys_dict.keys():
+            for subsysname, subsys_dict in sys_dict["subsystems"].items():
+               subsys = self._setup_system(subsys_dict)
+               system.add_subsystem(subsys, subsysname)
+        return system
+
+    def _connect_system(self, system, sys_dict, siblings):
+        for con in sys_dict["connections"]:
+            system.connections.add_connection(con[0], siblings[con[1]], con[2])
+
+        if "ports" in sys_dict.keys():
+            for name, portdict in sys_dict["ports"]["in"].items():
+                for con in portdict["connections"]:
+                    subsys = system.subsystems[con["subsystem"]]
+                    system.connect_port_in(name, subsys, con["input"])
+            for name, portdict in sys_dict["ports"]["out"].items():
+                for con in portdict["connections"]:
+                    subsys = system.subsystems[con["subsystem"]]
+                    system.connect_port_out(name, subsys, con["output"])
+
+        if "subsystems" in sys_dict.keys():
+            for subsysname, subsys_dict in sys_dict["subsystems"].items():
+                self._connect_system(system.subsystems[subsysname], subsys_dict, system.subsystems)
+
     def load_config(self,filepath):
         """Loads a number of systems and their input values from a file.
         The file is loaded from the path supplied as an argument to the 
@@ -151,16 +204,14 @@ cdef class Sim:
         d = collections.OrderedDict()
         with open(filepath,'r') as f:
             d = json.load(f,object_pairs_hook=collections.OrderedDict)
-        systems = d["systems"]
-        for name,sys_dict in systems.items():
-            modulename = sys_dict["module"]
-            typename = sys_dict["type"]
-            mod = importlib.import_module(modulename)
-            system = getattr(mod,typename)()
-            self.add_system(system,name)
+        systems_dict = d["systems"]
+        for name,sys_dict in systems_dict.items():
+            system = self._setup_system(sys_dict)
+            self.add_system(system, name)
 
-            for iname,ivalue in systems[name]["inputs"].items():
-                setattr(system.inputs,iname,ivalue)
+        for name,sys_dict in systems_dict.items():
+            self._connect_system(self.systems[name], sys_dict, self.systems)
+
 
     def simulate(self, double duration, double dt, solver = Runge_Kutta_4() ):
         """Start or continue a simulation for duration seconds.

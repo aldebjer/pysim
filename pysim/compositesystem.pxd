@@ -47,4 +47,12 @@ cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
 cdef class CompositeSystem(SimulatableSystem):
     cdef CompositeSystemImpl * _c_sys
     cdef public PysimVars inputs
+    cdef public PysimVars outputs
+    cdef public object subsystems
+    cdef public object res
+    cdef public object pars
+    cdef public object stores
+    cdef public object out_ports
+    cdef public object in_ports
     cdef public Connections connections
+

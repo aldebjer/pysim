@@ -11,5 +11,6 @@ cdef extern from "ConnectionHandler.hpp" namespace "pysim":
 
 cdef class Connections:
     cdef ConnectionHandler* _c_connectionHandler
+    cdef readonly object connection_list
     @staticmethod
     cdef _create(ConnectionHandler* ptr)
