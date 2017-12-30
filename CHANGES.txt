@@ -5,6 +5,7 @@
  - Adding Adder6D system.
  - Adding function store_all for all systems and store_all_recursive for 
    CompositeSystem.
+ - Connections and Composite systems now work with config files
  - First version of a standalone c++ only simulation runner.
 
 2.2
