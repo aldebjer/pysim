@@ -1,5 +1,5 @@
 numpy
-cython>=0.21
+cython>=0.21,<0.28.0
 pytest
 pytest-runner
 
