@@ -10,6 +10,7 @@ public:
 
     virtual void preSim(){};
     virtual void doStep(double time)=0;
+    virtual void postStep(){};
     virtual void doStoreStep(double time) = 0;
     virtual void copyoutputs() = 0;
     virtual void copystateoutputs() = 0;
