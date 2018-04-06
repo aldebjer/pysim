@@ -26,6 +26,7 @@
     <Compile Include="input_ouput_test.py" />
     <Compile Include="integration_test.py" />
     <Compile Include="parameter_test.py" />
+    <Compile Include="poststep_test.py" />
     <Compile Include="simulation_test.py" />
     <Compile Include="state_test.py" />
     <Compile Include="store_test.py" />

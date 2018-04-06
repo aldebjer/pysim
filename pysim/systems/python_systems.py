@@ -101,4 +101,4 @@ class InOutTestSystem(Sys):
         self.outputs.input_output_matrix = self.inputs.input_matrix
         self.outputs.state_output_scalar = self.states.state_scalar
         self.outputs.state_output_vector = self.states.state_vector
-        self.outputs.state_output_matrix = self.inputs.state_matrix
+        self.outputs.state_output_matrix = self.states.state_matrix
