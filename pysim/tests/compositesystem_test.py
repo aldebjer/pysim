@@ -159,7 +159,7 @@ def test_port_connections():
     cs = CompositeTestSystem()
     ref_scalar = 5.0
     ref_vector = (6.0, 7.0, 8.0)
-    ref_matrix = ((9.0, 10.0),(11.0, 12.0))
+    ref_matrix = ((9.0, 10.0, 11.0),(12.0, 13.0, 14.0),(15.0, 16.0, 17.0))
     cs.inputs.scalar_in_0 = ref_scalar
     cs.inputs.vector_in_0 = ref_vector
     cs.inputs.matrix_in_0 = ref_matrix
@@ -267,7 +267,8 @@ def test_composite_vs_connected_outputs():
 
 
 if __name__ == "__main__":
-    test_connected_subsystems()
-    test_connection_from_composite(CompositeSquareWave)
-    test_connection_to_composite(NestedCompositeSpring)
-    test_port_connections()
+    #test_connected_subsystems()
+    #test_connection_from_composite(CompositeSquareWave)
+    #test_connection_to_composite(NestedCompositeSpring)
+    #test_port_connections()
+    test_system_store()
