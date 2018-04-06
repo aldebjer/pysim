@@ -179,7 +179,7 @@ def test_connected_subsystems():
     sim.add_system(cd)
 
     sim.simulate(2, 0.1)
-    assert np.abs(cd.outputs.out-0.32406429942202225) < 1e-10
+    assert np.abs(cd.outputs.out-0.3240587706226495) < 1e-10
 
 @pytest.mark.parametrize("sw_class",
                          [CompositeSquareWave,NestedCompositeSquareWave])
@@ -221,7 +221,7 @@ def test_connection_to_composite(spring_class):
 
     sw.connections.add_connection("signal",msd,"force")
     sim.simulate(2, 0.1)
-    assert np.abs(msd.outputs.position - 0.32406429942202225) < 1e-10
+    assert np.abs(msd.outputs.position - 0.3240587706226495) < 1e-10
 
 
 def test_system_store():
@@ -233,8 +233,36 @@ def test_system_store():
 
     sim.simulate(2, 0.1)
 
-    assert np.abs(cd.res.position[5]-0.90459733332768599) < 1e-7
-    assert np.abs(cd.res.position[-1]-0.32406429942202225) < 1e-7
+    assert np.abs(cd.res.position[5]-0.90450499444532406) < 1e-7
+    assert np.abs(cd.res.position[-1]-0.3240587706226495) < 1e-7
+
+def test_composite_vs_connected_outputs():
+    """Test that the same result is given regardless if two systems are 
+    connected externally or put together in a composite system"""
+
+    sim = Sim()
+
+    #Externally connected systems
+    msd = MassSpringDamper()
+    msd.inputs.b = 80
+    msd.inputs.m = 50
+    msd.inputs.f = 0
+    sim.add_system(msd)
+
+    sw = SquareWave()
+    sw.inputs.amplitude = 50
+    sw.inputs.freq = 0.1
+    sim.add_system(sw)
+
+    sw.connections.add_connection("signal",msd,"f")
+
+    #Composite system
+    cd = ControlledSpring()
+    sim.add_system(cd)
+
+    sim.simulate(2, 0.1)
+
+    assert cd.outputs.out == msd.states.x1
 
 
 

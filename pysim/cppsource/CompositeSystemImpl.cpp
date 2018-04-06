@@ -70,6 +70,15 @@ void CompositeSystemImpl::doStep(double time)
 	copyinternaloutputs();
 }
 
+void CompositeSystemImpl::postStep() {
+
+	for (SimulatableSystemInterface* s : d_ptr->subsystems) {
+		s->postStep();
+	}
+
+	copyinternaloutputs();
+}
+
 void CompositeSystemImpl::doStoreStep(double time) {
     d_ptr->storeHandler.doStoreStep(time);
 
