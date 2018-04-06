@@ -126,9 +126,17 @@ cdef class Sys:
     def do_step(self,time):
         print("stepping {}".format(time))
 
+    cpdef void post_step(self):
+        pass
+
 
 cdef api void step_callback(void* sys, double time):
     cdef Sys s
     s = <Sys> (sys)
     s.do_step(time)
+
+cdef api void post_step_callback(void* sys):
+    cdef Sys s
+    s = <Sys> (sys)
+    s.post_step()
 

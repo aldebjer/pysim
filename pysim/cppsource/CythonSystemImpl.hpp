@@ -14,6 +14,7 @@ public:
 
     void preSim(){};
     void doStep(double time);
+	void postStep();
 
     double getNextUpdateTime();
 
