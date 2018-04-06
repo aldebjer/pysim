@@ -240,7 +240,7 @@ void CompositeSystemImpl::add_outport(std::string name, std::vector<std::vector<
 
     std::unique_ptr<Eigen::MatrixXd> ptr(new Eigen::MatrixXd(m));
     d_ptr->outports.matrices.push_back(std::move(ptr));
-    outputs.d_ptr->matrices[name] = d_ptr->matrix_inports.back().get();
+    outputs.d_ptr->matrices[name] = d_ptr->outports.matrices.back().get();
     outputs.d_ptr->descriptions[name] = description;
 }
 
