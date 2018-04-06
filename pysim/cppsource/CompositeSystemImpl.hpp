@@ -26,6 +26,7 @@ public:
     void copystateoutputs();
     std::vector<double*> getStatePointers();
     std::vector<double*> getDerPointers();
+	void postStep();
     void doStoreStep(double time);
     bool getDiscrete() { return false; };
 
