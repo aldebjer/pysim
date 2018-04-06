@@ -59,10 +59,7 @@ void CompositeSystemImpl::preSim()
 
 void CompositeSystemImpl::doStep(double time)
 {
-    auto copyfunc = [](auto vi) {*(vi.second) = *(vi.first); };
-    for_each(d_ptr->connected_inport_scalars.cbegin(), d_ptr->connected_inport_scalars.cend(), copyfunc);
-    for_each(d_ptr->connected_inport_vectors.cbegin(), d_ptr->connected_inport_vectors.cend(), copyfunc);
-    for_each(d_ptr->connected_inport_matrices.cbegin(), d_ptr->connected_inport_matrices.cend(), copyfunc);
+	copyinternalinputs();
 
     for (SimulatableSystemInterface* s : d_ptr->subsystems) {
         s->doStep(time);
@@ -70,6 +67,7 @@ void CompositeSystemImpl::doStep(double time)
         s->copystateoutputs();
     }
 
+	copyinternaloutputs();
 }
 
 void CompositeSystemImpl::doStoreStep(double time) {
@@ -107,13 +105,21 @@ void CompositeSystemImpl::copystateoutputs() {
     }
 }
 
+void CompositeSystemImpl::copyinternalinputs() {
+	auto copyfunc = [](auto vi) {*(vi.second) = *(vi.first); };
+	for_each(d_ptr->connected_inport_scalars.cbegin(), d_ptr->connected_inport_scalars.cend(), copyfunc);
+	for_each(d_ptr->connected_inport_vectors.cbegin(), d_ptr->connected_inport_vectors.cend(), copyfunc);
+	for_each(d_ptr->connected_inport_matrices.cbegin(), d_ptr->connected_inport_matrices.cend(), copyfunc);
+}
+
+void CompositeSystemImpl::copyinternaloutputs() {
+	auto copyfunc = [](auto vi) {*(vi.second) = *(vi.first); };
+	for_each(d_ptr->outports.connected_scalars.cbegin(), d_ptr->outports.connected_scalars.cend(), copyfunc);
+	for_each(d_ptr->outports.connected_vectors.cbegin(), d_ptr->outports.connected_vectors.cend(), copyfunc);
+	for_each(d_ptr->outports.connected_matrices.cbegin(), d_ptr->outports.connected_matrices.cend(), copyfunc);
+}
+
 void CompositeSystemImpl::copyoutputs() {
-
-    auto copyfunc = [](auto vi) {*(vi.second) = *(vi.first); };
-    for_each(d_ptr->outports.connected_scalars.cbegin(), d_ptr->outports.connected_scalars.cend(), copyfunc);
-    for_each(d_ptr->outports.connected_vectors.cbegin(), d_ptr->outports.connected_vectors.cend(), copyfunc);
-    for_each(d_ptr->outports.connected_matrices.cbegin(), d_ptr->outports.connected_matrices.cend(), copyfunc);
-
     connectionHandler.copyoutputs();
 }
 

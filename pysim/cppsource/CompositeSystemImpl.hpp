@@ -61,6 +61,9 @@ public:
 
 protected:
     std::unique_ptr<CompositeSystemImplPrivate> d_ptr;
+
+	void copyinternalinputs();
+	void copyinternaloutputs();
 };
 
 }
