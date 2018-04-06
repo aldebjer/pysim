@@ -63,11 +63,13 @@ void Simulation::observer(const std::vector<double> &state, double time) {
     }
 
     for ( auto syst = systems.cbegin(); syst != systems.end(); ++syst ) {
+        (*syst)->postStep();
         (*syst)->doStoreStep(time);
     }
     for (   auto syst = discreteSystems.cbegin();
             syst != discreteSystems.end();
             ++syst) {
+        (*syst)->postStep();
         (*syst)->doStoreStep(time);
     }
 
