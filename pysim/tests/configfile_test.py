@@ -246,7 +246,7 @@ def test_load_composite_connections():
     file.close()
     sim.load_config(file.name)
     sim.simulate(2, 0.1)
-    assert np.abs(sim.systems["controlled_spring"].outputs.out-0.32406429942202225) < 1e-10
+    assert np.abs(sim.systems["controlled_spring"].outputs.out-0.3240587706226495) < 1e-10
 
 if __name__ == "__main__":
     #test_store_config_composite_ports()

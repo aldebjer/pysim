@@ -138,6 +138,15 @@ class CompositeTestSystem(CompositeSystem):
                                   self.new_subsystems[i],
                                   "input_output_vector")
 
+            portoutname = "output_state_vector_{}".format(i)
+            podesc = "Test vector output from composite system {}".format(i)
+            self.add_port_out_vector(portoutname,
+                                     (-1, -1, -1),
+                                     podesc)
+            self.connect_port_out(portoutname,
+                                  self.new_subsystems[i],
+                                  "state_vector")
+
             self.add_port_in_matrix("matrix_in_{}".format(i),
                                     ((1,2),(3,4)),
                                     "input matrix {}".format(i))
@@ -154,12 +163,21 @@ class CompositeTestSystem(CompositeSystem):
                                   self.new_subsystems[i],
                                   "input_output_matrix")
 
+            portoutname = "output_state_matrix_{}".format(i)
+            podesc = "Test state matrix output from composite system {}".format(i)
+            self.add_port_out_matrix(portoutname,
+                                     ((-1,-1),(-1,-1)),
+                                     podesc)
+            self.connect_port_out(portoutname,
+                                  self.new_subsystems[i],
+                                  "state_matrix")
+
 def test_port_connections():
     """Test the port connections to and from subsystems"""
     cs = CompositeTestSystem()
     ref_scalar = 5.0
     ref_vector = (6.0, 7.0, 8.0)
-    ref_matrix = ((9.0, 10.0),(11.0, 12.0))
+    ref_matrix = ((9.0, 10.0, 11.0),(12.0, 13.0, 14.0),(15.0, 16.0, 17.0))
     cs.inputs.scalar_in_0 = ref_scalar
     cs.inputs.vector_in_0 = ref_vector
     cs.inputs.matrix_in_0 = ref_matrix
@@ -179,7 +197,7 @@ def test_connected_subsystems():
     sim.add_system(cd)
 
     sim.simulate(2, 0.1)
-    assert np.abs(cd.outputs.out-0.32406429942202225) < 1e-10
+    assert np.abs(cd.outputs.out-0.3240587706226495) < 1e-10
 
 @pytest.mark.parametrize("sw_class",
                          [CompositeSquareWave,NestedCompositeSquareWave])
@@ -221,7 +239,7 @@ def test_connection_to_composite(spring_class):
 
     sw.connections.add_connection("signal",msd,"force")
     sim.simulate(2, 0.1)
-    assert np.abs(msd.outputs.position - 0.32406429942202225) < 1e-10
+    assert np.abs(msd.outputs.position - 0.3240587706226495) < 1e-10
 
 
 def test_system_store():
@@ -233,13 +251,42 @@ def test_system_store():
 
     sim.simulate(2, 0.1)
 
-    assert np.abs(cd.res.position[5]-0.90459733332768599) < 1e-7
-    assert np.abs(cd.res.position[-1]-0.32406429942202225) < 1e-7
+    assert np.abs(cd.res.position[5]-0.90450499444532406) < 1e-7
+    assert np.abs(cd.res.position[-1]-0.3240587706226495) < 1e-7
+
+def test_composite_vs_connected_outputs():
+    """Test that the same result is given regardless if two systems are 
+    connected externally or put together in a composite system"""
+
+    sim = Sim()
+
+    #Externally connected systems
+    msd = MassSpringDamper()
+    msd.inputs.b = 80
+    msd.inputs.m = 50
+    msd.inputs.f = 0
+    sim.add_system(msd)
+
+    sw = SquareWave()
+    sw.inputs.amplitude = 50
+    sw.inputs.freq = 0.1
+    sim.add_system(sw)
+
+    sw.connections.add_connection("signal",msd,"f")
+
+    #Composite system
+    cd = ControlledSpring()
+    sim.add_system(cd)
+
+    sim.simulate(2, 0.1)
+
+    assert cd.outputs.out == msd.states.x1
 
 
 
 if __name__ == "__main__":
-    test_connected_subsystems()
-    test_connection_from_composite(CompositeSquareWave)
-    test_connection_to_composite(NestedCompositeSpring)
-    test_port_connections()
+    #test_connected_subsystems()
+    #test_connection_from_composite(CompositeSquareWave)
+    #test_connection_to_composite(NestedCompositeSpring)
+    #test_port_connections()
+    test_system_store()

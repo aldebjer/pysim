@@ -22,6 +22,10 @@ void CythonSystemImpl::doStep(double time) {
     step_callback(sysp,time);
 }
 
+void CythonSystemImpl::postStep() {
+	post_step_callback(sysp);
+}
+
 double CythonSystemImpl::getNextUpdateTime() { return 0; }
 
 bool CythonSystemImpl::do_comparison() { return false; }
