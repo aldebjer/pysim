@@ -138,6 +138,15 @@ class CompositeTestSystem(CompositeSystem):
                                   self.new_subsystems[i],
                                   "input_output_vector")
 
+            portoutname = "output_state_vector_{}".format(i)
+            podesc = "Test vector output from composite system {}".format(i)
+            self.add_port_out_vector(portoutname,
+                                     (-1, -1, -1),
+                                     podesc)
+            self.connect_port_out(portoutname,
+                                  self.new_subsystems[i],
+                                  "state_vector")
+
             self.add_port_in_matrix("matrix_in_{}".format(i),
                                     ((1,2),(3,4)),
                                     "input matrix {}".format(i))
@@ -153,6 +162,15 @@ class CompositeTestSystem(CompositeSystem):
             self.connect_port_out(portoutname,
                                   self.new_subsystems[i],
                                   "input_output_matrix")
+
+            portoutname = "output_state_matrix_{}".format(i)
+            podesc = "Test state matrix output from composite system {}".format(i)
+            self.add_port_out_matrix(portoutname,
+                                     ((-1,-1),(-1,-1)),
+                                     podesc)
+            self.connect_port_out(portoutname,
+                                  self.new_subsystems[i],
+                                  "state_matrix")
 
 def test_port_connections():
     """Test the port connections to and from subsystems"""

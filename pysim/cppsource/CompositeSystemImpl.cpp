@@ -326,16 +326,38 @@ void CompositeSystemImpl::connect_port_out(std::string portname, CommonSystemImp
         throw std::invalid_argument("Could not find matching state, der, or output to connect from");
     } else if (outputs.d_ptr->vectors.count(portname) > 0) {
         pysim::vector* port_p = outputs.d_ptr->vectors.at(portname);
-        pysim::vector* sub_output_p = subsystem->outputs.d_ptr->vectors.at(subsystem_output);
-        auto p = std::make_pair(sub_output_p, port_p);
-        d_ptr->outports.connected_vectors.push_back(p);
-		*port_p = *sub_output_p;
+
+		std::vector<std::map<std::string, pysim::vector* >*> v;
+		v.push_back(&subsystem->outputs.d_ptr->vectors);
+		v.push_back(&subsystem->states.d_ptr->vectors);
+		v.push_back(&subsystem->ders.d_ptr->vectors);
+		for (auto item : v) {
+			if (item->count(subsystem_output)) {
+				pysim::vector* sub_output_p = item->at(subsystem_output);
+				auto p = std::make_pair(sub_output_p, port_p);
+				d_ptr->outports.connected_vectors.push_back(p);
+				*port_p = *sub_output_p;
+				return;
+			}
+		}
+		throw std::invalid_argument("Could not find matching state, der, or output to connect from");
     } else if (outputs.d_ptr->matrices.count(portname) > 0) {
         Eigen::MatrixXd* port_p = outputs.d_ptr->matrices.at(portname);
-        Eigen::MatrixXd* sub_output_p = subsystem->outputs.d_ptr->matrices.at(subsystem_output);
-        auto p = std::make_pair(sub_output_p, port_p);
-        d_ptr->outports.connected_matrices.push_back(p);
-		*port_p = *sub_output_p;
+
+		std::vector<std::map<std::string, Eigen::MatrixXd* >*> v;
+		v.push_back(&subsystem->outputs.d_ptr->matrices);
+		v.push_back(&subsystem->states.d_ptr->matrices);
+		v.push_back(&subsystem->ders.d_ptr->matrices);
+		for (auto item : v) {
+			if (item->count(subsystem_output)) {
+				Eigen::MatrixXd* sub_output_p = item->at(subsystem_output);
+				auto p = std::make_pair(sub_output_p, port_p);
+				d_ptr->outports.connected_matrices.push_back(p);
+				*port_p = *sub_output_p;
+				return;
+			}
+		}
+		throw std::invalid_argument("Could not find matching state, der, or output to connect from");
     } else {
         throw std::invalid_argument("Port not created");
     }
@@ -345,31 +367,41 @@ void CompositeSystemImpl::connect_port_out_composite(std::string portname, Compo
     
         if (outputs.d_ptr->scalars.count(portname) > 0) {
             double* port_p = outputs.d_ptr->scalars.at(portname);
-    
-            std::vector<std::map<std::string, double* >*> v;
-            v.push_back(&subsystem->outputs.d_ptr->scalars);
-            for (auto item : v) {
-                if (item->count(subsystem_output)) {
-                    double* sub_output_p = item->at(subsystem_output);
-                    auto p = std::make_pair(sub_output_p, port_p);
-                    d_ptr->outports.connected_scalars.push_back(p);
-					*port_p = *sub_output_p;
-                    return;
-                }
-            }
-            throw std::invalid_argument("Could not find matching state, der, or output to connect from");
+
+			if (subsystem->outputs.d_ptr->scalars.count(subsystem_output) > 0) {
+				double* sub_output_p = subsystem->outputs.d_ptr->scalars.at(subsystem_output);
+				auto p = std::make_pair(sub_output_p, port_p);
+				d_ptr->outports.connected_scalars.push_back(p);
+				*port_p = *sub_output_p;
+			}
+			else {
+				throw std::invalid_argument("Could not find matching state, der, or output to connect from");
+			}
+   
         } else if (outputs.d_ptr->vectors.count(portname) > 0) {
             pysim::vector* port_p = outputs.d_ptr->vectors.at(portname);
-            pysim::vector* sub_output_p = subsystem->outputs.d_ptr->vectors.at(subsystem_output);
-            auto p = std::make_pair(sub_output_p, port_p);
-            d_ptr->outports.connected_vectors.push_back(p);
-			*port_p = *sub_output_p;
+
+			if (subsystem->outputs.d_ptr->vectors.count(subsystem_output) > 0) {
+				pysim::vector* sub_output_p = subsystem->outputs.d_ptr->vectors.at(subsystem_output);
+				auto p = std::make_pair(sub_output_p, port_p);
+				d_ptr->outports.connected_vectors.push_back(p);
+				*port_p = *sub_output_p;
+			}
+			else {
+				throw std::invalid_argument("Could not find matching state, der, or output to connect from");
+			}
         } else if (outputs.d_ptr->matrices.count(portname) > 0) {
             Eigen::MatrixXd* port_p = outputs.d_ptr->matrices.at(portname);
-            Eigen::MatrixXd* sub_output_p = subsystem->outputs.d_ptr->matrices.at(subsystem_output);
-            auto p = std::make_pair(sub_output_p, port_p);
-            d_ptr->outports.connected_matrices.push_back(p);
-			*port_p = *sub_output_p;
+
+			if (subsystem->outputs.d_ptr->matrices.count(subsystem_output) > 0) {
+				Eigen::MatrixXd* sub_output_p = subsystem->outputs.d_ptr->matrices.at(subsystem_output);
+				auto p = std::make_pair(sub_output_p, port_p);
+				d_ptr->outports.connected_matrices.push_back(p);
+				*port_p = *sub_output_p;
+			}
+			else {
+				throw std::invalid_argument("Could not find matching state, der, or output to connect from");
+			}
         } else {
             throw std::invalid_argument("Port not created");
         }
