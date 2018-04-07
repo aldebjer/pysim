@@ -32,14 +32,14 @@ class PostStepCompositeSystem(CompositeSystem):
         self.connect_port_out('state_scalar_out', ps,
                               'state_scalar')
 
-        #self.add_port_out_vector('state_vector_out', [0,0,0], '')
-        #self.connect_port_out('state_vector_out', ps,
-        #                      'state_vector')
+        self.add_port_out_vector('state_vector_out', [0,0,0], '')
+        self.connect_port_out('state_vector_out', ps,
+                              'state_vector')
 
-        #self.add_port_out_matrix('state_matrix_out',
-        #                         [[0,0,0],[0,0,0],[0,0,0]],'')
-        #self.connect_port_out('state_matrix_out', ps,
-        #                      'state_matrix')
+        self.add_port_out_matrix('state_matrix_out',
+                                 [[0,0,0],[0,0,0],[0,0,0]],'')
+        self.connect_port_out('state_matrix_out', ps,
+                              'state_matrix')
 
 
 def test_cython_poststep():
@@ -64,8 +64,8 @@ def test_composite_poststep():
     sim.simulate(2, 0.1)
 
     assert ps.outputs.state_scalar_out == 1.23*2
-    #assert np.all(ps.outputs.state_vector_out == np.ones(3)*4.56*2)
-    #assert np.all(ps.outputs.state_matrix_out == np.ones((3,3))*7.89*2)
+    assert np.all(ps.outputs.state_vector_out == np.ones(3)*4.56*2)
+    assert np.all(ps.outputs.state_matrix_out == np.ones((3,3))*7.89*2)
 
 def test_cpp_poststep():
     """Test that cpp system post step functionality is working"""
@@ -82,6 +82,6 @@ def test_cpp_poststep():
 
 
 if __name__ == '__main__':
-    test_cython_poststep()
+    #test_cython_poststep()
     test_composite_poststep()
-    test_cpp_poststep()
+    #test_cpp_poststep()
