@@ -123,12 +123,20 @@ cdef class Sys:
         utf_desc = bytes(desc,'utf-8')
         self._c_sys.add_output_matrix(utf_name,rows, columns, utf_desc)
 
+    cpdef void pre_step(self):
+        pass
+
     def do_step(self,time):
         print("stepping {}".format(time))
 
     cpdef void post_step(self):
         pass
 
+
+cdef api void pre_step_callback(void* sys):
+    cdef Sys s
+    s = <Sys> (sys)
+    s.pre_step()
 
 cdef api void step_callback(void* sys, double time):
     cdef Sys s

@@ -13,6 +13,7 @@ public:
     ~CythonSystemImpl(){};
 
     void preSim(){};
+	void preStep();
     void doStep(double time);
 	void postStep();
 

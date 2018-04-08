@@ -18,6 +18,10 @@ CythonSystemImpl::CythonSystemImpl()
     import_pysim__cythonsystem();
 }
 
+void CythonSystemImpl::preStep() {
+	pre_step_callback(sysp);
+}
+
 void CythonSystemImpl::doStep(double time) {
     step_callback(sysp,time);
 }
