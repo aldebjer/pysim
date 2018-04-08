@@ -29,6 +29,7 @@
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ParameterTestSystem.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\PostStepTestSystem.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\PredatorPrey.cpp" />
+    <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\PreStepTestSystem.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ReadTextInput.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\RigidBody.cpp" />
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ScalarAdder.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ParameterTestSystem.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\PostStepTestSystem.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\PredatorPrey.h" />
+    <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\PreStepTestSystem.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ReadTextInput.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\RigidBody.h" />
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ScalarAdder.h" />
