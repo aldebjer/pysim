@@ -31,6 +31,7 @@ public:
     bool getDiscrete() { return false; };
 
     void preSim();
+	void preStep();
     void doStep(double time);
     double getNextUpdateTime();
     bool do_comparison();

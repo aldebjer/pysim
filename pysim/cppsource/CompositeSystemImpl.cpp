@@ -57,6 +57,15 @@ void CompositeSystemImpl::preSim()
     }
 }
 
+void CompositeSystemImpl::preStep() 
+{
+	for (SimulatableSystemInterface* s : d_ptr->subsystems) {
+		s->preStep();
+	}
+
+	copyinternaloutputs();
+}
+
 void CompositeSystemImpl::doStep(double time)
 {
 	copyinternalinputs();
