@@ -50,6 +50,23 @@ cdef class CompositeSystem(SimulatableSystem):
         self._c_sys.store(bs)
         self.stores.append(name)
 
+    def set_store_interval(self, interval):
+        """Set the store interval of this system. 
+        By default the
+        store interval for all systems in a simulation is set by
+        the simulation, typically for the step length for fixed
+        step algorithms. By calling this function the store interval
+        *for this system* is set differently.
+        Parameters
+        ----------
+        interval : float
+            The time between stores, in seconds.
+        """
+        self._c_sys.getStoreHandlerP().setStoreInterval(interval)
+
+        for subsystem in self.subsystems.values():
+            subsystem.set_store_interval(interval)
+
     def store_recursively(self,name):
         """Store a input or output in the composite system if existing and
         an input, output, state or der in all subsystems if existing.
@@ -87,7 +104,7 @@ cdef class CompositeSystem(SimulatableSystem):
 
         for subsystem in self.subsystems.values():
             if type(subsystem) is CompositeSystem:
-                subsystem.store_all_recursive()
+                subsystem.store_all_recursively()
             else:
                 subsystem.store_all()
 

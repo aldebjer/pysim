@@ -40,7 +40,7 @@ cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
         void connect_port_out(string portname, CommonSystemImpl* subsystem, string subsystem_output) except +
         void connect_port_out_composite(string portname, CompositeSystemImpl* subsystem, string subsystem_output) except +
 
-        void store(char* name)
+        void store(char* name) except +
         StoreHandler* getStoreHandlerP()
 
 
