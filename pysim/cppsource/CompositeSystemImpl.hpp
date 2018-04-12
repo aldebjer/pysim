@@ -43,9 +43,9 @@ public:
     void add_subsystem(CommonSystemImpl* subsystem, std::string name);
     void add_composite_subsystem(CompositeSystemImpl* subsystem, std::string name);
 
-    void add_scalar_port_in(std::string name, double initial_value, std::string description);
-    void add_vector_inport(std::string name, std::vector<double> initial_value, std::string description);
-    void add_matrix_inport(std::string name, std::vector<std::vector<double>> initial_value, std::string description);
+    void add_scalar_port_in(std::string name, double initial_value, std::string description, std::string operator_str);
+    void add_vector_inport(std::string name, std::vector<double> initial_value, std::string description, std::string operator_str);
+    void add_matrix_inport(std::string name, std::vector<std::vector<double>> initial_value, std::string description, std::string operator_str);
 
     void add_outport(std::string name, double initial_value, std::string description);
     void add_outport(std::string name, std::vector<double> initial_value, std::string description);

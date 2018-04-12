@@ -60,9 +60,9 @@ protected:
     void par(std::map<std::string, std::vector<double>>* var, const char* name, const char* description);
     void par(pysim::matrix* vars, const char* name, const char* description);
 
-    void input(double* var, const char* name, const char* desc);
-    void input(pysim::vector* vars, const char* name, const char* description);
-    void input(Eigen::MatrixXd*  vars, const char* name, const char* description);
+    void input(double* var, const char* name, const char* desc, const char* operator_str="=");
+    void input(pysim::vector* vars, const char* name, const char* description, const char* operator_str = "=");
+    void input(Eigen::MatrixXd*  vars, const char* name, const char* description, const char* operator_str = "=");
 
     void output(double* var, const char* name, const char* desc);
     void output(pysim::vector* vars, const char* name, const char* desc);

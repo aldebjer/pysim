@@ -18,6 +18,7 @@ struct VariablePrivate{
     std::map<std::string, pysim::vector* > vectors;
     std::map<std::string, Eigen::MatrixXd* > matrices;
     std::map<std::string, std::string> descriptions;
+	std::map<std::string, std::string> operators;
 };
 
 }

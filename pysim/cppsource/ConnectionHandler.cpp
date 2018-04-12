@@ -25,13 +25,13 @@ struct ConnectionHandlerPrivate {
     Variable* statep;
     Variable* derp;
 
-    std::vector<std::pair<double*, double* > > connected_scalars;
-    std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vectors;
-    std::vector<std::pair<Eigen::MatrixXd*, Eigen::MatrixXd* > > connected_matrices;
+	std::vector<std::tuple<double*, double*, std::string* > > connected_scalars;
+    std::vector<std::tuple<pysim::vector*, pysim::vector*, std::string* > > connected_vectors;
+    std::vector<std::tuple<Eigen::MatrixXd*, Eigen::MatrixXd*, std::string* > > connected_matrices;
 
-    std::vector<std::pair<double*, double* > > connected_scalar_states_;
-    std::vector<std::pair<pysim::vector*, pysim::vector* > > connected_vector_states;
-    std::vector<std::pair<Eigen::MatrixXd*, Eigen::MatrixXd* > > connected_matrix_states;
+    std::vector<std::tuple<double*, double*, std::string* > > connected_scalar_states_;
+    std::vector<std::tuple<pysim::vector*, pysim::vector*, std::string* > > connected_vector_states;
+    std::vector<std::tuple<Eigen::MatrixXd*, Eigen::MatrixXd*, std::string* > > connected_matrix_states;
 };
 
 ConnectionHandler::ConnectionHandler(Variable* outputp, Variable* statep, Variable* derp):
@@ -65,20 +65,20 @@ std::map<std::string, Eigen::MatrixXd*> get_output_map<Eigen::MatrixXd*>(Variabl
 
 //Overloaded function 'get_connection' for getting the correect variable for each type
 template<class T>
-std::vector<std::pair<T, T > >* get_connections(ConnectionHandlerPrivate* var) {
-    std::vector<std::pair<T, T > > connected;
+std::vector<std::tuple<T, T, std::string* > >* get_connections(ConnectionHandlerPrivate* var) {
+    std::vector<std::tuple<T, T, std::string* > > connected;
     return nullptr;
 }
 template<>
-std::vector<std::pair<double*, double* > >* get_connections(ConnectionHandlerPrivate* var) {
+std::vector<std::tuple<double*, double*, std::string* > >* get_connections(ConnectionHandlerPrivate* var) {
     return &var->connected_scalars;
 }
 template<>
-std::vector<std::pair<pysim::vector*, pysim::vector* > >* get_connections(ConnectionHandlerPrivate* var) {
+std::vector<std::tuple<pysim::vector*, pysim::vector*, std::string* > >* get_connections(ConnectionHandlerPrivate* var) {
     return &var->connected_vectors;
 }
 template<>
-std::vector<std::pair<Eigen::MatrixXd*, Eigen::MatrixXd* > >* get_connections(ConnectionHandlerPrivate* var) {
+std::vector<std::tuple<Eigen::MatrixXd*, Eigen::MatrixXd*, std::string* > >* get_connections(ConnectionHandlerPrivate* var) {
     return &var->connected_matrices;
 }
 
@@ -96,8 +96,9 @@ bool ConnectionHandler::check_input(std::map<std::string, T > input, char* input
         for (auto v : vec) {
             std::map<std::string, T> output = get_output_map<T>(v);
             if (output.count(outputname) > 0) {
-                std::vector<std::pair<T, T > >* connections = get_connections<T>(d_ptr.get());
-                auto p = std::make_pair(output[outputname],input[inputname]);
+                std::vector<std::pair<T, T, std::string* > >* connections = get_connections<T>(d_ptr.get());
+                //auto p = std::make_pair(output[outputname],input[inputname]);
+				auto p = std::make_tuple(output[outputname], inputsys->inputs.d_ptr->scalars[inputname], inputsys->inputs.d_ptr->operators[inputname]);
                 connections->push_back(p);
                 return true;
             }
@@ -129,7 +130,7 @@ void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname, 
         if (d_ptr->outputp->d_ptr->vectors.count(outputname) == 1) {
             pysim::vector* v_ptr = d_ptr->outputp->d_ptr->vectors[outputname];
             double* element_ptr = &(v_ptr->data()[output_index]);
-            auto p = make_pair(element_ptr, inputsys->inputs.d_ptr->scalars[inputname]);
+			auto p = make_pair(element_ptr, inputsys->inputs.d_ptr->scalars[inputname]);
             d_ptr->connected_scalars.push_back(p);
         } else if ((d_ptr->statep != nullptr) && (d_ptr->statep->d_ptr->vectors.count(outputname) == 1)) {
             pysim::vector* v_ptr = d_ptr->statep->d_ptr->vectors[outputname];
@@ -153,15 +154,43 @@ void ConnectionHandler::connect(char* outputname, T* inputsys, char* inputname, 
 template void ConnectionHandler::connect<CommonSystemImpl>(char* outputname, CommonSystemImpl* inputsys, char* inputname, int output_index);
 template void ConnectionHandler::connect<CompositeSystemImpl>(char* outputname, CompositeSystemImpl* inputsys, char* inputname, int output_index);
 
-void check_copy(std::pair<double *,double *> vi){
-    if (std::isnan(*(vi.first))){
+void check_copy(std::tuple<double *,double *, std::string> vi){
+	double* first;
+	double* second;
+	std:string* operator_str;
+	std::tie(first, second, operator_str) = vi;
+
+    if (std::isnan(*(first))){
         throw std::runtime_error("Output from system is NaN");
     }
-    *(vi.second) = *(vi.first);
+	if (*(operator_str) == "="){
+		*(second) = *(first);
+	}
+	else if (*(operator_str) == "+"){
+		*(second) += *(first);
+	}
+	else {
+		throw std::runtime_error("No supported operator found!");
+	}
+    
 }
 
-void copy(std::pair<pysim::vector *,pysim::vector *> vi){
-    *(vi.second) = *(vi.first);
+void copy(std::tuple<pysim::vector *,pysim::vector *, std::string*> vi){
+
+	pysim::vector* first;
+	pysim::vector* second;
+	std::string* operator_str;
+	std::tie(first, second, operator_str) = vi;
+
+	if (*(operator_str) == "=") {
+		*(second) = *(first);
+	}
+	else if (*(operator_str) == "+") {
+		*(second) += *(first);
+	}
+	else {
+		throw std::runtime_error("No supported operator found!");
+	}
 }
 
 void check_copy(std::pair<Eigen::MatrixXd *,Eigen::MatrixXd *> vi){
@@ -193,6 +222,21 @@ void ConnectionHandler::copystateoutputs() {
     for( auto connection: d_ptr->connected_matrix_states){
         check_copy(connection);
     }
+}
+
+void ConnectionHandler::reset_connected_inputs() {
+	for (auto connection : d_ptr->connected_scalar_states_) {
+		double* second = std::get<1>(connection);
+		*(second) = 0;
+	}
+	for (auto connection : d_ptr->connected_vector_states) {
+		pysim::vector* second = std::get<1>(connection);
+		second->clear();
+	}
+	for (auto connection : d_ptr->connected_matrix_states) {
+		Eigen::MatrixXd* second = std::get<1>(connection);
+		second->setZero;
+	}
 }
 
 

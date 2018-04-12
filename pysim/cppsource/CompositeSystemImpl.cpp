@@ -186,15 +186,16 @@ void CompositeSystemImpl::add_composite_subsystem(CompositeSystemImpl* subsystem
     d_ptr->subsystems.push_back(subsystem);
 }
 
-void CompositeSystemImpl::add_scalar_port_in(std::string name, double initial_value, std::string description) {
+void CompositeSystemImpl::add_scalar_port_in(std::string name, double initial_value, std::string description, std::string operator_str) {
     std::unique_ptr<double> ptr(new double(initial_value));
     d_ptr->scalar_inports.push_back(std::move(ptr));
     inputs.d_ptr->scalars[name] = d_ptr->scalar_inports.back().get();
     inputs.d_ptr->descriptions[name] = description;
+	inputs.d_ptr->operators[name] = operator_str;
 }
 
 
-void CompositeSystemImpl::add_vector_inport(std::string name, std::vector<double> initial_value, std::string description) {
+void CompositeSystemImpl::add_vector_inport(std::string name, std::vector<double> initial_value, std::string description, std::string operator_str) {
     pysim::vector pyvec(initial_value.size());
     std::copy(initial_value.begin(), initial_value.end(), pyvec.begin());
     
@@ -202,10 +203,11 @@ void CompositeSystemImpl::add_vector_inport(std::string name, std::vector<double
     d_ptr->vector_inports.push_back(std::move(ptr));
     inputs.d_ptr->vectors[name] = d_ptr->vector_inports.back().get();
     inputs.d_ptr->descriptions[name] = description;
+	inputs.d_ptr->operators[name] = operator_str;
 }
 
 
-void CompositeSystemImpl::add_matrix_inport(std::string name, std::vector<std::vector<double>> initial_value, std::string description) {
+void CompositeSystemImpl::add_matrix_inport(std::string name, std::vector<std::vector<double>> initial_value, std::string description, std::string operator_str) {
     size_t rows = initial_value.size();
     size_t columns = initial_value.front().size();
     Eigen::MatrixXd m(rows, columns);
@@ -222,6 +224,7 @@ void CompositeSystemImpl::add_matrix_inport(std::string name, std::vector<std::v
     d_ptr->matrix_inports.push_back(std::move(ptr));
     inputs.d_ptr->matrices[name] = d_ptr->matrix_inports.back().get();
     inputs.d_ptr->descriptions[name] = description;
+	inputs.d_ptr->operators[name] = operator_str;
 }
 
 ////Outports

@@ -22,6 +22,7 @@ public:
 
     void copyoutputs();
     void copystateoutputs();
+	void reset_connected_inputs();
 
     template <typename T>
     void connect(char* outputname, T* inputsys, char* inputname);

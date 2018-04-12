@@ -77,11 +77,12 @@ void CppSystem::state(Eigen::MatrixXd* state, const char* stateName, Eigen::Matr
 }
 
 
-void CppSystem::input(double* var, const char* name, const char* description) {
+void CppSystem::input(double* var, const char* name, const char* description, const char* operator_str) {
     std::string str(name);
     boost::algorithm::trim(str);
     inputs.d_ptr->scalars[str] = var;
     inputs.d_ptr->descriptions[str] = string(description);
+	inputs.d_ptr->operators[str] = string(operator_str);
 }
 
 void CppSystem::par(std::vector<double>* var, const char* name, const char* description) {
@@ -100,11 +101,12 @@ void CppSystem::par(std::vector<std::vector<double>>* var, const char* name, con
     d_ptr->par_descriptions[str] = string(description);
 }
 
-void CppSystem::input(pysim::vector* vars, const char* name, const char* description) {
+void CppSystem::input(pysim::vector* vars, const char* name, const char* description, const char* operator_str) {
     string str(name);
     boost::algorithm::trim(str);
     inputs.d_ptr->vectors[str] = vars;
     inputs.d_ptr->descriptions[str] = string(description);
+	inputs.d_ptr->operators[str] = string(operator_str);
 }
 
 void CppSystem::par(boost::numeric::ublas::matrix<double>* var, const char* name, const char* description) {
@@ -114,11 +116,12 @@ void CppSystem::par(boost::numeric::ublas::matrix<double>* var, const char* name
     d_ptr->par_descriptions[str] = string(description);
 }
 
-void CppSystem::input(Eigen::MatrixXd* var, const char* name, const char* description) {
+void CppSystem::input(Eigen::MatrixXd* var, const char* name, const char* description, const char* operator_str) {
     string str(name);
     boost::algorithm::trim(str);
     inputs.d_ptr->matrices[str] = var;
     inputs.d_ptr->descriptions[str] = string(description);
+	inputs.d_ptr->operators[str] = string(operator_str);
 }
 
 

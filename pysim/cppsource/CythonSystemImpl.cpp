@@ -35,27 +35,30 @@ double CythonSystemImpl::getNextUpdateTime() { return 0; }
 bool CythonSystemImpl::do_comparison() { return false; }
 
 void CythonSystemImpl::add_input(std::string name, size_t length){
+
     if (length == 1) {
-        inputs.d_ptr->scalars[name] = new double(0);
+		add_input_scalar(name, std::string("No Description"), std::string("="));
     } else {
-        inputs.d_ptr->vectors[name] = new pysim::vector(length,0.0);
-        inputs.d_ptr->descriptions[name] = std::string("No Description"); //TODO add descriptions in call
+		add_input_vector(name, length, std::string("No Description"), std::string("="));
     }
 }
 
-void CythonSystemImpl::add_input_scalar(std::string name, std::string desc) {
+void CythonSystemImpl::add_input_scalar(std::string name, std::string desc, std::string operator_str) {
     inputs.d_ptr->scalars[name] = new double(0);
     inputs.d_ptr->descriptions[name] = desc;
+	inputs.d_ptr->operators[name] = operator_str;
 }
 
-void CythonSystemImpl::add_input_vector(std::string name, size_t length, std::string desc) {
+void CythonSystemImpl::add_input_vector(std::string name, size_t length, std::string desc, std::string operator_str) {
     inputs.d_ptr->vectors[name] = new pysim::vector(length, 0.0);
     inputs.d_ptr->descriptions[name] = desc;
+	inputs.d_ptr->operators[name] = operator_str;
 }
 
-void CythonSystemImpl::add_input_matrix(std::string name, size_t rows, size_t cols, std::string desc) {
+void CythonSystemImpl::add_input_matrix(std::string name, size_t rows, size_t cols, std::string desc, std::string operator_str) {
     inputs.d_ptr->matrices[name] = new Eigen::MatrixXd(rows, cols);
     inputs.d_ptr->descriptions[name] = desc;
+	inputs.d_ptr->operators[name] = operator_str;
 }
 
 void CythonSystemImpl::add_output(std::string name, size_t length) {

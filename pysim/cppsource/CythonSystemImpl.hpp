@@ -27,9 +27,9 @@ public:
 
     //Python Interface
     void add_input(std::string name, size_t length);
-    void add_input_scalar(std::string name, std::string desc);
-    void add_input_vector(std::string name, size_t rows, std::string desc);
-    void add_input_matrix(std::string name, size_t rows, size_t cols, std::string desc);
+    void add_input_scalar(std::string name, std::string desc, std::string operator_str);
+    void add_input_vector(std::string name, size_t rows, std::string desc, std::string operator_str);
+    void add_input_matrix(std::string name, size_t rows, size_t cols, std::string desc, std::string operator_str);
     void add_output(std::string name, size_t length);
     void add_output_scalar(std::string name, std::string desc);
     void add_output_vector(std::string name, size_t rows, std::string desc);
