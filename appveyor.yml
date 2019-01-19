@@ -1,7 +1,7 @@
 environment:
 
   global:
-    BOOST_ROOT: "C:\\Libraries\\boost_1_59_0"
+    BOOST_ROOT: "C:\\Libraries\\boost_1_67_0"
     PIP_PASSWORD:
       secure: 5/+VoitJX0FZVcCLi1xOHQ==
 
