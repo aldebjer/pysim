@@ -13,7 +13,7 @@ environment:
 
 install:
   - "%PYTHON%\\python.exe get_external.py"
-  - SET EIGEN_ROOT=%CD%\eigen-eigen-26667be4f70b
+  - SET EIGEN_ROOT=%CD%\eigen-eigen-323c052e1731
   - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
   - "%PYTHON%\\python.exe -m pip install -r requirements_docs.txt"
   # We need wheel installed to build wheels later
