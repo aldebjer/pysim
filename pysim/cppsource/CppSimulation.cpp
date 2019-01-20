@@ -35,16 +35,13 @@ void Simulation::doGenericStep(const std::vector< double > &state,
     // Since they are states, and constant input to this function this
     // is done before the timestep calulations.
     for ( auto syst = systems.begin(); syst != systems.end(); ++syst ) {
-		(*syst)->preStep();
-        (*syst)->copystateoutputs();
-		(*syst)->copyoutputs();
+		(*syst)->__preStep();
     }
 
     // Do the time step for all systems, and copy the variable
     // outputs after the time step.
     for ( auto syst = systems.begin(); syst != systems.end(); ++syst ) {
-        (*syst)->doStep(time);
-        (*syst)->copyoutputs();
+        (*syst)->__doStep(time);
     }
 
     // Copy the systems derivate variables to the
@@ -65,13 +62,13 @@ void Simulation::observer(const std::vector<double> &state, double time) {
     }
 
     for ( auto syst = systems.cbegin(); syst != systems.end(); ++syst ) {
-        (*syst)->postStep();
+        (*syst)->__postStep();
         (*syst)->doStoreStep(time);
     }
     for (   auto syst = discreteSystems.cbegin();
             syst != discreteSystems.end();
             ++syst) {
-        (*syst)->postStep();
+        (*syst)->__postStep();
         (*syst)->doStoreStep(time);
     }
 
@@ -106,7 +103,7 @@ void Simulation::prepare_first_sim() {
     for (   auto syst = discreteSystems.cbegin();
             syst != discreteSystems.end();
             ++syst) {
-        (*syst)->preSim();
+        (*syst)->__preSim();
     }
 }
 

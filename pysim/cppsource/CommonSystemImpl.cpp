@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <boost/format.hpp>
+#include <boost/range/algorithm_ext.hpp>
 
 using std::string;
 
@@ -218,6 +219,55 @@ std::map<std::string, std::string> CommonSystemImpl::getParDescriptionMap() {
 }
 
 
+/////////////////////////////////////
+//
+//       Subsystem handling
+//
+////////////////////////////////////
+void CommonSystemImpl::__preSim()
+{
+	// Subsystems
+	for (auto const &sys : d_ptr->subsystems) {
+		sys->__preSim();
+	}
+
+	this->preSim();
+}
+
+void CommonSystemImpl::__preStep()
+{
+	// Subsystems
+	for (auto const &sys : d_ptr->subsystems) {
+		sys->__preStep();
+	}
+
+	this->preStep();
+	this->copystateoutputs();
+	this->copyoutputs();
+}
+
+void CommonSystemImpl::__doStep(double time)
+{
+	// Subsystems
+	for (auto const &sys : d_ptr->subsystems) {
+		sys->__doStep(time);
+	}
+
+	this->doStep(time);
+	this->copyoutputs();
+}
+
+void CommonSystemImpl::__postStep()
+{
+	// Subsystems
+	for (auto const &sys : d_ptr->subsystems) {
+		sys->__postStep();
+	}
+
+	this->postStep();
+}
+
+
 ////////////////////////////////////
 //
 //       Connections
@@ -253,6 +303,11 @@ std::vector<double*> CommonSystemImpl::getStatePointers() {
             out.push_back(d++);
         }
     }
+
+	// Subsystems
+	for (auto const &sys : d_ptr->subsystems) {
+		boost::range::push_back(out, sys->getStatePointers());
+	}
     return out;
 }
 
@@ -282,11 +337,21 @@ std::vector<double*> CommonSystemImpl::getDerPointers() {
             out.push_back(d++);
         }
     }
+
+	// Subsystems
+	for (auto const &sys : d_ptr->subsystems) {
+		boost::range::push_back(out, sys->getDerPointers());
+	}
     return out;
 }
 
 void CommonSystemImpl::doStoreStep(double time) {
     d_ptr->storeHandler.doStoreStep(time);
+
+	// Subsystems
+	for (auto const &sys : d_ptr->subsystems) {
+		sys->doStoreStep(time);
+	}
 }
 
 
@@ -361,7 +426,13 @@ bool CommonSystemImpl::do_comparison() {
         }
     }
 
-    return is_greater || is_smaller;
+	// Subsystems
+	bool subsystem_triggered = false;
+	for (auto const &sys : d_ptr->subsystems) {
+		subsystem_triggered = subsystem_triggered || sys->do_comparison();
+	}
+
+	return is_greater || is_smaller || subsystem_triggered;
 }
 
 double CommonSystemImpl::getNextUpdateTime() {
@@ -374,6 +445,15 @@ bool CommonSystemImpl::getDiscrete(){
 
 StoreHandler* CommonSystemImpl::getStoreHandlerP(){
     return &(d_ptr->storeHandler);
+}
+
+void CommonSystemImpl::add_subsystem(CommonSystemImpl * subsystem, string group)
+{
+	if (subsystem->getDiscrete()) {
+		throw std::invalid_argument("Discrete systems not supported as subsystems");
+	}
+	d_ptr->subsystems_map[group].push_back(subsystem);
+	d_ptr->subsystems.push_back(subsystem);
 }
 
 }

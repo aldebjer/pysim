@@ -25,6 +25,10 @@ public:
     //////////////////////////////////////////////////////////////////////////
     //      Inherited from Simulatable System
     //////////////////////////////////////////////////////////////////////////
+	void __preSim();
+	void __preStep();
+	void __doStep(double time);
+	void __postStep();
     void copyoutputs();
     void copystateoutputs();
     double getNextUpdateTime();
@@ -40,6 +44,8 @@ public:
     //////////////////////////////////////////////////////////////////////////
     void store(const char* name);
     StoreHandler* getStoreHandlerP();
+
+	void add_subsystem(CommonSystemImpl * subsystem, std::string group);
 
     void add_compare_greater(char* comparename, double comparevalue);
     void add_compare_smaller(char* comparename, double comparevalue);
