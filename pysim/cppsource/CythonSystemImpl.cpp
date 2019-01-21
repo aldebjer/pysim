@@ -18,6 +18,12 @@ CythonSystemImpl::CythonSystemImpl()
     import_pysim__cythonsystem();
 }
 
+CythonSystemImpl::~CythonSystemImpl()
+{
+	// Delete all created inputs|outputs|states|ders
+	// TODO
+}
+
 void CythonSystemImpl::preStep() {
 	pre_step_callback(sysp);
 }

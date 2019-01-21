@@ -10,7 +10,7 @@ class  CythonSystemImpl :
 {
 public:
     CythonSystemImpl();
-    ~CythonSystemImpl(){};
+    ~CythonSystemImpl();
 
     void preSim(){};
 	void preStep();
