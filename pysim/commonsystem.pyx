@@ -122,6 +122,12 @@ cdef class CommonSystem:
         bname = bytes(name,'utf-8')
         self._c_s.add_compare_smaller(bname,value)
 
+    def add_subsystem(self, CommonSystem subsystem, group):
+        self.subsystems[group] = subsystem
+        bs = bytes(group,'utf-8')
+        self._c_sys.add_subsystem(<CommonSystemImpl*>subsystem._c_s, bs)
+
+
 cdef class Results:
     """ Class containing the results of a simulation.
 
