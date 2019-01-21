@@ -21,7 +21,9 @@ public:
 
     //  Inherited from System
     virtual void preSim(){};
+	virtual void preStep() {};
     virtual void doStep(double time)=0;
+	virtual void postStep() {};
 
 protected:
 
