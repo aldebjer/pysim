@@ -126,8 +126,8 @@ cdef class Sys:
     cpdef void pre_step(self):
         pass
 
-    def do_step(self,time):
-        print("stepping {}".format(time))
+    cpdef void do_step(self, double time):
+        pass
 
     cpdef void post_step(self):
         pass
