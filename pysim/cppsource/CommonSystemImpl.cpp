@@ -248,6 +248,8 @@ void CommonSystemImpl::__preStep()
 
 void CommonSystemImpl::__doStep(double time)
 {
+	this->copyinputs();
+
 	// Subsystems
 	for (auto const &sys : d_ptr->subsystems) {
 		sys->__doStep(time);
@@ -274,11 +276,18 @@ void CommonSystemImpl::__postStep()
 //
 ////////////////////////////////////
 
-void CommonSystemImpl::copyoutputs() {
+void CommonSystemImpl::__copyinputs() {
+	this->copyinputs();
+	connectionHandler.copyinputs();
+}
+
+void CommonSystemImpl::__copyoutputs() {
+	this->copyoutputs();
     connectionHandler.copyoutputs();
 }
 
-void CommonSystemImpl::copystateoutputs() {
+void CommonSystemImpl::__copystateoutputs() {
+	this->copystateoutputs();
     connectionHandler.copystateoutputs();
 }
 

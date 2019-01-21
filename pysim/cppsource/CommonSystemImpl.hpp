@@ -16,11 +16,22 @@ struct CommonSystemImplPrivate;
 class StoreHandler;
 
 class  CommonSystemImpl :
-    public SimulatableSystemInterface
+	public SimulatableSystemInterface
 {
 public:
-    CommonSystemImpl();
-    virtual ~CommonSystemImpl();
+	CommonSystemImpl();
+	virtual ~CommonSystemImpl();
+
+	//////////////////////////////////////////////////////////////////////////
+	//      C++ interface
+	//////////////////////////////////////////////////////////////////////////
+	virtual void preSim() {};
+	virtual void preStep() {};
+	virtual void doStep(double time) = 0;
+	virtual void postStep() {};
+	virtual void copyinputs() {};
+	virtual void copyoutputs() {};
+	virtual void copystateoutputs() {};
 
     //////////////////////////////////////////////////////////////////////////
     //      Inherited from Simulatable System
@@ -29,8 +40,9 @@ public:
 	void __preStep();
 	void __doStep(double time);
 	void __postStep();
-    void copyoutputs();
-    void copystateoutputs();
+	void __copyinputs();
+	void __copyoutputs();
+    void __copystateoutputs();
     double getNextUpdateTime();
     bool do_comparison();
     std::vector<double*> getStatePointers();
