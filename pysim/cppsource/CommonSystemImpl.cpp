@@ -227,7 +227,7 @@ std::map<std::string, std::string> CommonSystemImpl::getParDescriptionMap() {
 void CommonSystemImpl::__preSim()
 {
 	// Subsystems
-	for (auto const &sys : d_ptr->subsystems) {
+	for (auto const &sys : d_ptr->subsystems_vec) {
 		sys->__preSim();
 	}
 
@@ -237,7 +237,7 @@ void CommonSystemImpl::__preSim()
 void CommonSystemImpl::__preStep()
 {
 	// Subsystems
-	for (auto const &sys : d_ptr->subsystems) {
+	for (auto const &sys : d_ptr->subsystems_vec) {
 		sys->__preStep();
 	}
 
@@ -251,7 +251,7 @@ void CommonSystemImpl::__doStep(double time)
 	this->copyinputs();
 
 	// Subsystems
-	for (auto const &sys : d_ptr->subsystems) {
+	for (auto const &sys : d_ptr->subsystems_vec) {
 		sys->__doStep(time);
 	}
 
@@ -262,7 +262,7 @@ void CommonSystemImpl::__doStep(double time)
 void CommonSystemImpl::__postStep()
 {
 	// Subsystems
-	for (auto const &sys : d_ptr->subsystems) {
+	for (auto const &sys : d_ptr->subsystems_vec) {
 		sys->__postStep();
 	}
 
@@ -314,7 +314,7 @@ std::vector<double*> CommonSystemImpl::getStatePointers() {
     }
 
 	// Subsystems
-	for (auto const &sys : d_ptr->subsystems) {
+	for (auto const &sys : d_ptr->subsystems_vec) {
 		boost::range::push_back(out, sys->getStatePointers());
 	}
     return out;
@@ -348,7 +348,7 @@ std::vector<double*> CommonSystemImpl::getDerPointers() {
     }
 
 	// Subsystems
-	for (auto const &sys : d_ptr->subsystems) {
+	for (auto const &sys : d_ptr->subsystems_vec) {
 		boost::range::push_back(out, sys->getDerPointers());
 	}
     return out;
@@ -358,7 +358,7 @@ void CommonSystemImpl::doStoreStep(double time) {
     d_ptr->storeHandler.doStoreStep(time);
 
 	// Subsystems
-	for (auto const &sys : d_ptr->subsystems) {
+	for (auto const &sys : d_ptr->subsystems_vec) {
 		sys->doStoreStep(time);
 	}
 }
@@ -437,7 +437,7 @@ bool CommonSystemImpl::do_comparison() {
 
 	// Subsystems
 	bool subsystem_triggered = false;
-	for (auto const &sys : d_ptr->subsystems) {
+	for (auto const &sys : d_ptr->subsystems_vec) {
 		subsystem_triggered = subsystem_triggered || sys->do_comparison();
 	}
 
@@ -456,13 +456,16 @@ StoreHandler* CommonSystemImpl::getStoreHandlerP(){
     return &(d_ptr->storeHandler);
 }
 
-void CommonSystemImpl::add_subsystem(CommonSystemImpl * subsystem, string group)
+void CommonSystemImpl::add_subsystem(CommonSystemImpl * subsystem, string name)
 {
 	if (subsystem->getDiscrete()) {
 		throw std::invalid_argument("Discrete systems not supported as subsystems");
 	}
-	d_ptr->subsystems_map[group].push_back(subsystem);
-	d_ptr->subsystems.push_back(subsystem);
+	if (d_ptr->subsystems.count(name) > 0) {
+		throw std::invalid_argument("A subsystem with this name already exists!");
+	}
+	d_ptr->subsystems[name] = subsystem;
+	d_ptr->subsystems_vec.push_back(subsystem);
 }
 
 }

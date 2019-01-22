@@ -41,8 +41,8 @@ struct CommonSystemImplPrivate {
     std::map<std::string, pysim::matrix* > par_boost_matrices;
     std::map<std::string, std::string> par_descriptions;
 
-	std::map<std::string, std::vector<CommonSystemImpl*>> subsystems_map;
-	std::vector<CommonSystemImpl*> subsystems;
+	std::map<std::string, CommonSystemImpl*> subsystems_map;
+	std::vector<CommonSystemImpl*> subsystems_vec;
 
     StoreHandler storeHandler;
 
