@@ -87,7 +87,7 @@ void Simulation::observer(const std::vector<double> &state, double time) {
 void Simulation::prepare_first_sim() {
     // Copy system states to this objects list
     for ( auto syst = systems.cbegin(); syst != systems.end(); ++syst ) {
-        (*syst)->preSim();
+        (*syst)->__preSim();
 
         std::vector<double*> sp = (*syst)->getStatePointers();
         std::copy(sp.cbegin(), sp.cend(), std::back_inserter(states));
@@ -133,7 +133,8 @@ void Simulation::simulate(double duration,
                              abs_err, rel_err, dense_output);
             }
             do {
-                (*si)->doStep(currentTime);
+				(*si)->__copyinputs();
+                (*si)->__doStep(currentTime);
                 std::vector<double*> states = (*si)->getStatePointers();
                 std::vector<double*> ders = (*si)->getDerPointers();
 
@@ -144,8 +145,8 @@ void Simulation::simulate(double duration,
                     **state_iter++ = **der_iter++;
                 }
 
-                (*si)->copystateoutputs();
-                (*si)->copyoutputs();
+                (*si)->__copystateoutputs();
+                (*si)->__copyoutputs();
                 si = std::min_element(discreteSystems.begin(),
                                       discreteSystems.end(),
                                       myfn);
