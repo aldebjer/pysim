@@ -11,6 +11,8 @@ import numpy as np
 cimport numpy as np
 from commonsystem cimport CommonSystemImpl
 cimport simulatablesystem
+cimport cppsystem
+cimport cythonsystem
 
 
 np.import_array()
@@ -48,6 +50,27 @@ cdef class CommonSystem:
         The stored values from the simulation.        
 
     """
+	def __getattr__(self, name):
+	    """
+	    Return subsystem if one found mathing name otherwise revert to normal
+	    """
+	    bs = bytes(name,'utf-8')
+	    if self._c_s.subsystems.count(bs):
+	        try:
+		        cdef cppsystem.CppSystem* p = <cppsystem.CppSystem*?> self._c_s.subsystems[name]
+				return cppsystem.Sys._create(p)
+            except TypeError:
+			    cdef cythonsystem.CythonSystemImpl* p = <cythonsystem.CythonSystemImpl*?> self._c_s.subsystems[name]
+				cdef cythonsystem.Sys s
+				s = <cythonsystem.Sys> p.sysp
+			    return s
+	    
+        super().__getattr(name)
+
+    def add_subsystem(self, CommonSystem subsystem, name):
+        bs = bytes(name,'utf-8')
+        self._c_sys.add_subsystem(<CommonSystemImpl*>subsystem._c_s, bs)
+
     def store(self,name):
         """Store a input, output or state in the system.
 
@@ -121,11 +144,6 @@ cdef class CommonSystem:
         """
         bname = bytes(name,'utf-8')
         self._c_s.add_compare_smaller(bname,value)
-
-    def add_subsystem(self, CommonSystem subsystem, group):
-        self.subsystems[group] = subsystem
-        bs = bytes(group,'utf-8')
-        self._c_sys.add_subsystem(<CommonSystemImpl*>subsystem._c_s, bs)
 
 
 cdef class Results:
