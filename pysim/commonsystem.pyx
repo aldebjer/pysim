@@ -55,21 +55,24 @@ cdef class CommonSystem:
         Return subsystem if one found mathing name otherwise revert to normal
         """
         bs = bytes(name,'utf-8')
+        cdef cppsystem.CppSystem* c_p
+        cdef cythonsystem.CythonSystemImpl* cy_p
+        cdef cythonsystem.Sys s
+
         if self._c_s.subsystems.count(bs):
             try:
-                cdef cppsystem.CppSystem* p = <cppsystem.CppSystem*?> self._c_s.subsystems[name]
-                return cppsystem.Sys._create(p)
+                c_p = <cppsystem.CppSystem*?> self._c_s.subsystems[name]
+                return cppsystem.Sys._create(c_p)
             except TypeError:
-                cdef cythonsystem.CythonSystemImpl* p = <cythonsystem.CythonSystemImpl*?> self._c_s.subsystems[name]
-                cdef cythonsystem.Sys s
-                s = <cythonsystem.Sys> p.sysp
+                cy_p = <cythonsystem.CythonSystemImpl*?> self._c_s.subsystems[name]
+                s = <cythonsystem.Sys> cy_p.sysp
                 return s
         
         super().__getattr(name)
 
     def add_subsystem(self, CommonSystem subsystem, name):
         bs = bytes(name,'utf-8')
-        self._c_sys.add_subsystem(<CommonSystemImpl*>subsystem._c_s, bs)
+        self._c_s.add_subsystem(<CommonSystemImpl*>subsystem._c_s, bs)
 
     def store(self,name):
         """Store a input, output or state in the system.
