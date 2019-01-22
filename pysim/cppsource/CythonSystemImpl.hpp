@@ -13,9 +13,9 @@ public:
     ~CythonSystemImpl();
 
     void preSim(){};
-	void preStep();
+    void preStep();
     void doStep(double time);
-	void postStep();
+    void postStep();
 
     double getNextUpdateTime();
 

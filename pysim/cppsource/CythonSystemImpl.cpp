@@ -20,12 +20,12 @@ CythonSystemImpl::CythonSystemImpl()
 
 CythonSystemImpl::~CythonSystemImpl()
 {
-	// Delete all created inputs|outputs|states|ders
-	// TODO
+    // Delete all created inputs|outputs|states|ders
+    // TODO
 }
 
 void CythonSystemImpl::preStep() {
-	pre_step_callback(sysp);
+    pre_step_callback(sysp);
 }
 
 void CythonSystemImpl::doStep(double time) {
@@ -33,7 +33,7 @@ void CythonSystemImpl::doStep(double time) {
 }
 
 void CythonSystemImpl::postStep() {
-	post_step_callback(sysp);
+    post_step_callback(sysp);
 }
 
 double CythonSystemImpl::getNextUpdateTime() { return 0; }

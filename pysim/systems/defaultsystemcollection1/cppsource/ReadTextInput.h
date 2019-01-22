@@ -5,7 +5,7 @@ class ReadTextInput :
     public pysim::CppSystem
 {
 public:
-	ReadTextInput(void);
+    ReadTextInput(void);
 
     static std::string getDocs();
 

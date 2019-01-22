@@ -27,12 +27,12 @@ struct StateType {
 
 struct CommonSystemImplPrivate {
 
-	// State - Der mappings
+    // State - Der mappings
     std::map<std::string, std::string> state_to_der_map_scalars;
     std::map<std::string, std::string> state_to_der_map_vectors;
     std::map<std::string, std::string> state_to_der_map_matrices;
 
-	// Par containers
+    // Par containers
     std::map<std::string, ParString*> par_strings;
     std::map< std::string, ParMap* > par_maps;
     std::map<std::string, ParVectorMap* > par_vector_maps;
@@ -41,8 +41,8 @@ struct CommonSystemImplPrivate {
     std::map<std::string, pysim::matrix* > par_boost_matrices;
     std::map<std::string, std::string> par_descriptions;
 
-	std::map<std::string, CommonSystemImpl*> subsystems_map;
-	std::vector<CommonSystemImpl*> subsystems_vec;
+    std::map<std::string, CommonSystemImpl*> subsystems;
+    std::vector<CommonSystemImpl*> subsystems_vec;
 
     StoreHandler storeHandler;
 

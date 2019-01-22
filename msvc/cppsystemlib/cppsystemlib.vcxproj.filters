@@ -27,13 +27,13 @@
     <ClCompile Include="..\..\pysim\cppsource\Variable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\pysim\cppsource\CompositeSystemImpl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\pysim\cppsource\ConnectionHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\pysim\cppsource\CppSimulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\pysim\cppsource\CythonSystemImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,16 +62,13 @@
     <ClInclude Include="..\..\pysim\cppsource\Variable_p.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\pysim\cppsource\CompositeSystemImpl.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\pysim\cppsource\ConnectionHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\pysim\cppsource\CompositeSystemImpl_p.hpp">
+    <ClInclude Include="..\..\pysim\cppsource\CppSimulation.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\pysim\cppsource\CppSimulation.hpp">
+    <ClInclude Include="..\..\pysim\cppsource\CythonSystemImpl.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

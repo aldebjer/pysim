@@ -27,9 +27,9 @@ cdef extern from "CommonSystemImpl.hpp" namespace "pysim":
         Variable states
         Variable ders
         ConnectionHandler connectionHandler
-		map[string, CommonSystemImpl*] subsystems
+        map[string, CommonSystemImpl*] subsystems
 
-		void add_subsystem(CommonSystemImpl* , string) except +
+        void add_subsystem(CommonSystemImpl* , string) except +
 
         vector[string] getParNames[T]()
         T getPar[T](char*) except +

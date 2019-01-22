@@ -179,7 +179,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\pysim\cppsource\CythonSystemImpl.cpp" />
     <ClCompile Include="..\..\pysim\cythonsystem.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -195,9 +194,6 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cythonsystem.cpp</Outputs>
     </CustomBuild>
     <None Include="..\..\pysim\cythonsystem.pxd" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\pysim\cppsource\CythonSystemImpl.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

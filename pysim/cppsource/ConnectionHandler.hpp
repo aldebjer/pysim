@@ -18,13 +18,13 @@ class CompositeSystemImpl;
 class ConnectionHandler{
 public:
     ConnectionHandler(
-		Variable* inputp,
-		Variable* outputp, 
-		Variable* statep = nullptr, 
-		Variable* derp = nullptr);
+        Variable* inputp,
+        Variable* outputp, 
+        Variable* statep = nullptr, 
+        Variable* derp = nullptr);
     virtual ~ConnectionHandler();
 
-	void copyinputs();
+    void copyinputs();
     void copyoutputs();
     void copystateoutputs();
 

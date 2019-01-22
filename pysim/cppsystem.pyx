@@ -16,13 +16,13 @@ cdef class Sys:
        States and State derivatives, and Variables, that may be stored during
        a simulation"""
 
-	@staticmethod
-	cdef _create(CppSystem* sys_p):
-	    s = Sys()
-		s._c_s = sys_p
-		s._c_sys = sys_p
-		s._setupParVar()
-		return s
+    @staticmethod
+    cdef _create(CppSystem* sys_p):
+        s = Sys()
+        s._c_s = sys_p
+        s._c_sys = sys_p
+        s._setupParVar()
+        return s
 
     def __dealloc__(self):
         del self._c_sys

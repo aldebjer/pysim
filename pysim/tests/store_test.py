@@ -164,7 +164,7 @@ def test_interval_store(test_class):
     reftime = np.linspace(0,2,11)
     simtime = sys.res.time
     assert np.all(np.abs(simtime-reftime) <= np.finfo(float).eps)
-	
+    
 @pytest.mark.parametrize("test_class",[VanDerPol,PythonVanDerPol,CompositeVanDerPol])
 def test_midsim_store(test_class):
     """Check that it is possible to store a variable mid-simulation

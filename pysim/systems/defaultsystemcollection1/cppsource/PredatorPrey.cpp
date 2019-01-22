@@ -31,9 +31,9 @@ PredatorPrey::PredatorPrey(void)
     STATE(x,dx,"Number of Prey")
     STATE(y,dy, "Number of Predators")
 
-	x0 = 1; //number of animals of type X
-	y0 = 2; //number of animals of type Y
-	
+    x0 = 1; //number of animals of type X
+    y0 = 2; //number of animals of type Y
+    
     alfa = 1.5;
     beta = 1;
     gamma = 3;

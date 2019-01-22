@@ -35,7 +35,7 @@ void Simulation::doGenericStep(const std::vector< double > &state,
     // Since they are states, and constant input to this function this
     // is done before the timestep calulations.
     for ( auto syst = systems.begin(); syst != systems.end(); ++syst ) {
-		(*syst)->__preStep();
+        (*syst)->__preStep();
     }
 
     // Do the time step for all systems, and copy the variable

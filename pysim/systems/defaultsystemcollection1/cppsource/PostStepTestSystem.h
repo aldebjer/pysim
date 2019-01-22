@@ -2,7 +2,7 @@
 #include "InOutTestSystem.h"
 
 class PostStepTestSystem :
-	public InOutTestSystem
+    public InOutTestSystem
 {
-	void postStep();
+    void postStep();
 };

@@ -2,12 +2,12 @@
 #include "InOutTestSystem.h"
 
 class PreStepTestSystem :
-	public InOutTestSystem
+    public InOutTestSystem
 {
 public:
-	PreStepTestSystem(void);
-	void preStep();
+    PreStepTestSystem(void);
+    void preStep();
 
 protected:
-	pysim::vector state_vector_derived;
+    pysim::vector state_vector_derived;
 };

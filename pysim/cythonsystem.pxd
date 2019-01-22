@@ -26,5 +26,5 @@ cdef extern from "CythonSystemImpl.hpp" namespace "pysim":
 cdef class Sys(CommonSystem):
     cdef CythonSystemImpl * _c_sys
     cpdef void pre_step(Sys)
-	cpdef void do_step(Sys, double)
+    cpdef void do_step(Sys, double)
     cpdef void post_step(Sys)

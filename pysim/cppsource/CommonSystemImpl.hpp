@@ -16,32 +16,32 @@ struct CommonSystemImplPrivate;
 class StoreHandler;
 
 class  CommonSystemImpl :
-	public SimulatableSystemInterface
+    public SimulatableSystemInterface
 {
 public:
-	CommonSystemImpl();
-	virtual ~CommonSystemImpl();
+    CommonSystemImpl();
+    virtual ~CommonSystemImpl();
 
-	//////////////////////////////////////////////////////////////////////////
-	//      C++ interface
-	//////////////////////////////////////////////////////////////////////////
-	virtual void preSim() {};
-	virtual void preStep() {};
-	virtual void doStep(double time) = 0;
-	virtual void postStep() {};
-	virtual void copyinputs() {};
-	virtual void copyoutputs() {};
-	virtual void copystateoutputs() {};
+    //////////////////////////////////////////////////////////////////////////
+    //      C++ interface
+    //////////////////////////////////////////////////////////////////////////
+    virtual void preSim() {};
+    virtual void preStep() {};
+    virtual void doStep(double time) = 0;
+    virtual void postStep() {};
+    virtual void copyinputs() {};
+    virtual void copyoutputs() {};
+    virtual void copystateoutputs() {};
 
     //////////////////////////////////////////////////////////////////////////
     //      Inherited from Simulatable System
     //////////////////////////////////////////////////////////////////////////
-	void __preSim();
-	void __preStep();
-	void __doStep(double time);
-	void __postStep();
-	void __copyinputs();
-	void __copyoutputs();
+    void __preSim();
+    void __preStep();
+    void __doStep(double time);
+    void __postStep();
+    void __copyinputs();
+    void __copyoutputs();
     void __copystateoutputs();
     double getNextUpdateTime();
     bool do_comparison();
@@ -57,7 +57,7 @@ public:
     void store(const char* name);
     StoreHandler* getStoreHandlerP();
 
-	void add_subsystem(CommonSystemImpl * subsystem, std::string name);
+    void add_subsystem(CommonSystemImpl * subsystem, std::string name);
 
     void add_compare_greater(char* comparename, double comparevalue);
     void add_compare_smaller(char* comparename, double comparevalue);

@@ -226,47 +226,47 @@ std::map<std::string, std::string> CommonSystemImpl::getParDescriptionMap() {
 ////////////////////////////////////
 void CommonSystemImpl::__preSim()
 {
-	// Subsystems
-	for (auto const &sys : d_ptr->subsystems_vec) {
-		sys->__preSim();
-	}
+    // Subsystems
+    for (auto const &sys : d_ptr->subsystems_vec) {
+        sys->__preSim();
+    }
 
-	this->preSim();
+    this->preSim();
 }
 
 void CommonSystemImpl::__preStep()
 {
-	// Subsystems
-	for (auto const &sys : d_ptr->subsystems_vec) {
-		sys->__preStep();
-	}
+    // Subsystems
+    for (auto const &sys : d_ptr->subsystems_vec) {
+        sys->__preStep();
+    }
 
-	this->preStep();
-	this->copystateoutputs();
-	this->copyoutputs();
+    this->preStep();
+    this->copystateoutputs();
+    this->copyoutputs();
 }
 
 void CommonSystemImpl::__doStep(double time)
 {
-	this->copyinputs();
+    this->copyinputs();
 
-	// Subsystems
-	for (auto const &sys : d_ptr->subsystems_vec) {
-		sys->__doStep(time);
-	}
+    // Subsystems
+    for (auto const &sys : d_ptr->subsystems_vec) {
+        sys->__doStep(time);
+    }
 
-	this->doStep(time);
-	this->copyoutputs();
+    this->doStep(time);
+    this->copyoutputs();
 }
 
 void CommonSystemImpl::__postStep()
 {
-	// Subsystems
-	for (auto const &sys : d_ptr->subsystems_vec) {
-		sys->__postStep();
-	}
+    // Subsystems
+    for (auto const &sys : d_ptr->subsystems_vec) {
+        sys->__postStep();
+    }
 
-	this->postStep();
+    this->postStep();
 }
 
 
@@ -277,17 +277,17 @@ void CommonSystemImpl::__postStep()
 ////////////////////////////////////
 
 void CommonSystemImpl::__copyinputs() {
-	this->copyinputs();
-	connectionHandler.copyinputs();
+    this->copyinputs();
+    connectionHandler.copyinputs();
 }
 
 void CommonSystemImpl::__copyoutputs() {
-	this->copyoutputs();
+    this->copyoutputs();
     connectionHandler.copyoutputs();
 }
 
 void CommonSystemImpl::__copystateoutputs() {
-	this->copystateoutputs();
+    this->copystateoutputs();
     connectionHandler.copystateoutputs();
 }
 
@@ -313,10 +313,10 @@ std::vector<double*> CommonSystemImpl::getStatePointers() {
         }
     }
 
-	// Subsystems
-	for (auto const &sys : d_ptr->subsystems_vec) {
-		boost::range::push_back(out, sys->getStatePointers());
-	}
+    // Subsystems
+    for (auto const &sys : d_ptr->subsystems_vec) {
+        boost::range::push_back(out, sys->getStatePointers());
+    }
     return out;
 }
 
@@ -347,20 +347,20 @@ std::vector<double*> CommonSystemImpl::getDerPointers() {
         }
     }
 
-	// Subsystems
-	for (auto const &sys : d_ptr->subsystems_vec) {
-		boost::range::push_back(out, sys->getDerPointers());
-	}
+    // Subsystems
+    for (auto const &sys : d_ptr->subsystems_vec) {
+        boost::range::push_back(out, sys->getDerPointers());
+    }
     return out;
 }
 
 void CommonSystemImpl::doStoreStep(double time) {
     d_ptr->storeHandler.doStoreStep(time);
 
-	// Subsystems
-	for (auto const &sys : d_ptr->subsystems_vec) {
-		sys->doStoreStep(time);
-	}
+    // Subsystems
+    for (auto const &sys : d_ptr->subsystems_vec) {
+        sys->doStoreStep(time);
+    }
 }
 
 
@@ -435,13 +435,13 @@ bool CommonSystemImpl::do_comparison() {
         }
     }
 
-	// Subsystems
-	bool subsystem_triggered = false;
-	for (auto const &sys : d_ptr->subsystems_vec) {
-		subsystem_triggered = subsystem_triggered || sys->do_comparison();
-	}
+    // Subsystems
+    bool subsystem_triggered = false;
+    for (auto const &sys : d_ptr->subsystems_vec) {
+        subsystem_triggered = subsystem_triggered || sys->do_comparison();
+    }
 
-	return is_greater || is_smaller || subsystem_triggered;
+    return is_greater || is_smaller || subsystem_triggered;
 }
 
 double CommonSystemImpl::getNextUpdateTime() {
@@ -458,14 +458,14 @@ StoreHandler* CommonSystemImpl::getStoreHandlerP(){
 
 void CommonSystemImpl::add_subsystem(CommonSystemImpl * subsystem, string name)
 {
-	if (subsystem->getDiscrete()) {
-		throw std::invalid_argument("Discrete systems not supported as subsystems");
-	}
-	if (d_ptr->subsystems.count(name) > 0) {
-		throw std::invalid_argument("A subsystem with this name already exists!");
-	}
-	d_ptr->subsystems[name] = subsystem;
-	d_ptr->subsystems_vec.push_back(subsystem);
+    if (subsystem->getDiscrete()) {
+        throw std::invalid_argument("Discrete systems not supported as subsystems");
+    }
+    if (d_ptr->subsystems.count(name) > 0) {
+        throw std::invalid_argument("A subsystem with this name already exists!");
+    }
+    d_ptr->subsystems[name] = subsystem;
+    d_ptr->subsystems_vec.push_back(subsystem);
 }
 
 }

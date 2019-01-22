@@ -50,21 +50,21 @@ cdef class CommonSystem:
         The stored values from the simulation.        
 
     """
-	def __getattr__(self, name):
-	    """
-	    Return subsystem if one found mathing name otherwise revert to normal
-	    """
-	    bs = bytes(name,'utf-8')
-	    if self._c_s.subsystems.count(bs):
-	        try:
-		        cdef cppsystem.CppSystem* p = <cppsystem.CppSystem*?> self._c_s.subsystems[name]
-				return cppsystem.Sys._create(p)
+    def __getattr__(self, name):
+        """
+        Return subsystem if one found mathing name otherwise revert to normal
+        """
+        bs = bytes(name,'utf-8')
+        if self._c_s.subsystems.count(bs):
+            try:
+                cdef cppsystem.CppSystem* p = <cppsystem.CppSystem*?> self._c_s.subsystems[name]
+                return cppsystem.Sys._create(p)
             except TypeError:
-			    cdef cythonsystem.CythonSystemImpl* p = <cythonsystem.CythonSystemImpl*?> self._c_s.subsystems[name]
-				cdef cythonsystem.Sys s
-				s = <cythonsystem.Sys> p.sysp
-			    return s
-	    
+                cdef cythonsystem.CythonSystemImpl* p = <cythonsystem.CythonSystemImpl*?> self._c_s.subsystems[name]
+                cdef cythonsystem.Sys s
+                s = <cythonsystem.Sys> p.sysp
+                return s
+        
         super().__getattr(name)
 
     def add_subsystem(self, CommonSystem subsystem, name):
