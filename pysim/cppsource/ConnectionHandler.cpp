@@ -11,7 +11,6 @@
 #include <Eigen/Dense>
 
 #include "CommonSystemImpl_p.hpp"
-#include "CompositeSystemImpl_p.hpp"
 #include "Variable_p.hpp"
 
 using std::string;
@@ -56,8 +55,8 @@ ConnectionHandler::~ConnectionHandler() {
 };
 
 template <typename T>
-void make_connection(std::vector<std::pair<T, T>>* connections, T input, T output) {
-    connections->push_back(std::make_pair<T, T>(output, input));
+void make_connection(std::vector<std::pair<T*, T*>>* connections, T* input, T* output) {
+    connections->push_back(std::make_pair(output, input));
 }
 
 void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, char* inputname) {
