@@ -20,8 +20,8 @@ public:
     ConnectionHandler(
         Variable* inputp,
         Variable* outputp, 
-        Variable* statep = nullptr, 
-        Variable* derp = nullptr);
+        Variable* statep, 
+        Variable* derp);
     virtual ~ConnectionHandler();
 
     void copyinputs();
