@@ -152,7 +152,7 @@
     <LinkIncremental>true</LinkIncremental>
     <TargetExt>.pyd</TargetExt>
     <OutDir>$(ProjectDir)..\..\pysim\systems\</OutDir>
-    <TargetName>$(ProjectName).cp36-win32</TargetName>
+    <TargetName>$(ProjectName).cp37-win32</TargetName>
     <IntDir>$(ProjectDir)Intermediate\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
