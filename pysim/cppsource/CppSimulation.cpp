@@ -133,7 +133,7 @@ void Simulation::simulate(double duration,
                              abs_err, rel_err, dense_output);
             }
             do {
-				(*si)->__copyinputs();
+                (*si)->__copyinputs();
                 (*si)->__doStep(currentTime);
                 std::vector<double*> states = (*si)->getStatePointers();
                 std::vector<double*> ders = (*si)->getDerPointers();
