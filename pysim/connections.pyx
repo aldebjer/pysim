@@ -9,8 +9,6 @@ cimport numpy as np
 
 from commonsystem cimport CommonSystemImpl
 from commonsystem cimport CommonSystem
-from compositesystem cimport CompositeSystem
-from compositesystem cimport CompositeSystemImpl
 
 np.import_array()
 
@@ -33,8 +31,7 @@ cdef class Connections:
         """Connect the outputs from this system to the inputs of another.
 
         The systems that are to be connected must be derived from a
-        CommonSystem, e.g. CppSystems and CythonSystems, or be a 
-        CompositeSystem.
+        CommonSystem, e.g. CppSystems and CythonSystems.
 
         Parameters
         ----------
@@ -57,15 +54,5 @@ cdef class Connections:
         bsout =  bytes(outputname,'utf-8')
         bsin =  bytes(inputname,'utf-8')
 
-        if isinstance(inputsys,CommonSystem):
-            if output_element:
-                self._c_connectionHandler.connect[CommonSystemImpl](bsout,(<CommonSystem>inputsys)._c_s,bsin, output_element)
-            else:
-                self._c_connectionHandler.connect[CommonSystemImpl](bsout,(<CommonSystem>inputsys)._c_s,bsin)
-        elif isinstance(inputsys, CompositeSystem):
-            if output_element:
-                self._c_connectionHandler.connect[CompositeSystemImpl](bsout,(<CompositeSystem>inputsys)._c_sys,bsin, output_element)
-            else:
-                self._c_connectionHandler.connect[CompositeSystemImpl](bsout,(<CompositeSystem>inputsys)._c_sys,bsin)
-
+        self._c_connectionHandler.connect(bsout,(<CommonSystem>inputsys)._c_s,bsin)
         self.connection_list.append((outputname, inputsys, inputname))
