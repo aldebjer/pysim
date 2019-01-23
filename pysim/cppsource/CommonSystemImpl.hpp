@@ -58,6 +58,7 @@ public:
     StoreHandler* getStoreHandlerP();
 
     void add_subsystem(CommonSystemImpl * subsystem, std::string name);
+    CommonSystemImpl* get_subsystem(std::string name);
 
     void add_compare_greater(char* comparename, double comparevalue);
     void add_compare_smaller(char* comparename, double comparevalue);
@@ -77,6 +78,7 @@ public:
     Variable states;
     Variable ders;
     ConnectionHandler connectionHandler;
+    std::vector<std::string> subsystem_names;
 
 protected:
     std::unique_ptr<CommonSystemImplPrivate> d_ptr;

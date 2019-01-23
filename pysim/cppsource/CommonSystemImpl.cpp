@@ -464,8 +464,19 @@ void CommonSystemImpl::add_subsystem(CommonSystemImpl * subsystem, string name)
     if (d_ptr->subsystems.count(name) > 0) {
         throw std::invalid_argument("A subsystem with this name already exists!");
     }
+    subsystem_names.push_back(name);
     d_ptr->subsystems[name] = subsystem;
     d_ptr->subsystems_vec.push_back(subsystem);
+}
+
+CommonSystemImpl * CommonSystemImpl::get_subsystem(std::string name)
+{
+    if (d_ptr->subsystems.count(name) > 0) {
+        return d_ptr->subsystems[name];
+    }
+    else {
+        throw std::invalid_argument("A subsystem with this name doesn't exist!");
+    }
 }
 
 }
