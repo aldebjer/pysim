@@ -15,7 +15,7 @@ namespace pysim {
 
 
 CommonSystemImpl::CommonSystemImpl() :
-    connectionHandler(&outputs, &states, &ders),
+    connectionHandler(&inputs, &outputs, &states, &ders),
     d_ptr(new CommonSystemImplPrivate())
 {
 }
@@ -242,13 +242,13 @@ void CommonSystemImpl::__preStep()
     }
 
     this->preStep();
-    this->copystateoutputs();
-    this->copyoutputs();
+    this->__copystateoutputs();
+    this->__copyoutputs();
 }
 
 void CommonSystemImpl::__doStep(double time)
 {
-    this->copyinputs();
+    this->__copyinputs();
 
     // Subsystems
     for (auto const &sys : d_ptr->subsystems_vec) {
@@ -256,7 +256,7 @@ void CommonSystemImpl::__doStep(double time)
     }
 
     this->doStep(time);
-    this->copyoutputs();
+    this->__copyoutputs();
 }
 
 void CommonSystemImpl::__postStep()
