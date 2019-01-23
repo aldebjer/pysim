@@ -60,6 +60,7 @@ cdef extern from "StoreHandler.hpp" namespace "pysim":
 
 cdef class CommonSystem(simulatablesystem.SimulatableSystem):
     cdef CommonSystemImpl * _c_s
+    cdef _get_subsystem(CommonSystem, CommonSystemImpl*)
 
 cdef class Parameters:
     cdef CommonSystemImpl* _c_sys

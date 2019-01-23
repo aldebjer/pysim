@@ -54,10 +54,17 @@ cdef class CommonSystem:
         """
         Return subsystem if one found mathing name otherwise revert to normal
         """
-        bs = bytes(name,'utf-8')
+        try:
+            bs = bytes(name,'utf-8')
+            return self._get_subsystem(self._c_s.get_subsystem(bs))
+        except ValueError:
+            return super().__getattr__(name)
 
-        cdef CommonSystemImpl* sub_p = self._c_s.get_subsystem(bs)
+    def __iter__(self):
+        for name in self._c_s.subsystem_names:
+            yield self._get_subsystem(self._c_s.get_subsystem(name))
 
+    cdef _get_subsystem(self, CommonSystemImpl* sub_p):
         cdef cppsystem.CppSystem* c_p
         cdef cythonsystem.CythonSystemImpl* cy_p
         cdef cythonsystem.Sys s
@@ -69,8 +76,7 @@ cdef class CommonSystem:
             cy_p = <cythonsystem.CythonSystemImpl*?> sub_p
             s = <cythonsystem.Sys> cy_p.sysp
             return s
-        
-        return super().__getattr__(name)
+
 
     def add_subsystem(self, CommonSystem subsystem, name):
         bs = bytes(name,'utf-8')
