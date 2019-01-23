@@ -6,7 +6,6 @@ The module also contains a number of solvers that the Sim object can use.
 from libcpp.vector cimport vector
 from libcpp cimport bool
 from commonsystem cimport CommonSystem
-from compositesystem import CompositeSystem
 cimport simulatablesystem
 import json
 import importlib
@@ -106,111 +105,6 @@ cdef class Sim:
         """
         currentTime = self._c_sim.getCurrentTime()
         return currentTime
-
-    def _save_system(self,system, namedict):
-        systemdict = collections.OrderedDict()
-
-        if isinstance(system, CompositeSystem):
-            systemdict["type"] = "CompositeSystem"
-            systemdict["module"] = "pysim.compositesystem"
-            systemdict["ports"] = {"in": system.in_ports, "out": system.out_ports}
-
-            subsystems = {}
-            for subname,subsys in system.subsystems.items():
-                subsystems[subname] = self._save_system(subsys, system.subsystems)
-            systemdict["subsystems"] = subsystems
-        else:
-            systemdict["type"] = type(system).__name__
-            systemdict["module"] = type(system).__module__
-
-        inputdict = collections.OrderedDict()
-        for input_name in dir(system.inputs):
-            inputdict[input_name] = getattr(system.inputs,input_name)
-        systemdict["inputs"]=inputdict
-
-        cons = []
-        for c in system.connections.connection_list:
-            sysname = _get_system_name(namedict, c[1])
-            cons.append((c[0],sysname, c[2]))
-        systemdict["connections"] = cons
-
-        systemdict["stores"] = system.stores
-
-        return systemdict
-
-    def save_config(self,filepath):
-        """Stores the simulations systems and their input values to a file.
-        The path for the file to be stored at is given by the arguement'
-        "filepath". This file can later be read with the function "load_config".
-        """
-        systems_dict = collections.OrderedDict()
-        for name,system in self.systems.items():
-            systems_dict[name] = self._save_system(system, self.systems)
-
-        root_dict = {"systems":systems_dict}
-
-        with open(filepath,'w') as f:
-            json.dump(root_dict,
-                      f,
-                      sort_keys=True,
-                      indent=4,
-                      separators=(',', ': '))
-
-    def _setup_system(self, sys_dict):
-        typename = sys_dict["type"]
-        modulename = sys_dict["module"]
-        mod = importlib.import_module(modulename)
-        system = getattr(mod,typename)()
-
-        if "ports" in sys_dict.keys():
-            for name, value in sys_dict["ports"]["in"].items():
-                if value["type"] == "scalar":
-                    system.add_port_in_scalar(name, value["value"], value["description"])
-            for name, value in sys_dict["ports"]["out"].items():
-                if value["type"] == "scalar":
-                    system.add_port_out_scalar(name, value["value"], value["description"])
-
-        for iname,ivalue in sys_dict["inputs"].items():
-            setattr(system.inputs,iname,ivalue)
-        if "subsystems" in sys_dict.keys():
-            for subsysname, subsys_dict in sys_dict["subsystems"].items():
-               subsys = self._setup_system(subsys_dict)
-               system.add_subsystem(subsys, subsysname)
-        return system
-
-    def _connect_system(self, system, sys_dict, siblings):
-        for con in sys_dict["connections"]:
-            system.connections.add_connection(con[0], siblings[con[1]], con[2])
-
-        if "ports" in sys_dict.keys():
-            for name, portdict in sys_dict["ports"]["in"].items():
-                for con in portdict["connections"]:
-                    subsys = system.subsystems[con["subsystem"]]
-                    system.connect_port_in(name, subsys, con["input"])
-            for name, portdict in sys_dict["ports"]["out"].items():
-                for con in portdict["connections"]:
-                    subsys = system.subsystems[con["subsystem"]]
-                    system.connect_port_out(name, subsys, con["output"])
-
-        if "subsystems" in sys_dict.keys():
-            for subsysname, subsys_dict in sys_dict["subsystems"].items():
-                self._connect_system(system.subsystems[subsysname], subsys_dict, system.subsystems)
-
-    def load_config(self,filepath):
-        """Loads a number of systems and their input values from a file.
-        The file is loaded from the path supplied as an argument to the 
-        function
-        """
-        d = collections.OrderedDict()
-        with open(filepath,'r') as f:
-            d = json.load(f,object_pairs_hook=collections.OrderedDict)
-        systems_dict = d["systems"]
-        for name,sys_dict in systems_dict.items():
-            system = self._setup_system(sys_dict)
-            self.add_system(system, name)
-
-        for name,sys_dict in systems_dict.items():
-            self._connect_system(self.systems[name], sys_dict, self.systems)
 
 
     def simulate(self, double duration, double dt, solver = Runge_Kutta_4() ):
