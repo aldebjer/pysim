@@ -8,6 +8,7 @@ from pysim.simulation import Sim
 from pysim.systems import MassSpringDamper
 from pysim.systems import SquareWave
 from pysim.systems import InOutTestSystem
+from pysim.systems import ControlledSpring as ControlledSpringCpp
 
 from pysim.cythonsystem import Sys
 
@@ -275,9 +276,12 @@ def test_composite_vs_connected_outputs():
     cd.inputs.amp = 50
     sim.add_system(cd)
 
+    cd2 = ControlledSpringCpp()
+    sim.add_system(cd2)
+
     sim.simulate(2, 0.1)
 
-    assert cd.outputs.out == msd.states.x1
+    assert cd.outputs.out == msd.states.x1 == cd2.outputs.out
 
 
 

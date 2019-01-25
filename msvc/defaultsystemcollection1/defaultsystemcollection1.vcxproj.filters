@@ -75,6 +75,9 @@
     <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\PreStepTestSystem.cpp">
       <Filter>Source Files\test_systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ControlledSpring.cpp">
+      <Filter>Source Files\test_systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\Factory.hpp">
@@ -123,6 +126,9 @@
       <Filter>Header Files\test_systems</Filter>
     </ClInclude>
     <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\PreStepTestSystem.h">
+      <Filter>Header Files\test_systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\pysim\systems\defaultsystemcollection1\cppsource\ControlledSpring.h">
       <Filter>Header Files\test_systems</Filter>
     </ClInclude>
   </ItemGroup>
