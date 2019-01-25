@@ -26,7 +26,7 @@ cdef class Sys:
         cdef CythonSystemImpl* _c_sys_local
         _c_sys_local = new CythonSystemImpl()
         self._c_sys = _c_sys_local
-        self._c_s = <CommonSystemImpl*> _c_sys_local
+        self._c_s = _c_sys_local
         self._c_sys.sysp = <void*> self
         self._SimulatableSystemInterface_p = _c_sys_local
 
