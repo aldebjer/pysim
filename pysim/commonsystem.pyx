@@ -50,6 +50,9 @@ cdef class CommonSystem:
         The stored values from the simulation.        
 
     """
+    def __cinit__(self):
+        self._subsystems = {}
+
     def __getattr__(self, name):
         """
         Return subsystem if one found mathing name otherwise revert to normal
@@ -64,7 +67,7 @@ cdef class CommonSystem:
         for name in self._c_s.subsystem_names:
             yield self._get_subsystem(self._c_s.get_subsystem(name))
 
-    cdef _get_subsystem(self, CommonSystemImpl* sub_p):
+    cdef _get_subsystem(self, simulatablesystem.SimulatableSystemInterface* sub_p):
         cdef cppsystem.CppSystem* c_p
         cdef cythonsystem.CythonSystemImpl* cy_p
         cdef cythonsystem.Sys s
@@ -78,9 +81,10 @@ cdef class CommonSystem:
             return s
 
 
-    def add_subsystem(self, CommonSystem subsystem, name):
+    def add_subsystem(self, simulatablesystem.SimulatableSystem subsystem, name):
         bs = bytes(name,'utf-8')
-        self._c_s.add_subsystem(<CommonSystemImpl*>subsystem._c_s, bs)
+        self._c_s.add_subsystem(subsystem._SimulatableSystemInterface_p, bs)
+        self._subsystems[name] = subsystem
 
     def store(self,name):
         """Store a input, output or state in the system.

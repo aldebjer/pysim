@@ -456,7 +456,7 @@ StoreHandler* CommonSystemImpl::getStoreHandlerP(){
     return &(d_ptr->storeHandler);
 }
 
-void CommonSystemImpl::add_subsystem(CommonSystemImpl * subsystem, string name)
+void CommonSystemImpl::add_subsystem(SimulatableSystemInterface * subsystem, string name)
 {
     if (subsystem->getDiscrete()) {
         throw std::invalid_argument("Discrete systems not supported as subsystems");
@@ -469,7 +469,7 @@ void CommonSystemImpl::add_subsystem(CommonSystemImpl * subsystem, string name)
     d_ptr->subsystems_vec.push_back(subsystem);
 }
 
-CommonSystemImpl * CommonSystemImpl::get_subsystem(std::string name)
+SimulatableSystemInterface * CommonSystemImpl::get_subsystem(std::string name)
 {
     if (d_ptr->subsystems.count(name) > 0) {
         return d_ptr->subsystems[name];
