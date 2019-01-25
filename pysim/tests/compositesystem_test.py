@@ -9,33 +9,39 @@ from pysim.systems import MassSpringDamper
 from pysim.systems import SquareWave
 from pysim.systems import InOutTestSystem
 
-from pysim.compositesystem import CompositeSystem
+from pysim.cythonsystem import Sys
 
-class ControlledSpring(CompositeSystem):
+class ControlledSpring(Sys):
     """Composite system created for testing
     The system is made up of a square wave system and a mass-spring-damper 
     system. The square wave is applied as a force acting on the mass,
     driving it up and down.
     """
     def __init__(self):
-        wave_sys = SquareWave()
-        wave_sys.inputs.amplitude = 50
-        wave_sys.inputs.freq = 0.1
-        self.add_subsystem(wave_sys,"wave_sys")
-
         msd = MassSpringDamper()
         msd.inputs.b = 80
         msd.inputs.m = 50
         msd.inputs.f = 0
         self.add_subsystem(msd,"msd")
 
+        wave_sys = SquareWave()
+        wave_sys.inputs.amplitude = 50
+        wave_sys.inputs.freq = 0.1
+        self.add_subsystem(wave_sys,"wave_sys")
+
         wave_sys.connections.add_connection("signal", msd, "f")
 
-        self.add_input_port("amp","wave_sys","amplitude", "amplitude of wave")
-        self.add_output_port("out","msd","x1", "position")
-        self.add_output_port("signal","wave_sys","signal", "signal from wave")
+        self.add_input_scalar("amp")
+        self.connections.add_connection("amp", wave_sys, "amplitude")
 
-class CompositeSpring(CompositeSystem):
+        self.add_output_scalar("out")
+        msd.connections.add_connection("x1", self, "out")
+
+        self.add_output_scalar("signal")
+        wave_sys.connections.add_connection("signal", self, "signal")
+
+
+class CompositeSpring(Sys):
     """Composite system for testing purposes
     The system contains only a mass spring damper subsystem connected to 
     ports.
@@ -46,11 +52,16 @@ class CompositeSpring(CompositeSystem):
         msd.inputs.m = 50
         msd.inputs.f = 0
         self.add_subsystem(msd,"msd")
-        self.add_port_in_scalar("force", 0, "force acting on mass")
-        self.connect_port_in("force", msd, "f")
-        self.add_output_port("position","msd","x1", "Position")
 
-class NestedCompositeSpring(CompositeSystem):
+        self.add_input_scalar("force", "force acting on mass")
+        self.inputs.force = 0
+        self.connections.add_connection("force", msd, "f")
+
+        self.add_output_scalar("position", "Position")
+        msd.connections.add_connection("x1", self, "position")
+
+
+class NestedCompositeSpring(Sys):
     """Nested composite system for testing purposes
     The system contains only a CompositeSpring system. It is used to 
     test nesting of composite systems. 
@@ -58,119 +69,103 @@ class NestedCompositeSpring(CompositeSystem):
     def __init__(self):
         composite_spring = CompositeSpring()
         self.add_subsystem(composite_spring,"composite_spring")
-        self.add_port_in_scalar("force", 0, "force acting on mass")
-        self.connect_port_in("force", composite_spring, "force")
-        self.add_port_out_scalar("position",0,"Position of the mass")
-        self.connect_port_out("position",composite_spring,"position")
 
-class CompositeSquareWave(CompositeSystem):
+        self.add_input_scalar("force", "force acting on mass")
+        self.inputs.force = 0
+        self.connections.add_connection("force", composite_spring, "force")
+
+        self.add_output_scalar("position", "Position of mass")
+        self.outputs.position = 0
+        composite_spring.connections.add_connection("position", self, "position")
+
+
+class CompositeSquareWave(Sys):
     """Composite system representating a square wave, used for testing."""
     def __init__(self):
         wave_sys = SquareWave()
-        wave_sys.inputs.amplitude = 50
-        wave_sys.inputs.freq = 0.1
         self.add_subsystem(wave_sys,"wave_sys")
 
-        self.add_port_in_scalar("freq", 0, "frequency of wave")
-        self.connect_port_in("freq", wave_sys, "freq")
+        self.add_input_scalar("freq", "frequency of wave")
+        self.inputs.freq = 0.1
+        self.connections.add_connection("freq", wave_sys, "freq")
 
-        self.add_port_in_scalar("amplitude", 0, "amplitude of wave")
-        self.connect_port_in("amplitude", wave_sys, "amplitude")
+        self.add_input_scalar("amplitude", "amplitude of wave")
+        self.inputs.amplitude = 50
+        self.connections.add_connection("amplitude", wave_sys, "amplitude")
 
-        self.add_port_out_scalar("signal", 0, "signal from wave")
-        self.connect_port_out("signal", wave_sys, "signal")
+        self.add_output_scalar("signal", "signal from wave")
+        wave_sys.connections.add_connection("signal", self, "signal")
 
-class NestedCompositeSquareWave(CompositeSystem):
+
+class NestedCompositeSquareWave(Sys):
     """Composite system representating a square wave, used for testing."""
     def __init__(self):
         wave_sys = CompositeSquareWave()
-        wave_sys.inputs.amplitude = 50
-        wave_sys.inputs.freq = 0.1
         self.add_subsystem(wave_sys,"wave_sys")
 
-        self.add_port_in_scalar("freq", 0, "frequency of wave")
-        self.connect_port_in("freq", wave_sys, "freq")
+        self.add_input_scalar("freq", "frequency of wave")
+        self.inputs.freq = 0.1
+        self.connections.add_connection("freq", wave_sys, "freq")
 
-        self.add_port_in_scalar("amplitude", 0, "amplitude of wave")
-        self.connect_port_in("amplitude", wave_sys, "amplitude")
+        self.add_input_scalar("amplitude", "amplitude of wave")
+        self.inputs.amplitude = 50
+        self.connections.add_connection("amplitude", wave_sys, "amplitude")
 
-        self.add_port_out_scalar("signal", 0, "signal from wave")
-        self.connect_port_out("signal", wave_sys, "signal")
+        self.add_output_scalar("signal", "signal from wave")
+        wave_sys.connections.add_connection("signal", self, "signal")
 
-class CompositeTestSystem(CompositeSystem):
+class CompositeTestSystem(Sys):
     """Composite system used for testing composite systems."""
     def __init__(self):
         self.new_subsystems = [InOutTestSystem(),
                                InOutTestSystem()]
 
-        for i in range(len(self.new_subsystems)):
-            self.add_subsystem(self.new_subsystems[i],"subsystem_{}".format(i))
+        for i, sys in enumerate(self.new_subsystems):
+            self.add_subsystem(sys,"subsystem_{}".format(i))
 
-            self.add_port_in_scalar("scalar_in_{}".format(i),
-                                    -1,
-                                    "input scalar {}".format(i))
-            self.connect_port_in("scalar_in_{}".format(i),
-                                 self.new_subsystems[i],
-                                 "input_scalar")
+            name = "scalar_in_{}".format(i)
+            self.add_input_scalar(name)
+            setattr(self.inputs, name, -1)
+            self.connections.add_connection(name, sys, "input_scalar")
 
-            portoutname = "output_scalar_{}".format(i)
-            podesc = "Test scalar output from composite system {}".format(i)
-            self.add_port_out_scalar(portoutname,
-                                     -1,
-                                     podesc)
-            self.connect_port_out(portoutname,
-                                  self.new_subsystems[i],
-                                  "input_output_scalar")
+            name = "output_scalar_{}".format(i)
+            self.add_output_scalar(name)
+            setattr(self.outputs, name, -1)
+            sys.connections.add_connection("input_output_scalar", self, name)
 
-            self.add_port_in_vector("vector_in_{}".format(i),
-                                    (1,2,3),
-                                    "input vector {}".format(i))
-            self.connect_port_in("vector_in_{}".format(i),
-                                 self.new_subsystems[i],
-                                 "input_vector")
 
-            portoutname = "output_vector_{}".format(i)
-            podesc = "Test vector output from composite system {}".format(i)
-            self.add_port_out_vector(portoutname,
-                                     (-1, -1, -1),
-                                     podesc)
-            self.connect_port_out(portoutname,
-                                  self.new_subsystems[i],
-                                  "input_output_vector")
+            name = "vector_in_{}".format(i)
+            self.add_input_vector(name, 3)
+            setattr(self.inputs, name, [1,2,3])
+            self.connections.add_connection(name, sys, "input_vector")
 
-            portoutname = "output_state_vector_{}".format(i)
-            podesc = "Test vector output from composite system {}".format(i)
-            self.add_port_out_vector(portoutname,
-                                     (-1, -1, -1),
-                                     podesc)
-            self.connect_port_out(portoutname,
-                                  self.new_subsystems[i],
-                                  "state_vector")
+            name = "output_vector_{}".format(i)
+            self.add_output_vector(name, 3)
+            setattr(self.outputs, name, [-1,-1,-1])
+            sys.connections.add_connection("input_output_vector", self, name)
 
-            self.add_port_in_matrix("matrix_in_{}".format(i),
-                                    ((1,2),(3,4)),
-                                    "input matrix {}".format(i))
-            self.connect_port_in("matrix_in_{}".format(i),
-                                 self.new_subsystems[i],
-                                 "input_matrix")
 
-            portoutname = "output_matrix_{}".format(i)
-            podesc = "Test matrix output from composite system {}".format(i)
-            self.add_port_out_matrix(portoutname,
-                                     ((-1,-1),(-1,-1)),
-                                     podesc)
-            self.connect_port_out(portoutname,
-                                  self.new_subsystems[i],
-                                  "input_output_matrix")
+            name = "output_state_vector_{}".format(i)
+            self.add_output_vector(name, 3)
+            setattr(self.outputs, name, [-1,-1,-1])
+            sys.connections.add_connection("state_vector", self, name)
 
-            portoutname = "output_state_matrix_{}".format(i)
-            podesc = "Test state matrix output from composite system {}".format(i)
-            self.add_port_out_matrix(portoutname,
-                                     ((-1,-1),(-1,-1)),
-                                     podesc)
-            self.connect_port_out(portoutname,
-                                  self.new_subsystems[i],
-                                  "state_matrix")
+
+            name = "matrix_in_{}".format(i)
+            self.add_input_matrix(name, 3, 3)
+            self.connections.add_connection(name, sys, "input_matrix")
+
+            name = "output_matrix_{}".format(i)
+            self.add_output_matrix(name, 3, 3)
+            setattr(self.outputs, name, ((-1,-1,-1),(-1,-1,-1),(-1,-1,-1)))
+            sys.connections.add_connection("input_output_matrix", self, name)
+
+
+            name = "output_state_matrix_{}".format(i)
+            self.add_output_matrix(name, 3, 3)
+            setattr(self.outputs, name, ((-1,-1,-1),(-1,-1,-1),(-1,-1,-1)))
+            sys.connections.add_connection("state_matrix", self, name)
+
 
 def test_port_connections():
     """Test the port connections to and from subsystems"""
@@ -197,6 +192,7 @@ def test_connected_subsystems():
     sim.add_system(cd)
 
     sim.simulate(2, 0.1)
+    print(cd.outputs.out)
     assert np.abs(cd.outputs.out-0.3240587706226495) < 1e-10
 
 @pytest.mark.parametrize("sw_class",
@@ -276,6 +272,7 @@ def test_composite_vs_connected_outputs():
 
     #Composite system
     cd = ControlledSpring()
+    cd.inputs.amp = 50
     sim.add_system(cd)
 
     sim.simulate(2, 0.1)
@@ -289,4 +286,5 @@ if __name__ == "__main__":
     #test_connection_from_composite(CompositeSquareWave)
     #test_connection_to_composite(NestedCompositeSpring)
     #test_port_connections()
-    test_system_store()
+    #test_system_store()
+    test_composite_vs_connected_outputs()

@@ -6,7 +6,7 @@ import pytest
 
 from pysim.simulation import Sim
 
-from pysim.compositesystem import CompositeSystem
+from pysim.cythonsystem import Sys
 from pysim.systems.python_systems import InOutTestSystem
 from pysim.systems import PreStepTestSystem as PreStepTestSystemCpp
 
@@ -22,18 +22,16 @@ class PreStepTestSystem(InOutTestSystem):
         self.outputs.state_vector_derived = np.cross(self.states.state_vector, self.system_pos)
 
 
-class PreStepCompositeSystem(CompositeSystem):
+class PreStepCompositeSystem(Sys):
     """Composite test system for testing post step 
     functionality within a composite system"""
     def __init__(self):
         ps = PreStepTestSystem()
         self.add_subsystem(ps, 'ps')
 
-        self.expand_single_output('state_vector_derived',
-                                  ps,
-                                  'state_vector_derived',
-                                  [0,0,0])
-
+        self.add_output_vector("state_vector_derived", 3)
+        self.outputs.state_vector_derived = [0,0,0]
+        ps.connections.add_connection("state_vector_derived", self, "state_vector_derived")
 
 
 def test_cython_prestep():

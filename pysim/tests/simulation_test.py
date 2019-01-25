@@ -146,3 +146,6 @@ def test_discrete_system():
         x.append(r*x[-1]*(1-x[-1]))
 
     assert np.all(np.abs(lm.res.x[1::10]-x)<1e-18)
+
+if __name__ == '__main__':
+    test_connected_system()

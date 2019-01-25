@@ -5,10 +5,11 @@ from numpy.testing import assert_array_almost_equal
 import pytest
 
 from pysim.simulation import Sim
-
-from pysim.compositesystem import CompositeSystem
 from pysim.systems.python_systems import InOutTestSystem
 from pysim.systems import PostStepTestSystem as PostStepTestSystemCpp
+
+from pysim.cythonsystem import Sys
+
 
 class PostStepTestSystem(InOutTestSystem):
     """Test system for testing post step functionality 
@@ -21,25 +22,24 @@ class PostStepTestSystem(InOutTestSystem):
         self.states.state_vector = np.ones(3)*4.56*2
         self.states.state_matrix = np.ones((3,3))*7.89*2
 
-class PostStepCompositeSystem(CompositeSystem):
+class PostStepCompositeSystem(Sys):
     """Composite test system for testing post step 
     functionality within a composite system"""
     def __init__(self):
         ps = PostStepTestSystem()
-        self.add_subsystem(ps, 'ps')
+        self.add_subsystem(ps, "ps")
 
-        self.add_port_out_scalar('state_scalar_out', 0, '')
-        self.connect_port_out('state_scalar_out', ps,
-                              'state_scalar')
+        self.add_output_scalar("state_scalar_out")
+        self.outputs.state_scalar_out = 0
+        ps.connections.add_connection("state_scalar", self, "state_scalar_out")
 
-        self.add_port_out_vector('state_vector_out', [0,0,0], '')
-        self.connect_port_out('state_vector_out', ps,
-                              'state_vector')
+        self.add_output_vector("state_vector_out", 3)
+        self.outputs.state_vector_out = [0,0,0]
+        ps.connections.add_connection("state_vector", self, "state_vector_out")
 
-        self.add_port_out_matrix('state_matrix_out',
-                                 [[0,0,0],[0,0,0],[0,0,0]],'')
-        self.connect_port_out('state_matrix_out', ps,
-                              'state_matrix')
+        self.add_output_matrix("state_matrix_out", 3, 3)
+        self.outputs.state_matrix_out = [[0,0,0],[0,0,0],[0,0,0]]
+        ps.connections.add_connection("state_matrix", self, "state_matrix_out")
 
 
 def test_cython_poststep():

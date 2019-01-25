@@ -8,17 +8,24 @@ from pysim.simulation import Sim
 from pysim.systems import VanDerPol, SquareWave, RigidBody, InOutTestSystem
 from pysim.systems.python_systems import VanDerPol as PythonVanDerPol
 from pysim.systems.python_systems import InOutTestSystem as PythonInOutTestSystem
-from pysim.compositesystem import CompositeSystem
+from pysim.cythonsystem import Sys
 
-class CompositeVanDerPol(CompositeSystem):
+class CompositeVanDerPol(Sys):
 
     def __init__(self):
         vdp = VanDerPol()
         self.add_subsystem(vdp, 'vdp')
 
-        self.expand_single_output('x', vdp, 'x', 0)
-        self.expand_single_output('dx', vdp, 'dx', 0)
-        self.expand_single_input('a', vdp, 'a', 0)
+        self.add_output_scalar("x")
+        vdp.connections.add_connection("x", self, "x")
+
+        self.add_output_scalar("dx")
+        vdp.connections.add_connection("dx", self, "dx")
+
+        self.add_input_scalar("a")
+        self.inputs.a = 1
+        self.connections.add_connection("a", vdp, "a")
+
 
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
@@ -51,7 +58,8 @@ def test_store_der(test_class):
     sys.store("dx")
 
     sim.add_system(sys)
-    sim.simulate(10, 0.1)
+    sim.simulate(5, 0.1)
+    sim.simulate(5, 0.1)
     dxres = sys.res.dx
     assert isinstance(dxres, np.ndarray)
     assert dxres.size == 101
@@ -175,13 +183,13 @@ def test_midsim_store(test_class):
     sys = test_class()
     
     sim.add_system(sys)
-    sim.simulate(5, 1)
+    sim.simulate(5, 0.1)
     sys.store("a")
-    sim.simulate(5, 1)
+    sim.simulate(5, 0.1)
     ares = sys.res.a
-    assert np.all(np.isnan(ares[:6]))
-    assert not np.any(np.isnan(ares[6:]))
+    assert np.all(np.isnan(ares[:51]))
+    assert not np.any(np.isnan(ares[51:]))
 
 
 if __name__ == "__main__":
-    test_store_state(CompositeVanDerPol)
+    test_midsim_store(CompositeVanDerPol)
