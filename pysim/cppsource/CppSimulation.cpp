@@ -31,15 +31,12 @@ void Simulation::doGenericStep(const std::vector< double > &state,
         **si++ = *i;
     }
 
-    // Copy state outputs from all systems to their respective inputs
-    // Since they are states, and constant input to this function this
-    // is done before the timestep calulations.
+    // Run preStep function for all systems
     for ( auto syst = systems.begin(); syst != systems.end(); ++syst ) {
         (*syst)->__preStep();
     }
 
-    // Do the time step for all systems, and copy the variable
-    // outputs after the time step.
+    // Do the time step for all systems
     for ( auto syst = systems.begin(); syst != systems.end(); ++syst ) {
         (*syst)->__doStep(time);
     }
@@ -61,6 +58,7 @@ void Simulation::observer(const std::vector<double> &state, double time) {
         **si++ = *i;
     }
 
+	// Run each system's postStep function and store the step afterwards
     for ( auto syst = systems.cbegin(); syst != systems.end(); ++syst ) {
         (*syst)->__postStep();
         (*syst)->doStoreStep(time);
@@ -72,6 +70,7 @@ void Simulation::observer(const std::vector<double> &state, double time) {
         (*syst)->doStoreStep(time);
     }
 
+	// Check for early break comparisons
     bool compare_break = false;
     for (auto syst = systems.cbegin(); syst != systems.end(); ++syst) {
         if ((*syst)->do_comparison()) {
