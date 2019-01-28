@@ -58,7 +58,7 @@ public:
     StoreHandler* getStoreHandlerP();
 
     void add_subsystem(SimulatableSystemInterface* subsystem, std::string name);
-	SimulatableSystemInterface* get_subsystem(std::string name);
+    SimulatableSystemInterface* get_subsystem(std::string name);
 
     void add_compare_greater(char* comparename, double comparevalue);
     void add_compare_smaller(char* comparename, double comparevalue);

@@ -3,33 +3,33 @@
 #include "SquareWave.h"
 
 class ControlledSpring :
-	public pysim::CppSystem
+    public pysim::CppSystem
 {
 public:
-	ControlledSpring(void);
+    ControlledSpring(void);
 
-	static std::string getDocs();
+    static std::string getDocs();
 
-	void preSim() {};
-	void preStep() {};
-	void doStep(double time);
-	void postStep() {};
+    void preSim() {};
+    void preStep() {};
+    void doStep(double time);
+    void postStep() {};
 
-	void copyinputs();
-	void copyoutputs();
-	void copystateoutputs();
+    void copyinputs();
+    void copyoutputs();
+    void copystateoutputs();
 
 
 protected:
 
-	//Inputs
-	double amp;
+    //Inputs
+    double amp;
 
-	//Outputs
-	double out;
-	double signal;
+    //Outputs
+    double out;
+    double signal;
 
-	//Subsystems
-	MassSpringDamper msd;
-	SquareWave sqw;
+    //Subsystems
+    MassSpringDamper msd;
+    SquareWave sqw;
 };

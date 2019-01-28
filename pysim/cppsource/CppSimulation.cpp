@@ -58,7 +58,7 @@ void Simulation::observer(const std::vector<double> &state, double time) {
         **si++ = *i;
     }
 
-	// Run each system's postStep function and store the step afterwards
+    // Run each system's postStep function and store the step afterwards
     for ( auto syst = systems.cbegin(); syst != systems.end(); ++syst ) {
         (*syst)->__postStep();
         (*syst)->doStoreStep(time);
@@ -70,7 +70,7 @@ void Simulation::observer(const std::vector<double> &state, double time) {
         (*syst)->doStoreStep(time);
     }
 
-	// Check for early break comparisons
+    // Check for early break comparisons
     bool compare_break = false;
     for (auto syst = systems.cbegin(); syst != systems.end(); ++syst) {
         if ((*syst)->do_comparison()) {

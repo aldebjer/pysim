@@ -61,35 +61,35 @@ void make_connection(std::vector<std::pair<T*, T*>>* connections, T* input, T* o
 
 void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, char* inputname) {
 
-	std::map<std::string, double*> inputsys_scalars;
-	inputsys_scalars.insert(inputsys->inputs.d_ptr->scalars.begin(), 
-		inputsys->inputs.d_ptr->scalars.end());
-	inputsys_scalars.insert(inputsys->states.d_ptr->scalars.begin(),
-		inputsys->states.d_ptr->scalars.end());
-	inputsys_scalars.insert(inputsys->ders.d_ptr->scalars.begin(),
-		inputsys->ders.d_ptr->scalars.end());
-	inputsys_scalars.insert(inputsys->outputs.d_ptr->scalars.begin(),
-		inputsys->outputs.d_ptr->scalars.end());
+    std::map<std::string, double*> inputsys_scalars;
+    inputsys_scalars.insert(inputsys->inputs.d_ptr->scalars.begin(), 
+        inputsys->inputs.d_ptr->scalars.end());
+    inputsys_scalars.insert(inputsys->states.d_ptr->scalars.begin(),
+        inputsys->states.d_ptr->scalars.end());
+    inputsys_scalars.insert(inputsys->ders.d_ptr->scalars.begin(),
+        inputsys->ders.d_ptr->scalars.end());
+    inputsys_scalars.insert(inputsys->outputs.d_ptr->scalars.begin(),
+        inputsys->outputs.d_ptr->scalars.end());
 
-	std::map<std::string, pysim::vector*> inputsys_vectors;
-	inputsys_vectors.insert(inputsys->inputs.d_ptr->vectors.begin(),
-		inputsys->inputs.d_ptr->vectors.end());
-	inputsys_vectors.insert(inputsys->states.d_ptr->vectors.begin(),
-		inputsys->states.d_ptr->vectors.end());
-	inputsys_vectors.insert(inputsys->ders.d_ptr->vectors.begin(),
-		inputsys->ders.d_ptr->vectors.end());
-	inputsys_vectors.insert(inputsys->outputs.d_ptr->vectors.begin(),
-		inputsys->outputs.d_ptr->vectors.end());
+    std::map<std::string, pysim::vector*> inputsys_vectors;
+    inputsys_vectors.insert(inputsys->inputs.d_ptr->vectors.begin(),
+        inputsys->inputs.d_ptr->vectors.end());
+    inputsys_vectors.insert(inputsys->states.d_ptr->vectors.begin(),
+        inputsys->states.d_ptr->vectors.end());
+    inputsys_vectors.insert(inputsys->ders.d_ptr->vectors.begin(),
+        inputsys->ders.d_ptr->vectors.end());
+    inputsys_vectors.insert(inputsys->outputs.d_ptr->vectors.begin(),
+        inputsys->outputs.d_ptr->vectors.end());
 
-	std::map<std::string, Eigen::MatrixXd*> inputsys_matrices;
-	inputsys_matrices.insert(inputsys->inputs.d_ptr->matrices.begin(),
-		inputsys->inputs.d_ptr->matrices.end());
-	inputsys_matrices.insert(inputsys->states.d_ptr->matrices.begin(),
-		inputsys->states.d_ptr->matrices.end());
-	inputsys_matrices.insert(inputsys->ders.d_ptr->matrices.begin(),
-		inputsys->ders.d_ptr->matrices.end());
-	inputsys_matrices.insert(inputsys->outputs.d_ptr->matrices.begin(),
-		inputsys->outputs.d_ptr->matrices.end());
+    std::map<std::string, Eigen::MatrixXd*> inputsys_matrices;
+    inputsys_matrices.insert(inputsys->inputs.d_ptr->matrices.begin(),
+        inputsys->inputs.d_ptr->matrices.end());
+    inputsys_matrices.insert(inputsys->states.d_ptr->matrices.begin(),
+        inputsys->states.d_ptr->matrices.end());
+    inputsys_matrices.insert(inputsys->ders.d_ptr->matrices.begin(),
+        inputsys->ders.d_ptr->matrices.end());
+    inputsys_matrices.insert(inputsys->outputs.d_ptr->matrices.begin(),
+        inputsys->outputs.d_ptr->matrices.end());
 
     auto inputsys_dptr = inputsys->inputs.d_ptr.get();
 
@@ -104,7 +104,7 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // Input - Input connection
             make_connection(
                 &(d_ptr->connected_scalars_inputs),
-				inputsys_scalars[inputname],
+                inputsys_scalars[inputname],
                 input_dptr->scalars[outputname]);
             return;
         }
@@ -112,7 +112,7 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // Output - Input connection
             make_connection(
                 &(d_ptr->connected_scalars_outputs),
-				inputsys_scalars[inputname],
+                inputsys_scalars[inputname],
                 output_dptr->scalars[outputname]);
             return;
         }
@@ -120,7 +120,7 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // Der - Input connection
             make_connection(
                 &(d_ptr->connected_scalars_outputs),
-				inputsys_scalars[inputname],
+                inputsys_scalars[inputname],
                 der_dptr->scalars[outputname]);
             return;
         }
@@ -128,7 +128,7 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // State - Input connection
             make_connection(
                 &(d_ptr->connected_scalar_states),
-				inputsys_scalars[inputname],
+                inputsys_scalars[inputname],
                 state_dptr->scalars[outputname]);
             return;
         }
@@ -141,7 +141,7 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // Input - Input connection
             make_connection(
                 &(d_ptr->connected_vectors_inputs),
-				inputsys_vectors[inputname],
+                inputsys_vectors[inputname],
                 input_dptr->vectors[outputname]);
             return;
         }
@@ -149,7 +149,7 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // Output - Input connection
             make_connection(
                 &(d_ptr->connected_vectors_outputs),
-				inputsys_vectors[inputname],
+                inputsys_vectors[inputname],
                 output_dptr->vectors[outputname]);
             return;
         }
@@ -157,7 +157,7 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // Der - Input connection
             make_connection(
                 &(d_ptr->connected_vectors_outputs),
-				inputsys_vectors[inputname],
+                inputsys_vectors[inputname],
                 der_dptr->vectors[outputname]);
             return;
         }
@@ -165,8 +165,8 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // State - Input connection
             make_connection(
                 &(d_ptr->connected_vector_states),
-				inputsys_vectors[inputname],
-				state_dptr->vectors[outputname]);
+                inputsys_vectors[inputname],
+                state_dptr->vectors[outputname]);
             return;
         }
 
@@ -178,7 +178,7 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // Input - Input connection
             make_connection(
                 &(d_ptr->connected_matrices_inputs),
-				inputsys_matrices[inputname],
+                inputsys_matrices[inputname],
                 input_dptr->matrices[outputname]);
             return;
         }
@@ -186,7 +186,7 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // Output - Input connection
             make_connection(
                 &(d_ptr->connected_matrices_outputs),
-				inputsys_matrices[inputname],
+                inputsys_matrices[inputname],
                 output_dptr->matrices[outputname]);
             return;
         }
@@ -194,7 +194,7 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // Der - Input connection
             make_connection(
                 &(d_ptr->connected_matrices_outputs),
-				inputsys_matrices[inputname],
+                inputsys_matrices[inputname],
                 der_dptr->matrices[outputname]);
             return;
         }
@@ -202,8 +202,8 @@ void ConnectionHandler::connect(char* outputname, CommonSystemImpl* inputsys, ch
             // State - Input connection
             make_connection(
                 &(d_ptr->connected_matrix_states),
-				inputsys_matrices[inputname],
-				state_dptr->matrices[outputname]);
+                inputsys_matrices[inputname],
+                state_dptr->matrices[outputname]);
             return;
         }
 

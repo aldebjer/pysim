@@ -236,7 +236,7 @@ void CommonSystemImpl::__preSim()
 
 void CommonSystemImpl::__preStep()
 {
-	this->__copystateoutputs();
+    this->__copystateoutputs();
 
     // Subsystems
     for (auto const &sys : d_ptr->subsystems_vec) {
@@ -268,8 +268,8 @@ void CommonSystemImpl::__postStep()
     }
 
     this->postStep();
-	this->__copystateoutputs();
-	this->__copyoutputs();
+    this->__copystateoutputs();
+    this->__copyoutputs();
 }
 
 
