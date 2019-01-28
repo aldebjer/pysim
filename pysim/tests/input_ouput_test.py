@@ -242,6 +242,7 @@ def test_connected_system(test_class1,test_class2):
     assert np.all(sys2.outputs.input_output_matrix == refarray)
 
 
+@pytest.mark.skip()
 @pytest.mark.parametrize("sys1_class,sys2_class",
                          [(InOutTestSystem,InOutTestSystem),
                           (PythonInOutTestSystem,PythonInOutTestSystem),

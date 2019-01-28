@@ -13,6 +13,8 @@ from pysim.tests.compositesystem_test import NestedCompositeSpring, CompositeSpr
 
 __copyright__ = 'Copyright (c) 2014-2017 SSPA Sweden AB'
 
+pytest.skip("Temporarily skipped", allow_module_level=True)
+
 @pytest.mark.parametrize("test_class",[VanDerPol,PyVanDerPol])
 def test_store_config(test_class):
     """Test that it is possible to store the simulation to a file.
