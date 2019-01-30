@@ -283,7 +283,20 @@ def test_composite_vs_connected_outputs():
 
     assert cd.outputs.out == msd.states.x1 == cd2.outputs.out
 
+def test_get_subsystems():
 
+    from pysim.cppsystem import Sys as CppSystem
+
+    cd = ControlledSpringCpp()
+
+    msd = cd.msd
+    sqw = cd.sqw
+
+    ls = [msd, sqw]
+    for s, l in zip(cd, ls):
+        assert s == l
+
+    assert isinstance(msd, CppSystem)
 
 if __name__ == "__main__":
     #test_connected_subsystems()
@@ -291,4 +304,5 @@ if __name__ == "__main__":
     #test_connection_to_composite(NestedCompositeSpring)
     #test_port_connections()
     #test_system_store()
-    test_composite_vs_connected_outputs()
+    #test_composite_vs_connected_outputs()
+    test_get_subsystems()
