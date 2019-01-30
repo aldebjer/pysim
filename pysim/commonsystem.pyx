@@ -4,7 +4,6 @@ Base classes for systems. They are inherited by :obj:`CppSystems` and
 :obj:`CythonSystems`.
 """
 
-from collections import namedtuple
 from libcpp.vector cimport vector
 
 import numpy as np
@@ -55,31 +54,16 @@ cdef class CommonSystem:
 
     def __getattr__(self, name):
         """
-        Return subsystem if one found mathing name otherwise revert to normal
+        Return subsystem if one found mathing name
         """
-        try:
-            bs = bytes(name,'utf-8')
-            return self._get_subsystem(self._c_s.get_subsystem(bs))
-        except ValueError:
-            return super().__getattr__(name)
+        if name in self._subsystems:
+            return self._subsystems[name]
+        else:
+            raise AttributeError("No subsystem with name {} exist in this system!".format(name))
 
     def __iter__(self):
         for name in self._c_s.subsystem_names:
-            yield self._get_subsystem(self._c_s.get_subsystem(name))
-
-    cdef _get_subsystem(self, simulatablesystem.SimulatableSystemInterface* sub_p):
-        cdef cppsystem.CppSystem* c_p
-        cdef cythonsystem.CythonSystemImpl* cy_p
-        cdef cythonsystem.Sys s
-
-        try:
-            c_p = <cppsystem.CppSystem*?> sub_p
-            return cppsystem.Sys._create(c_p)
-        except TypeError:
-            cy_p = <cythonsystem.CythonSystemImpl*?> sub_p
-            s = <cythonsystem.Sys> cy_p.sysp
-            return s
-
+            yield self._subsystems[name.decode("utf-8")]
 
     def add_subsystem(self, simulatablesystem.SimulatableSystem subsystem, name):
         bs = bytes(name,'utf-8')

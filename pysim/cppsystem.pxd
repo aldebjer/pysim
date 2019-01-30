@@ -13,6 +13,8 @@ cdef extern from "CppSystem.hpp" namespace "pysim":
 
 cdef class Sys(CommonSystem):
     cdef CppSystem * _c_sys
+    cdef bool _owner
     @staticmethod
-    cdef _create(CppSystem*)
+    cdef Sys from_ptr(CppSystem* sys_p, string name, owner=*)
     cdef _setupParVar(self)
+    cdef _get_subsystems(self)

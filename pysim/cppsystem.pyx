@@ -16,16 +16,21 @@ cdef class Sys:
        States and State derivatives, and Variables, that may be stored during
        a simulation"""
 
+    def __cinit__(self):
+        self._owner = True
+
     @staticmethod
-    cdef _create(CppSystem* sys_p):
-        s = Sys()
+    cdef Sys from_ptr(CppSystem* sys_p, string name, owner=True):
+        cdef Sys s = type(name.decode("utf-8"), (Sys,), {})()
+        s._owner = owner
         s._c_s = sys_p
         s._c_sys = sys_p
         s._setupParVar()
         return s
 
     def __dealloc__(self):
-        del self._c_sys
+        if self._owner:
+            del self._c_sys
 
     cdef _setupParVar(self):
         cdef CommonSystemImpl* sp = self._c_s
@@ -38,3 +43,12 @@ cdef class Sys:
         self.connections = Connections._create(&sp.connectionHandler)
         self.res = Results._create(sp.getStoreHandlerP())
         self.stores = []
+        self._get_subsystems()
+
+    cdef _get_subsystems(self):
+        cdef CppSystem* c_p
+
+        for name in self._c_s.subsystem_names:
+            c_p = <CppSystem*>self._c_s.get_subsystem(name)
+            s = Sys.from_ptr(c_p, name, False)
+            self._subsystems[name.decode("utf-8")] = s
