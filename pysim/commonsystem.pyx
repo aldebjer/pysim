@@ -59,7 +59,7 @@ cdef class CommonSystem:
         if name in self._subsystems:
             return self._subsystems[name]
         else:
-            raise AttributeError("No subsystem with name {} exist in this system!".format(name))
+            raise AttributeError("No attribute with name {} exists!".format(name))
 
     def __iter__(self):
         for name in self._c_s.subsystem_names:
