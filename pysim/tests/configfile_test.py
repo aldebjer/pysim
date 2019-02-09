@@ -7,13 +7,25 @@ import pytest
 import numpy as np
 
 from pysim.simulation import Sim
+from pysim.cythonsystem import Sys
 from pysim.systems import VanDerPol, SquareWave, MassSpringDamper
 from pysim.systems.python_systems import VanDerPol as PyVanDerPol
 from pysim.tests.compositesystem_test import NestedCompositeSpring, CompositeSpring, ControlledSpring
 
 __copyright__ = 'Copyright (c) 2014-2017 SSPA Sweden AB'
 
-pytest.skip("Temporarily skipped", allow_module_level=True)
+class CompositeTest(Sys):
+    def __init__(self):
+        self.add_input_scalar("amp", "")
+        self.inputs.amp = 0
+
+        self.add_output_scalar("out", "")
+        self.outputs.out = 0
+
+        self.add_output_scalar("signal", "")
+        self.outputs.signal = 0
+
+#pytest.skip("Temporarily skipped", allow_module_level=True)
 
 @pytest.mark.parametrize("test_class",[VanDerPol,PyVanDerPol])
 def test_store_config(test_class):
@@ -57,20 +69,8 @@ def test_store_config_composite_ports():
     file2.close()
     print(simdict)
 
-    ports = simdict["systems"]["composite_root"]["ports"]
-    forceport = ports["in"]["force"]
-    assert forceport["type"] == "scalar"
-    assert forceport["value"] == 0
-    assert forceport["description"] == "force acting on mass"
-    assert forceport["connections"][0]["subsystem"] == "msd"
-    assert forceport["connections"][0]["input"] == "f"
-
-    posport = ports["out"]["position"]
-    assert posport["type"] == "scalar"
-    assert posport["value"] == 0
-    assert posport["description"] == "Position"
-    assert posport["connections"][0]["subsystem"] == "msd"
-    assert posport["connections"][0]["output"] == "x1"
+    inputs = simdict["systems"]["composite_root"]["inputs"]
+    assert inputs["force"] == 0
 
 def test_store_connections():
     """Test that it is possible to store connections in a config file"""
@@ -137,7 +137,8 @@ def test_load_config():
             },
             "module": "pysim.systems.defaultsystemcollection1",
             "type": "VanDerPol",
-            "connections": []
+            "connections": [],
+            "subsystems": {}
         },
        "vanderpol2": {
             "inputs": {
@@ -146,7 +147,8 @@ def test_load_config():
             },
             "module": "pysim.systems.python_systems",
             "type": "VanDerPol",
-            "connections": []
+            "connections": [],
+            "subsystems": {}
         }
     }
 }
@@ -168,14 +170,16 @@ def test_load_connections():
             "inputs": {"b": 80.0, "f": 0.0, "k": 50.0, "m": 50.0},
             "module": "pysim.systems.defaultsystemcollection1",
             "stores": [],
-            "type": "MassSpringDamper"
+            "type": "MassSpringDamper",
+            "subsystems": {}
             },
         "wave_sys": {
             "connections": [["signal", "msd", "f"]],
             "inputs": {"amplitude": 50.0, "freq": 0.1,"phaseRad": 0.0},
             "module": "pysim.systems.defaultsystemcollection1",
             "stores": [],
-            "type": "SquareWave"
+            "type": "SquareWave",
+            "subsystems": {}
             }
         }
     }
@@ -193,49 +197,27 @@ def test_load_composite_connections():
     JSON_STRING = """
     {"systems": {
         "controlled_spring": {
-            "type": "CompositeSystem",
-            "module": "pysim.compositesystem",
-            "connections": [],
+            "type": "CompositeTest",
+            "module": "pysim.tests.configfile_test",
+            "connections": [["amp", "wave_sys", "amplitude"]],
             "inputs": {"amp": 0.0},
-            "ports": {
-                "in": {
-                    "amp": {
-                        "connections": [{"input": "amplitude", "subsystem": "wave_sys"}],
-                        "description": "amplitude of wave",
-                        "type": "scalar",
-                        "value": 0.0
-                        }
-                    },
-                "out": {
-                    "out": {
-                        "connections": [{"output": "x1", "subsystem": "msd"}],
-                        "description": "position",
-                        "type": "scalar",
-                        "value": 0.0
-                        },
-                    "signal": {
-                        "connections": [{"output": "signal", "subsystem": "wave_sys"}],
-                        "description": "signal from wave",
-                        "type": "scalar",
-                        "value": 0.0
-                        }
-                    }
-                },
             "stores": [],
             "subsystems": {
                 "msd": {
-                    "connections": [],
+                    "connections": [["x1", "controlled_spring", "out"]],
                     "inputs": {"b": 80.0, "f": 0.0, "k": 50.0, "m": 50.0},
                     "module": "pysim.systems.defaultsystemcollection1",
                     "stores": [],
-                    "type": "MassSpringDamper"
+                    "type": "MassSpringDamper",
+                    "subsystems": {}
                     },
                 "wave_sys": {
-                    "connections": [["signal", "msd", "f"]],
+                    "connections": [["signal", "msd", "f"], ["signal", "controlled_spring", "signal"]],
                     "inputs": {"amplitude": 50.0, "freq": 0.1, "phaseRad": 0.0},
                     "module": "pysim.systems.defaultsystemcollection1",
                     "stores": [],
-                    "type": "SquareWave"
+                    "type": "SquareWave",
+                    "subsystems": {}
                     }
                 }
             }
@@ -251,8 +233,8 @@ def test_load_composite_connections():
     assert np.abs(sim.systems["controlled_spring"].outputs.out-0.3240587706226495) < 1e-10
 
 if __name__ == "__main__":
-    #test_store_config_composite_ports()
+    test_store_config_composite_ports()
     #test_store_connections()
     #test_store_connections_composite()
     #test_load_connections()
-    test_load_composite_connections()
+    #test_load_composite_connections()
