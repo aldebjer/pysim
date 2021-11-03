@@ -12,6 +12,8 @@ dist/
 pysim.egg-info/
 .cache/
 
+*.a
+
 #cython generated files
 pysim/simulation.cpp
 pysim/cppsystem.cpp
