@@ -9,7 +9,7 @@ import zipfile
 def read_and_unpack():
     """Reand and unpack Eigen to the current directory"""
     #Open the URL to download Eigen 3.3
-    url = "http://bitbucket.org/eigen/eigen/get/3.3.7.zip"
+    url = "https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.3.7.zip"
     remotedata = urlopen(url)
 
     #Convert the downloaded data to an in memory file-like object
