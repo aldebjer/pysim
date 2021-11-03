@@ -56,10 +56,15 @@ extracompileargs = []
 if sys.platform == "win32":
     config.add_include_dirs([os.environ['BOOST_ROOT'],os.environ['EIGEN_ROOT']])
 
-elif sys.platform in ("linux","darwin"):
+if sys.platform in ("linux","darwin"):
     extracompileargs.append("-std=c++11")
     extracompileargs.append("-std=c++14")
+
+if sys.platform == "linux":
     extracompileargs.append("-I/usr/include/eigen3")
+
+if sys.platform == "darwin":
+    extracompileargs.append("-I/usr/local/include/eigen3")
 
 config.add_installed_library("cppsystemlib",
                     ['pysim/cppsource/CppSystem.cpp',
