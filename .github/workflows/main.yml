@@ -29,7 +29,11 @@ jobs:
         run: | 
           brew install eigen
           brew install boost
-
-      - run: pip install wheel
-      - run: pip install -r requirements.txt
-      - run: python setup.py build_ext --inplace
+      - name: Install Python dependencies
+        run: | 
+          pip install wheel
+          pip install -r requirements.txt
+      - name: Build c++ extensions inplace
+        run: python setup.py build_ext --inplace
+      - name: Run Tests
+        run: pytest
