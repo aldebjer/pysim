@@ -26,9 +26,9 @@ equations. There are a number of systems included, and more systems can be added
 For more information on how to use it, build it and extend it please see the
 homepage at:
 
-http://pys.im
+http://aldebjer.github.io/pysim/
 
 or the documentation at: 
 
-http://pys.im/doc
+http://pysim.rtfd.io
 
