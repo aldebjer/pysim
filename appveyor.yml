@@ -1,37 +1,37 @@
+image:
+  - Visual Studio 2019
+
 environment:
 
   global:
-    BOOST_ROOT: "C:\\Libraries\\boost_1_67_0"
+    BOOST_ROOT: "C:\\Libraries\\boost_1_77_0"
     PIP_PASSWORD:
       secure: 5/+VoitJX0FZVcCLi1xOHQ==
 
   matrix:
-    - PYTHON: "C:\\Python37"
-    - PYTHON: "C:\\Python37-x64"
-    - PYTHON: "C:\\Python36"
-    - PYTHON: "C:\\Python36-x64"
+    - PYTHON: "C:\\Python39-x64"
 
 install:
-  - "%PYTHON%\\python.exe get_external.py"
-  - SET EIGEN_ROOT=%CD%\eigen-eigen-323c052e1731
-  - "%PYTHON%\\python.exe -m pip install -r requirements.txt"
-  - "%PYTHON%\\python.exe -m pip install -r requirements_docs.txt"
+  - cmd: "%PYTHON%\\python.exe get_external.py"
+  - cmd: SET EIGEN_ROOT=%CD%\eigen-3.4.0-3147391d946bb4b6c68edd901f2add6ac1f31f8c
+  - cmd: "%PYTHON%\\python.exe -m pip install -r requirements.txt"
+  - cmd: "%PYTHON%\\python.exe -m pip install -r requirements_docs.txt"
   # We need wheel installed to build wheels later
-  - "%PYTHON%\\python.exe -m pip install wheel"
-  - "%PYTHON%\\python.exe -m pip freeze > used_packages.txt"
-  - "%PYTHON%\\python.exe setup.py install"
+  - cmd: "%PYTHON%\\python.exe -m pip install wheel"
+  - cmd: "%PYTHON%\\python.exe -m pip freeze > used_packages.txt"
+  - cmd: "%PYTHON%\\python.exe setup.py install"
 
 build: off
 
 test_script:
-  - mkdir testrundir
-  - cd testrundir
-  - "%PYTHON%\\scripts\\py.test --pyargs pysim"
-  - cd..
+  - cmd: mkdir testrundir
+  - cmd: cd testrundir
+  - cmd: "%PYTHON%\\scripts\\py.test --pyargs pysim"
+  - cmd: cd..
 
 after_test:
-  - "%PYTHON%\\python.exe setup.py bdist_wheel"
-  - "%PYTHON%\\python.exe setup.py build_sphinx"
+  - cmd: "%PYTHON%\\python.exe setup.py bdist_wheel"
+  - cmd: "%PYTHON%\\python.exe setup.py build_sphinx"
 
 artifacts:
   # bdist_wheel puts your built wheel in the dist directory
@@ -39,18 +39,3 @@ artifacts:
   - path: used_packages.txt
   - path: build\sphinx\html
 
-#Upload to pypi
-on_success:
- - "echo [distutils] > %USERPROFILE%\\.pypirc"
- - "echo index-servers=pypi >> %USERPROFILE%\\.pypirc"
- - "echo [pypi] >> %USERPROFILE%\\.pypirc"
- - "echo repository = https://pypi.python.org/pypi >> %USERPROFILE%\\.pypirc"
- - "echo username = aldebjer >> %USERPROFILE%\\.pypirc"
- - "echo password = %PIP_PASSWORD% >> %USERPROFILE%\\.pypirc"
- 
- - set HOME=%USERPROFILE%
- 
- - ps: if ($APPVEYOR_REPO_TAG -eq "true") {%PYTHON%\\python.exe setup.py bdist_wheel upload }
- 
-#sdist is only uploaded one time, arbitrarily chosen as when x86 build is run.
- - ps: if (($APPVEYOR_REPO_TAG -eq "true") -And ($PYTHON -eq "C:\\Python35")) {%PYTHON%\\python.exe setup.py sdist upload }
