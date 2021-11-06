@@ -9,6 +9,8 @@ environment:
       secure: 5/+VoitJX0FZVcCLi1xOHQ==
 
   matrix:
+    - PYTHON: "C:\\Python37-x64"
+    - PYTHON: "C:\\Python38-x64"
     - PYTHON: "C:\\Python39-x64"
 
 install:
