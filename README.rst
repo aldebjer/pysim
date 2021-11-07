@@ -7,12 +7,14 @@ PySim
 .. list-table::
     :stub-columns: 1
 
-    * - tests
-      - | |travis| |appveyor|
+    * - Ubuntu & macOS
+      - | |github| 
+    * - Windows
+      - | |appveyor|
 
-.. |travis| image:: https://travis-ci.org/aldebjer/pysim.svg?branch=master
-    :alt: Travis-CI Build Status
-    :target: https://travis-ci.org/aldebjer/pysim
+.. |github| image:: https://github.com/aldebjer/pysim/actions/workflows/main.yml/badge.svg
+    :alt: Github Actions Build Status
+    :target: https://github.com/aldebjer/pysim/actions/workflows/main.yml
 
 .. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/aldebjer/pysim?branch=master&svg=true
     :alt: AppVeyor Build Status
@@ -26,9 +28,9 @@ equations. There are a number of systems included, and more systems can be added
 For more information on how to use it, build it and extend it please see the
 homepage at:
 
-http://aldebjer.github.io/pysim/
+https://pysim.org
 
 or the documentation at: 
 
-http://pysim.rtfd.io
+https://doc.pysim.org
 
