@@ -17,8 +17,8 @@ equations that are described in C++ classes. Before and after the simulations Cy
 access to these classes.
 
 ## Testing
-The tests are done automatically for each github push. They are done at [Travis CI](https://travis-ci.org/aldebjer/pysim) for Linux
-and [AppVeyor](https://ci.appveyor.com/project/aldebjer/pysim) for Windows. The environments use Python 3.5 to
+The tests are done automatically for each github push. They are done at github actions for Linux and macOS, 
+and [AppVeyor](https://ci.appveyor.com/project/aldebjer/pysim) for Windows. The environments uses Python 3.7, 3.8, 3.9 to
 build for both windows and Python. To
 perform the tests there is a test collection stored in the tests folder. These can be run with pytest.
 
