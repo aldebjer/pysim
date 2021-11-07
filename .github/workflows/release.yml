@@ -66,7 +66,7 @@ jobs:
           path: dist
 
       - name: Build manylinux wheels
-        uses: RalfG/python-wheels-manylinux-build@v0.3.4-manylinux2010_x86_64
+        uses: RalfG/python-wheels-manylinux-build@v0.3.4--manylinux2014_aarch64
         with:
           python-versions: 'cp37-cp37m cp38-cp38m cp39-cp39m'
           build-requirements: 'cython numpy'
