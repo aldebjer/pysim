@@ -70,7 +70,7 @@ jobs:
         with:
           python-versions: 'cp37-cp37m cp38-cp38m cp39-cp39m'
           build-requirements: 'cython numpy'
-          system-packages: 'libeigen3-dev libboost-all-dev'
+          system-packages: 'eigen3-devel boost boost-devel'
    
       - name: Archive dist
         uses: actions/upload-artifact@v2
