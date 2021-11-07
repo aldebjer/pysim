@@ -32,5 +32,5 @@ https://pysim.org
 
 or the documentation at: 
 
-http://pysim.rtfd.io
+https://doc.pysim.org
 
