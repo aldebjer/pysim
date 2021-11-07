@@ -4,6 +4,7 @@ import setuptools
 from numpy.distutils.core import setup
 from numpy.distutils.misc_util import Configuration
 from distutils.extension import Extension
+from distutils.command.sdist import sdist
 from Cython.Build import cythonize
 import sys
 import sysconfig
@@ -165,7 +166,8 @@ setup(
     author_email="aldebjer@gmail.com",
     url="http://pysim.org",
     ext_modules=cythonize(extensions),
-    cmdclass={'build_exe': BuildExeCommand},
+    cmdclass={'build_exe': BuildExeCommand, 
+              'sdist': sdist},
     scripts=['scripts/new_pysim_system.py'],
     data_files=[('pysim/include',['pysim/cppsource/SimulatableSystem.hpp',
                                   'pysim/cppsource/CppSystem.hpp',
@@ -200,6 +202,7 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX :: Linux',
+        'Operating System :: MacOS',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
