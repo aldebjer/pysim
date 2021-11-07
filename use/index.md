@@ -18,7 +18,7 @@ sim = Sim()
 #Create, setup and add a system to simulation
 sys = VanDerPol()
 sys.store("x")
-sim.addSys(sys)
+sim.add_system(sys)
 
 #Simulate and plot the results
 sim.simulate(20,0.1) 
