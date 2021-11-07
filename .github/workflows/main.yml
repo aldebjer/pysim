@@ -67,7 +67,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build source dist
-        run: python3 setup.py sdist
+        run: | 
+          pip3 install -r requirements.txt
+          python3 setup.py sdist
 
       - name: Download wheels
         uses: actions/download-artifact@v2
