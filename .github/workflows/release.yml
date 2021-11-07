@@ -1,23 +1,16 @@
 name: Tests
 
 on:
-  push:
-    branches: 
-      - master
-      - 'release/**'
+  release:
+    types: [published]
 
-  pull_request:
-    branches: [ master ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        python-version: ['3.9', '3.7']
+        python-version: ['3.9', '3.8', '3.7']
         os: ['macos-11', 'ubuntu-20.04']
     name: Python ${{ matrix.python-version }} test on ${{ matrix.os }}
     steps:
@@ -50,4 +43,43 @@ jobs:
 
       - name: Run Tests
         run: pytest
+
+      - name: Build wheel
+        run: python setup.py bdist_wheel
+
+      - name: Archive wheel
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheel
+          path: dist/*
         
+  publish:
+    runs-on: 'ubuntu-20.04'
+    needs: build
+
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Build source dist
+        run: | 
+          pip3 install -r requirements.txt
+          python3 setup.py sdist
+
+      - name: Download wheels
+        uses: actions/download-artifact@v2
+        with:
+          name: wheel
+          path: dist
+
+      - name: Archive dist
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist/*
+
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
