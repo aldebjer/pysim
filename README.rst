@@ -28,7 +28,7 @@ equations. There are a number of systems included, and more systems can be added
 For more information on how to use it, build it and extend it please see the
 homepage at:
 
-http://aldebjer.github.io/pysim/
+https://pysim.org
 
 or the documentation at: 
 
