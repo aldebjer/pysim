@@ -2,7 +2,10 @@ name: Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: 
+      - master
+      - 'release/**'
+
   pull_request:
     branches: [ master ]
 
@@ -76,7 +79,7 @@ jobs:
           name: wheel
           path: dist
 
-      - name: Archive wheel
+      - name: Archive dist
         uses: actions/upload-artifact@v2
         with:
           name: dist
