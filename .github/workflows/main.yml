@@ -41,7 +41,18 @@ jobs:
           pip install wheel
           pip install -r requirements.txt
 
-      - name: Build c++ extensions inplace and test
+      - name: Build c++ extensions inplace
         run: python setup.py build_ext --inplace
+
       - name: Run Tests
         run: pytest
+
+      - name: Build wheel
+        run: python setup.py bdist_wheel
+
+      - name: Archive wheel
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheel
+          path: dist/*
+        
