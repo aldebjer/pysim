@@ -6,8 +6,7 @@ description: Modelling and Simulation of Dynamical Systems
 logo: pysim-logo.png
 search: true
 #url: http://localhost:4000
-#url: https://pys.im
-url: http://aldebjer.github.io/pysim/
+url: https://pysim.org
 # Jekyll configuration
 
 permalink:   /:categories/:title/
