@@ -2,7 +2,7 @@
 layout: page
 title: Developing PySim
 excerpt: "Pysim lets you model and simulate and analyse dynamical systems"
-modified: 2016-06-05T14:31:00.0-01:00
+modified: 2021-11-09T14:31:00.0-01:00
 ---
 One of the main benefits of putting a project at github is that multiple persons all over the world
 can collaborate to make the project as good as possible. So any contributions are very welcome. There

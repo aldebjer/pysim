@@ -40,6 +40,6 @@ It is also possible to create your own systems in either C++ or Python. All syst
 differential equations, having a state as well as inputs and outputs. 
 
 ### Documentation
-The complete documentation for PySim can be found at [**http://pysim.rtfd.io**](http://pysim.rtfd.io)
+The complete documentation for PySim can be found at [**doc.pysim.org**](https://doc.pysim.org)
 
 
