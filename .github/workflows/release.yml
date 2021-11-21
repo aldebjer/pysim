@@ -62,7 +62,7 @@ jobs:
           system-packages: 'eigen3-devel boost boost-devel'
 
       - name: Remove non-manylinux linux wheels
-        run: rm ./dist/*-linux_*
+        run: sudo rm ./dist/*-linux_*
 
       - name: Archive wheel
         uses: actions/upload-artifact@v2
