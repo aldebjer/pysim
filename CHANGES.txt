@@ -1,3 +1,12 @@
+2.5
+===
+ - Switching to Github Actions for Windows CI/CD
+
+2.4
+===
+ - Support for Python 3.7, 3.8, 3.9
+ - Switching to Github Actions for CI/CD for macOS and Linux
+
 2.3
 ===
  - Template for creating c++ system.

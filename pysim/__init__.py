@@ -12,6 +12,6 @@ def test():
     import pytest
 
     try:
-        return pytest.main("--pyargs pysim")
+        return pytest.main(["--pyargs", "pysim"])
     except SystemExit as e:
         return e.code

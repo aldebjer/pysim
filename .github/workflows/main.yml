@@ -34,21 +34,21 @@ jobs:
           pip install wheel
           pip install -r ./requirements.txt
 
-      - name: Install c++ dependendencies on mac
+      - name: Install c++ dependendencies on mac and build
         if: ${{matrix.os == 'macos-11'}}
         run: | 
           brew install eigen
           brew install boost
           python setup.py build_ext --inplace
 
-      - name: Install c++ dependendencies on ubuntu
+      - name: Install c++ dependendencies on ubuntu and build
         if: ${{matrix.os == 'ubuntu-20.04'}}
         run: | 
           sudo apt-get install libeigen3-dev
           sudo apt-get install -y libboost-all-dev
           python setup.py build_ext --inplace
 
-      - name: Install c++ dependendencies on windows
+      - name: Install c++ dependendencies on windows and build
         if: ${{matrix.os == 'windows-2022'}}
         run: | 
           python get_external.py
