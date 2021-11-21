@@ -94,6 +94,7 @@ jobs:
       - name: install
         run: |
           pip install wheel
+          pip install pytest
           pip install --find-links dist pysim
 
       - name: test
