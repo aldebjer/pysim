@@ -5,9 +5,10 @@ on:
     branches: 
       - master
       - 'release/**'
-
   pull_request:
     branches: [ master ]
+  schedule:
+    - cron: '0 10 * * 2,5'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -18,7 +19,7 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.9', '3.7']
-        os: ['macos-11', 'ubuntu-20.04']
+        os: ['macos-11', 'ubuntu-20.04', 'windows-2022']
     name: Python ${{ matrix.python-version }} test on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -28,26 +29,34 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       
+      - name: Install Python dependencies
+        run: | 
+          pip install wheel
+          pip install -r ./requirements.txt
+
       - name: Install c++ dependendencies on mac
         if: ${{matrix.os == 'macos-11'}}
         run: | 
           brew install eigen
           brew install boost
+          python setup.py build_ext --inplace
 
       - name: Install c++ dependendencies on ubuntu
         if: ${{matrix.os == 'ubuntu-20.04'}}
         run: | 
           sudo apt-get install libeigen3-dev
           sudo apt-get install -y libboost-all-dev
+          python setup.py build_ext --inplace
 
-      - name: Install Python dependencies
+      - name: Install c++ dependendencies on windows
+        if: ${{matrix.os == 'windows-2022'}}
         run: | 
-          pip install wheel
-          pip install -r requirements.txt
-
-      - name: Build c++ extensions inplace
-        run: python setup.py build_ext --inplace
+          python get_external.py
+          $Env:EIGEN_ROOT = $pwd.path + "\external\eigen-3.4.0-3147391d946bb4b6c68edd901f2add6ac1f31f8c"
+          $Env:BOOST_ROOT = $pwd.path + "\external\boost_1_77_0"
+          python setup.py build_ext --inplace
+        shell: powershell          
 
       - name: Run Tests
-        run: pytest
+        run: pytest pysim
         
