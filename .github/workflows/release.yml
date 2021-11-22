@@ -93,6 +93,7 @@ jobs:
 
       - name: install
         run: |
+          py -m pip install --upgrade pip
           pip install wheel
           pip install pytest
           pip install --find-links dist pysim
