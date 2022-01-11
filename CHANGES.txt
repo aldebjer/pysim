@@ -1,6 +1,7 @@
 2.5
 ===
  - Switching to Github Actions for Windows CI/CD
+ - Compatible with Numpy 1.22
 
 2.4
 ===
