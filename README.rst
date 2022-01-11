@@ -7,18 +7,12 @@ PySim
 .. list-table::
     :stub-columns: 1
 
-    * - Ubuntu & macOS
+    * - Tests
       - | |github| 
-    * - Windows
-      - | |appveyor|
 
 .. |github| image:: https://github.com/aldebjer/pysim/actions/workflows/main.yml/badge.svg
     :alt: Github Actions Build Status
     :target: https://github.com/aldebjer/pysim/actions/workflows/main.yml
-
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/aldebjer/pysim?branch=master&svg=true
-    :alt: AppVeyor Build Status
-    :target: https://ci.appveyor.com/project/aldebjer/pysim
 
 .. end-badges
 
