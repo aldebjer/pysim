@@ -1,4 +1,4 @@
-name: Tests
+name: Build-Test-Publish
 
 on:
   release:
@@ -13,7 +13,7 @@ jobs:
       matrix:
         python-version: ['3.9', '3.8', '3.7']
         os: ['macos-11', 'windows-2022']
-    name: Python ${{ matrix.python-version }}
+    name: Build with Python ${{ matrix.python-version }} on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
 
@@ -75,9 +75,9 @@ jobs:
     needs: [build-linux-wheels, build-mac-windows-wheels]
     strategy:
       matrix:
-        python-version: ['3.9', '3.8', '3.7']
+        python-version: ['3.9', '3.8']
         os: ['macos-11', 'ubuntu-20.04', 'windows-2022']
-    name: Python ${{ matrix.python-version }} test on ${{ matrix.os }}
+    name: Test with Python ${{ matrix.python-version }} on ${{ matrix.os }}
 
     steps:
       - name: Setup python
@@ -94,6 +94,7 @@ jobs:
       - name: install
         run: |
           pip install wheel
+          pip install pytest
           pip install --find-links dist pysim
 
       - name: test

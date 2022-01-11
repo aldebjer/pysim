@@ -18,7 +18,7 @@ jobs:
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
-        python-version: ['3.9', '3.7']
+        python-version: ['3.9', '3.8']
         os: ['macos-11', 'ubuntu-20.04', 'windows-2022']
     name: Python ${{ matrix.python-version }} test on ${{ matrix.os }}
     steps:
