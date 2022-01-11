@@ -3,7 +3,7 @@ __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 import setuptools
 from numpy.distutils.core import setup
 from numpy.distutils.misc_util import Configuration
-from distutils.extension import Extension
+from numpy.distutils.extension import Extension
 from distutils.command.sdist import sdist
 from Cython.Build import cythonize
 import sys
