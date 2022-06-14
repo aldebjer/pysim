@@ -66,7 +66,9 @@ if sys.platform == "linux":
 
 if sys.platform == "darwin":
     extracompileargs.append("-I/usr/local/include/eigen3")
-
+    extracompileargs.append("-I/opt/homebrew/include/eigen3")
+    extracompileargs.append("-I/opt/homebrew/include")
+    
 config.add_installed_library("cppsystemlib",
                     ['pysim/cppsource/CppSystem.cpp',
                      'pysim/cppsource/StoreHandler.cpp',
