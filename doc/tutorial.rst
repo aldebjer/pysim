@@ -58,7 +58,7 @@ finished the results can be inspected using for example matplotlib.
     #Create, set up and add a system to simulation
     sys = VanDerPol()
     sys.store("x")
-    sim.addSys(sys)
+    sim.add_system(sys)
 
     #Simulate and plot the results
     sim.simulate(20,0.1)
