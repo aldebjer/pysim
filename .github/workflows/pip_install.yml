@@ -24,14 +24,18 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       
+      - if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libboost-all-dev libeigen3-dev
+
       - if: runner.os == 'macOS'
         run: brew install boost eigen
 
-      - if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libboost-all-dev libeigen3-dev
-
       - if: runner.os == 'Windows'
-        run: choco install boost eigen
+        run: |
+          choco install boost
+          choco install eigen
 
-      - run: pip install Cython numpy pysim
-        
+      - run: pip install Cython numpy
+      - run: pip install pysim
