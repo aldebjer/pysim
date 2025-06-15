@@ -39,3 +39,7 @@ jobs:
 
       - run: pip install Cython numpy
       - run: pip install pysim
+      - shell: python
+        run: |
+          import pysim
+          pysim.tests()
