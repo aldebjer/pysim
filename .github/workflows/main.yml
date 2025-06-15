@@ -17,15 +17,15 @@ jobs:
   build:
     runs-on: ${{matrix.os}}
     strategy:
-      matrix:
-        python-version: ['3.9', '3.8']
-        os: ['macos-11', 'ubuntu-20.04', 'windows-2022']
+      matrix:  # https://github.com/actions/python-versions/releases
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+        os: ['macos-latest', 'ubuntu-latest', 'windows-latest']
     name: Python ${{ matrix.python-version }} test on ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       
@@ -34,22 +34,22 @@ jobs:
           pip install wheel
           pip install -r ./requirements.txt
 
-      - name: Install c++ dependendencies on mac and build
-        if: ${{matrix.os == 'macos-11'}}
+      - name: Install C++ dependencies on macOS and build
+        if: runner.os == 'macOS'
         run: | 
           brew install eigen
           brew install boost
           python setup.py build_ext --inplace
 
-      - name: Install c++ dependendencies on ubuntu and build
-        if: ${{matrix.os == 'ubuntu-20.04'}}
+      - name: Install C++ dependencies on Linux and build
+        if: runner.os == 'Linux'
         run: | 
           sudo apt-get install libeigen3-dev
           sudo apt-get install -y libboost-all-dev
           python setup.py build_ext --inplace
 
-      - name: Install c++ dependendencies on windows and build
-        if: ${{matrix.os == 'windows-2022'}}
+      - name: Install C++ dependencies on Windows and build
+        if: runner.os == 'Windows'
         run: | 
           python get_external.py
           $Env:EIGEN_ROOT = $pwd.path + "\external\eigen-3.4.0-3147391d946bb4b6c68edd901f2add6ac1f31f8c"
