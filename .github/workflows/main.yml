@@ -17,6 +17,7 @@ jobs:
   build:
     runs-on: ${{matrix.os}}
     strategy:
+      fail-fast: false
       matrix:  # https://github.com/actions/python-versions/releases
         python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
         os: ['macos-latest', 'ubuntu-latest', 'windows-latest']
@@ -32,7 +33,8 @@ jobs:
       - name: Install Python dependencies
         run: | 
           pip install wheel
-          pip install -r ./requirements.txt
+          # Use setuptools<60.0 until aldebjer/pysim#45 is fixed.
+          pip install -r ./requirements.txt 'setuptools<60.0'
 
       - name: Install C++ dependencies on macOS and build
         if: runner.os == 'macOS'
