@@ -33,7 +33,8 @@ jobs:
       - name: Install Python dependencies
         run: | 
           pip install wheel
-          pip install -r ./requirements.txt 'setuptools;python_version >= "3.12"'
+          # Use setuptools<60.0 until aldebjer/pysim#45 is fixed.
+          pip install -r ./requirements.txt setuptools<60.0
 
       - name: Install C++ dependencies on macOS and build
         if: runner.os == 'macOS'
