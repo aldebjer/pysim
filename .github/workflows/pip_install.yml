@@ -1,0 +1,37 @@
+name: pip_install
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  pip_install:
+    strategy:
+      fail-fast: false
+      matrix:  # https://github.com/actions/python-versions/releases
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+        os: ['macos-latest', 'ubuntu-latest', 'windows-latest']
+    runs-on: ${{matrix.os}}
+    name: Python ${{ matrix.python-version }} test on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - if: runner.os == 'macOS'
+        run: brew install boost eigen
+
+      - if: runner.os == 'Linux'
+        run: apt-get update && sudo apt-get install -y libboost-all-dev libeigen3-dev
+
+      - if: runner.os == 'Windows'
+        run: choco install boost eigen
+
+      - run: pip install pysim
+        
