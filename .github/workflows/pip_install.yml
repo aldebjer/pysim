@@ -33,5 +33,5 @@ jobs:
       - if: runner.os == 'Windows'
         run: choco install boost eigen
 
-      - run: pip install pysim
+      - run: pip install numpy pysim
         
