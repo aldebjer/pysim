@@ -68,5 +68,8 @@ jobs:
         shell: powershell          
 
       - name: Run Tests
-        run: pytest pysim
+        run: | 
+          export PYTHONPATH=$PWD/build-install/lib/python${{ matrix.python-version }}/site-packages/
+          cd build-install
+          pytest
         
