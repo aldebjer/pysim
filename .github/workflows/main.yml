@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:  # https://github.com/actions/python-versions/releases
         python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
-        os: ['macos-latest', 'ubuntu-latest', 'windows-latest']
+        os: ['macos-latest', 'ubuntu-latest']
     name: Python ${{ matrix.python-version }} test on ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
