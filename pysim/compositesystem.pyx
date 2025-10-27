@@ -5,11 +5,11 @@ from libcpp.vector cimport vector
 import numpy as np
 cimport numpy as np
 
-from compositesystem cimport CompositeSystemImpl
-from compositesystem cimport CompositeSystem
-from commonsystem cimport Results
-from commonsystem cimport CommonSystem
-from simulatablesystem cimport SimulatableSystem
+from pysim.compositesystem cimport CompositeSystemImpl
+from pysim.compositesystem cimport CompositeSystem
+from pysim.commonsystem cimport Results
+from pysim.commonsystem cimport CommonSystem
+from pysim.simulatablesystem cimport SimulatableSystem
 
 np.import_array()
 

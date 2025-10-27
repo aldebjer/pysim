@@ -3,8 +3,8 @@ from libcpp.string cimport string
 from libcpp.map cimport map
 from libcpp cimport bool
 
-from commonsystem cimport CommonSystemImpl
-from commonsystem cimport CommonSystem
+from pysim.commonsystem cimport CommonSystemImpl
+from pysim.commonsystem cimport CommonSystem
 
 cdef extern from "CppSystem.hpp" namespace "pysim":
 

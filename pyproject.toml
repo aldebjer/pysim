@@ -1,0 +1,32 @@
+[build-system]
+build-backend = 'mesonpy'
+requires = ['meson-python', 'cython', 'numpy']
+
+[project]
+name = 'pysim'
+version = '2.6.dev0'
+description = 'Modeling and Simulation of Dynamical Systems'
+readme = 'README.rst'
+requires-python = '>=3.11'
+dependencies = [
+    'numpy>=1.8.1',
+]
+license = {file = 'LICENSE.txt'}
+authors = [
+  {name = 'Linus Aldebjer', email = 'linus@aldebjer.se'},
+]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Developers',
+    'Intended Audience :: Science/Research',
+    'Natural Language :: English',
+    'License :: OSI Approved :: BSD License',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: POSIX :: Linux',
+    'Operating System :: MacOS',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: Implementation :: CPython',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+]

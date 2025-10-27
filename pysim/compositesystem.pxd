@@ -3,18 +3,18 @@ from libcpp.string cimport string
 from libcpp.map cimport map
 from libcpp cimport bool
 
-from simulatablesystem cimport SimulatableSystemInterface
-from simulatablesystem cimport SimulatableSystem
+from pysim.simulatablesystem cimport SimulatableSystemInterface
+from pysim.simulatablesystem cimport SimulatableSystem
 
-from commonsystem cimport CommonSystemImpl
-from compositesystem cimport CommonSystemImpl
+from pysim.commonsystem cimport CommonSystemImpl
+from pysim.compositesystem cimport CommonSystemImpl
 
 
-from commonsystem cimport Variable
-from commonsystem cimport PysimVars
-from commonsystem cimport StoreHandler
-from connections cimport Connections
-from connections cimport ConnectionHandler
+from pysim.commonsystem cimport Variable
+from pysim.commonsystem cimport PysimVars
+from pysim.commonsystem cimport StoreHandler
+from pysim.connections cimport Connections
+from pysim.connections cimport ConnectionHandler
 
 cdef extern from "CompositeSystemImpl.hpp" namespace "pysim":
     cdef cppclass CompositeSystemImpl(SimulatableSystemInterface):

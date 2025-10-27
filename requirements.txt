@@ -2,4 +2,4 @@ numpy
 cython>=0.29
 pytest
 pytest-runner
-
+setuptools

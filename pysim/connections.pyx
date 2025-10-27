@@ -4,13 +4,15 @@
 from collections import namedtuple
 from libcpp.vector cimport vector
 
+from cpython.bytes cimport PyBytes_AsString
+
 import numpy as np
 cimport numpy as np
 
-from commonsystem cimport CommonSystemImpl
-from commonsystem cimport CommonSystem
-from compositesystem cimport CompositeSystem
-from compositesystem cimport CompositeSystemImpl
+from pysim.commonsystem cimport CommonSystemImpl
+from pysim.commonsystem cimport CommonSystem
+from pysim.compositesystem cimport CompositeSystem
+from pysim.compositesystem cimport CompositeSystemImpl
 
 np.import_array()
 
@@ -54,17 +56,25 @@ cdef class Connections:
             of the system.
 
         """
-        bsout =  bytes(outputname,'utf-8')
-        bsin =  bytes(inputname,'utf-8')
+        
+        bsout_t =  outputname.encode('utf-8')
+        cdef char* bsout = bsout_t
+
+        bsin_t =  inputname.encode('utf-8')
+        cdef char* bsin = bsin_t
+
+        cdef int output_element_int
 
         if isinstance(inputsys,CommonSystem):
             if output_element:
-                self._c_connectionHandler.connect[CommonSystemImpl](bsout,(<CommonSystem>inputsys)._c_s,bsin, output_element)
+                output_element_int = int(output_element)
+                self._c_connectionHandler.connect[CommonSystemImpl](bsout,(<CommonSystem>inputsys)._c_s, bsin, output_element_int)
             else:
                 self._c_connectionHandler.connect[CommonSystemImpl](bsout,(<CommonSystem>inputsys)._c_s,bsin)
         elif isinstance(inputsys, CompositeSystem):
             if output_element:
-                self._c_connectionHandler.connect[CompositeSystemImpl](bsout,(<CompositeSystem>inputsys)._c_sys,bsin, output_element)
+                output_element_int = int(output_element)
+                self._c_connectionHandler.connect[CompositeSystemImpl](bsout,(<CompositeSystem>inputsys)._c_sys,bsin, output_element_int)
             else:
                 self._c_connectionHandler.connect[CompositeSystemImpl](bsout,(<CompositeSystem>inputsys)._c_sys,bsin)
 

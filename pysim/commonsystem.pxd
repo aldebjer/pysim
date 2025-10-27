@@ -3,8 +3,8 @@ from libcpp.string cimport string
 from libcpp.map cimport map
 from libcpp.pair cimport pair
 
-cimport simulatablesystem
-from connections cimport ConnectionHandler
+from pysim cimport simulatablesystem
+from pysim.connections cimport ConnectionHandler
 
 cdef extern from "Variable.hpp" namespace "pysim":
     cdef cppclass Variable:

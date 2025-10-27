@@ -1,4 +1,4 @@
-from simulatablesystem cimport SimulatableSystemInterface
+from pysim.simulatablesystem cimport SimulatableSystemInterface
 
 
 cdef class SimulatableSystem:

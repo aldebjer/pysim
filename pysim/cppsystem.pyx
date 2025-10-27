@@ -1,12 +1,11 @@
 import numpy as np
 cimport numpy as np
 
-from cppsystem cimport CppSystem
-
-from commonsystem cimport Parameters
-from commonsystem cimport PysimVars
-from commonsystem cimport Results
-from connections cimport Connections
+from pysim.cppsystem cimport CppSystem
+from pysim.commonsystem cimport Parameters
+from pysim.commonsystem cimport PysimVars
+from pysim.commonsystem cimport Results
+from pysim.connections cimport Connections
 
 np.import_array()
 

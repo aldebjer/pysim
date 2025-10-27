@@ -11,6 +11,7 @@ build/
 dist/
 pysim.egg-info/
 .cache/
+.python-version
 
 *.a
 
@@ -37,3 +38,5 @@ pysim/systems/defaultsystemcollection1/defaultsystemcollection1.cpp
 
 external/
 MANIFEST
+.DS_Store
+build-install/

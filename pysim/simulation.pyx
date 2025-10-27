@@ -5,13 +5,13 @@ The module also contains a number of solvers that the Sim object can use.
 
 from libcpp.vector cimport vector
 from libcpp cimport bool
-from commonsystem cimport CommonSystem
-from compositesystem import CompositeSystem
-cimport simulatablesystem
+from pysim.commonsystem cimport CommonSystem
+from pysim.compositesystem import CompositeSystem
+from pysim cimport simulatablesystem
 import json
 import importlib
 import collections
-from simulatablesystem cimport SimulatableSystem
+from pysim.simulatablesystem cimport SimulatableSystem
 
 
 cdef extern from "CppSimulation.hpp" namespace "pysim":

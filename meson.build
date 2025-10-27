@@ -1,0 +1,182 @@
+project(
+    'pysim',
+    'cpp',
+    'cython',
+    default_options : [
+        'cpp_std=c++14',
+        ],
+)
+
+py_mod = import('python')
+py = py_mod.find_installation(pure: false)
+
+cy = meson.get_compiler('cython')
+cxx = meson.get_compiler('cpp')
+
+boost_dep = dependency('boost', required: true)
+eigen_dep = dependency('eigen3', required: true)
+numpy_dep = dependency('numpy', required: true)
+
+base_cython_args = []
+if cy.version().version_compare('>=3.1.0')
+  base_cython_args += ['-Xfreethreading_compatible=True']
+endif
+
+cython_cpp_lib = static_library(
+    'cppsystemlib',
+    'pysim/cppsource/CppSystem.cpp',
+    'pysim/cppsource/StoreHandler.cpp',   
+    'pysim/cppsource/CommonSystemImpl.cpp',
+    'pysim/cppsource/Variable.cpp',
+    'pysim/cppsource/ConnectionHandler.cpp',
+    'pysim/cppsource/CompositeSystemImpl.cpp',
+    'pysim/cppsource/CppSimulation.cpp',
+   
+    dependencies : [boost_dep, eigen_dep],
+    include_directories :['pysim/cppsource'],
+)
+
+py.install_sources(
+    'pysim/__init__.py',
+    subdir: 'pysim',
+)
+
+cppsystem = py.extension_module(
+    'cppsystem',
+    'pysim/cppsystem.pyx',
+    link_with: [cython_cpp_lib],
+    cython_args: base_cython_args,
+    override_options: ['cython_language=cpp'],
+    dependencies : [boost_dep, eigen_dep, numpy_dep],
+    include_directories :['pysim/cppsource'],
+    install: true,
+    subdir: 'pysim',
+)
+
+py.extension_module(
+    'cythonsystem',
+    ['pysim/cythonsystem.pyx','pysim/cppsource/CythonSystemImpl.cpp'],
+    link_with: [cython_cpp_lib],
+    cython_args: base_cython_args,
+    override_options: ['cython_language=cpp'],
+    dependencies : [boost_dep, eigen_dep, numpy_dep],
+    include_directories :['pysim/cppsource'],
+    install: true,
+    subdir: 'pysim',
+)
+
+py.extension_module(
+    'compositesystem',
+    'pysim/compositesystem.pyx',
+    link_with: [cython_cpp_lib],
+    cython_args: base_cython_args,
+    override_options: ['cython_language=cpp'],
+    dependencies : [boost_dep, eigen_dep, numpy_dep],
+    include_directories :['pysim/cppsource'],
+    install: true,
+    subdir: 'pysim',
+)
+
+py.extension_module(
+    'simulatablesystem',
+    'pysim/simulatablesystem.pyx',
+    link_with: [cython_cpp_lib],
+    cython_args: base_cython_args,
+    override_options: ['cython_language=cpp'],
+    dependencies : [boost_dep, eigen_dep, numpy_dep],
+    include_directories :['pysim/cppsource'],
+    install: true,
+    subdir: 'pysim',
+)
+
+py.extension_module(
+    'connections',
+    'pysim/connections.pyx',
+    link_with: [cython_cpp_lib],
+    cython_args: base_cython_args,
+    override_options: ['cython_language=cpp'],
+    dependencies : [boost_dep, eigen_dep, numpy_dep],
+    include_directories :['pysim/cppsource'],
+    install: true,
+    subdir: 'pysim',
+)
+
+py.extension_module(
+    'commonsystem',
+    'pysim/commonsystem.pyx',
+    link_with: [cython_cpp_lib],
+    cython_args: base_cython_args,
+    override_options: ['cython_language=cpp'],
+    dependencies : [boost_dep, eigen_dep, numpy_dep],
+    include_directories :['pysim/cppsource'],
+    install: true,
+    subdir: 'pysim',
+)
+
+py.extension_module(
+    'simulation',
+    'pysim/simulation.pyx',
+    link_with: [cython_cpp_lib],
+    cython_args: [base_cython_args],
+    override_options: ['cython_language=cpp'],
+    dependencies : [boost_dep, eigen_dep, numpy_dep],
+    include_directories :['pysim/cppsource'],
+    install: true,
+    subdir: 'pysim',
+)
+
+py.install_sources(
+    ['pysim/systems/__init__.py',
+    'pysim/systems/python_systems.py',
+    ],
+    subdir: 'pysim/systems',
+)
+
+py.extension_module(
+    'defaultsystemcollection1',
+    ['pysim/systems/defaultsystemcollection1/defaultsystemcollection1.pyx',
+     'pysim/systems/defaultsystemcollection1/cppsource/factory.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/MassSpringDamper.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/PredatorPrey.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/VanDerPol.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/Adder3D.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/Adder6D.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/Adder.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/ScalarAdder.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/SquareWave.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/DiscretePID.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/ReadTextInput.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/RigidBody.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/LogisticMap.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/ParameterTestSystem.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/InOutTestSystem.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/PostStepTestSystem.cpp',
+     'pysim/systems/defaultsystemcollection1/cppsource/PreStepTestSystem.cpp',
+    ],
+    link_with: [cython_cpp_lib],
+    cython_args: ['-I', meson.current_source_dir()] + base_cython_args,
+    dependencies : [boost_dep, eigen_dep, numpy_dep],
+    override_options: ['cython_language=cpp'],
+    include_directories :['pysim/cppsource', 'pysim/systems/defaultsystemcollection1'],
+    install: true,
+    subdir: 'pysim/systems',
+)
+
+py.install_sources(
+    [
+        'pysim/tests/__init__.py',
+        'pysim/tests/compositesystem_test.py',
+        'pysim/tests/configfile_test.py',
+        'pysim/tests/cppsystem_test.py',
+        'pysim/tests/input_ouput_test.py',
+        'pysim/tests/integration_test.py',
+        'pysim/tests/parameter_test.py',
+        'pysim/tests/poststep_test.py',
+        'pysim/tests/prestep_test.py',
+        'pysim/tests/simulation_test.py',
+        'pysim/tests/state_test.py',
+        'pysim/tests/store_test.py',
+        'pysim/tests/system_readtextinput_test.py',
+    ],
+    subdir: 'pysim/tests',
+)

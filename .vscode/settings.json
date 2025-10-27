@@ -12,7 +12,6 @@
     "**/__pycache__": true,
     "pysim.egg-info/": true,
     "pysim/lib/":true,
-    "build/": true,
     "dist/": true,
     "pysim/compositesystem.cpp":true,
     "pysim/commonsystem.cpp":true,
@@ -67,5 +66,7 @@
     "xtr1common": "cpp",
     "xtree": "cpp",
     "xutility": "cpp"
-  }
+  },
+  "C_Cpp.default.compileCommands": "/Users/linus/Dev/pysim/builddir/compile_commands.json",
+  "C_Cpp.default.configurationProvider": "mesonbuild.mesonbuild"
 }

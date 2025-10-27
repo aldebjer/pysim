@@ -9,11 +9,11 @@ import warnings
 
 import numpy as np
 cimport numpy as np
-from cythonsystem cimport CythonSystemImpl
-from commonsystem cimport PysimVars
-from commonsystem cimport Results
 
-from connections cimport Connections
+from pysim.cythonsystem cimport CythonSystemImpl
+from pysim.commonsystem cimport PysimVars
+from pysim.commonsystem cimport Results
+from pysim.connections cimport Connections
 
 np.import_array()
 
