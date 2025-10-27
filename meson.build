@@ -34,10 +34,42 @@ cython_cpp_lib = static_library(
    
     dependencies : [boost_dep, eigen_dep],
     include_directories :['pysim/cppsource'],
+    install: true,
+    install_dir: py.get_install_dir() / 'pysim/lib',
 )
 
+install_data(
+    [
+        'pysim/cppsystem.pxd',
+        'pysim/commonsystem.pxd',
+        'pysim/simulatablesystem.pxd',
+        'pysim/cythonsystem.pxd',
+        'pysim/connections.pxd',
+        'pysim/compositesystem.pxd',
+        ],
+    install_dir: py.get_install_dir() / 'pysim',
+)
+
+install_data(
+    ['pysim/cppsource/SimulatableSystem.hpp',
+        'pysim/cppsource/CppSystem.hpp',
+        'pysim/cppsource/PysimTypes.hpp',
+        'pysim/cppsource/CommonSystemImpl.hpp',
+        'pysim/cppsource/Variable.hpp',
+        'pysim/cppsource/StoreHandler.hpp',
+        'pysim/cppsource/CythonSystemImpl.hpp',
+        'pysim/cppsource/ConnectionHandler.hpp',
+        'pysim/cppsource/CompositeSystemImpl.hpp',
+        ],
+    install_dir: py.get_install_dir() / 'pysim/include',
+)
+
+
 py.install_sources(
+    [
     'pysim/__init__.py',
+    'pysim/info.py',
+    ],
     subdir: 'pysim',
 )
 
