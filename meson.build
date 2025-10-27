@@ -41,6 +41,14 @@ py.install_sources(
     subdir: 'pysim',
 )
 
+prog_cython = find_program('cython', required: true)
+
+cythonsystem_api_h = custom_target(
+    'cythonsystem_api.h',
+    input: 'pysim/cythonsystem.pyx',
+    output: 'cythonsystem_api.h',
+    command: [prog_cython, '@INPUT@', '--fast-fail', '--cplus', '-Xfreethreading_compatible=True'])
+
 cppsystem = py.extension_module(
     'cppsystem',
     'pysim/cppsystem.pyx',
@@ -55,7 +63,7 @@ cppsystem = py.extension_module(
 
 py.extension_module(
     'cythonsystem',
-    ['pysim/cythonsystem.pyx','pysim/cppsource/CythonSystemImpl.cpp'],
+    ['pysim/cythonsystem.pyx','pysim/cppsource/CythonSystemImpl.cpp', cythonsystem_api_h],
     link_with: [cython_cpp_lib],
     cython_args: base_cython_args,
     override_options: ['cython_language=cpp'],
