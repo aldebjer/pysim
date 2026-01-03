@@ -58,7 +58,7 @@ jobs:
           meson install -C build
           export PYTHONPATH=$PWD/build-install/lib/python${{ matrix.python-version }}/site-packages/
 
-      - name: Cache Boost headers
+      - name: Cache Boost Find
         if: runner.os == 'Windows'
         id: cache-boost
         uses: actions/cache@v4
@@ -73,6 +73,14 @@ jobs:
           curl -L https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip -o boost.zip
           Expand-Archive boost.zip -DestinationPath C:\
           Rename-Item C:\boost_1_90_0 C:\boost
+
+      - name: Cache Boost Save
+        if: runner.os == 'Windows'
+        id: cache-boost-save
+        uses: actions/cache/save@v4
+        with:
+          path: C:\boost
+          key: ${{ steps.cache-boost.outputs.cache-primary-key }}
 
       - name: Setup MSVC
         if: runner.os == 'Windows'
