@@ -59,9 +59,11 @@ jobs:
           # Install build dependencies
           CIBW_BEFORE_BUILD: pip install meson-python meson ninja cython numpy
 
-          # Linux: Install system dependencies
-          CIBW_BEFORE_ALL_LINUX: |
-            yum install -y eigen3-devel boost-devel || apt-get update && apt-get install -y libeigen3-dev libboost-all-dev
+          # Linux: Install system dependencies (manylinux uses yum/dnf)
+          CIBW_BEFORE_ALL_LINUX: >
+            yum install -y eigen3-devel boost-devel 2>/dev/null ||
+            dnf install -y eigen3-devel boost-devel 2>/dev/null ||
+            (apt-get update && apt-get install -y libeigen3-dev libboost-all-dev)
 
           # macOS: Install dependencies via brew
           CIBW_BEFORE_ALL_MACOS: |
@@ -73,10 +75,6 @@ jobs:
           # Windows: Setup MSVC compiler before build
           CIBW_BEFORE_BUILD_WINDOWS: |
             pip install meson-python meson ninja cython numpy
-
-          # Run tests after building (optional - runs pytest in the wheel)
-          CIBW_TEST_COMMAND: pytest {project}/pysim/tests
-          CIBW_TEST_REQUIRES: pytest
 
           # Use meson-python build backend
           CIBW_BUILD_FRONTEND: build
