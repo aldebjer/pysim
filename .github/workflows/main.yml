@@ -80,7 +80,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: C:\boost
-          key: oost-1.90.0-headers
+          key: boost-1.90.0-headers
 
       - name: Setup MSVC
         if: runner.os == 'Windows'
@@ -89,8 +89,6 @@ jobs:
       - name: Install C++ dependencies on Windows and build
         if: runner.os == 'Windows'
         run: | 
-          Remove-Item Env:CC -ErrorAction SilentlyContinue
-          Remove-Item Env:CXX -ErrorAction SilentlyContinue
           meson setup build --prefix=$PWD/build-install --buildtype=release
           meson compile -C build
           meson install -C build

@@ -13,7 +13,34 @@ py = py_mod.find_installation(pure: false)
 cy = meson.get_compiler('cython')
 cxx = meson.get_compiler('cpp')
 
-boost_dep = dependency('boost', required: true)
+# Platform-specific Boost dependency handling
+# Boost is header-only in this project (ublas, odeint, algorithm, format, variant, property_tree)
+if host_machine.system() == 'windows'
+  # On Windows, use BOOST_ROOT environment variable to locate headers
+  boost_root = run_command('python', '-c',
+    'import os; print(os.environ.get("BOOST_ROOT", ""))',
+    check: false).stdout().strip()
+
+  if boost_root != ''
+    # Create a header-only dependency using include_directories
+    boost_inc = include_directories(boost_root)
+    boost_dep = declare_dependency(
+      include_directories: boost_inc,
+      version: '1.90.0',  # Match the version downloaded in CI
+      compile_args: ['-DBOOST_ALL_NO_LIB']  # Disable MSVC auto-linking
+    )
+  else
+    # Fallback to standard dependency detection if BOOST_ROOT not set
+    boost_dep = dependency('boost', required: false)
+    if not boost_dep.found()
+      error('Boost not found. On Windows, please set BOOST_ROOT environment variable.')
+    endif
+  endif
+else
+  # On Linux/macOS, use standard pkg-config based detection
+  boost_dep = dependency('boost', required: true)
+endif
+
 eigen_dep = dependency('eigen3', required: true)
 numpy_dep = dependency('numpy', required: true)
 
