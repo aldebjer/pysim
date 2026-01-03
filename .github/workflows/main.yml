@@ -58,15 +58,21 @@ jobs:
           meson install -C build
           export PYTHONPATH=$PWD/build-install/lib/python${{ matrix.python-version }}/site-packages/
 
-      - name: Download Boost headers for windows
+      - name: Cache Boost headers
         if: runner.os == 'Windows'
+        id: cache-boost
+        uses: actions/cache@v4
+        with:
+          path: C:/boost
+          key: boost-1.90.0-headers
+
+      - name: Download Boost headers for windows
+        if: runner.os == 'Windows' && steps.cache-boost.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           curl -L https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip -o boost.zip
           Expand-Archive boost.zip -DestinationPath C:\
           Rename-Item C:\boost_1_90_0 C:\boost
-          $env:BOOST_ROOT="C:\boost"
-          
 
       - name: Install C++ dependencies on Windows and build
         if: runner.os == 'Windows'
@@ -74,7 +80,7 @@ jobs:
           meson setup build --prefix=$PWD/build-install --buildtype=release
           meson compile -C build
           meson install -C build
-          $env:PYTHONPATH=$PWD/build-install/Lib/site-packages/
+          $env:PYTHONPATH = Join-Path $PWD 'build-install\Lib\site-packages'
         shell: powershell
         env:
           BOOST_ROOT: C:\boost
