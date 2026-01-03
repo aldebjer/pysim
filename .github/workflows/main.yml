@@ -62,12 +62,11 @@ jobs:
         if: runner.os == 'Windows'
         shell: powershell
         run: |
-          run: |
-            curl -L https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip -o boost.zip
-            Expand-Archive boost.zip -DestinationPath C:\
-            Rename-Item C:\boost_1_90_0 C:\boost
-            $env:BOOST_ROOT="C:\boost"
-            
+          curl -L https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip -o boost.zip
+          Expand-Archive boost.zip -DestinationPath C:\
+          Rename-Item C:\boost_1_90_0 C:\boost
+          $env:BOOST_ROOT="C:\boost"
+          
 
       - name: Install C++ dependencies on Windows and build
         if: runner.os == 'Windows'
