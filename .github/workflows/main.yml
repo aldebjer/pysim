@@ -74,8 +74,11 @@ jobs:
           meson setup build --prefix=$PWD/build-install --buildtype=release
           meson compile -C build
           meson install -C build
-          Env:PYTHONPATH=$PWD/build-install/Lib/site-packages/
-        shell: powershell          
+          $env:PYTHONPATH=$PWD/build-install/Lib/site-packages/
+        shell: powershell
+        env:
+          BOOST_ROOT: C:\boost
+          CXX: msvc          
 
       - name: Run Tests
         run: | 
