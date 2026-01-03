@@ -74,6 +74,10 @@ jobs:
           Expand-Archive boost.zip -DestinationPath C:\
           Rename-Item C:\boost_1_90_0 C:\boost
 
+      - name: Setup MSVC
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Install C++ dependencies on Windows and build
         if: runner.os == 'Windows'
         run: | 
@@ -83,8 +87,7 @@ jobs:
           $env:PYTHONPATH = Join-Path $PWD 'build-install\Lib\site-packages'
         shell: powershell
         env:
-          BOOST_ROOT: C:\boost
-          CXX: msvc          
+          BOOST_ROOT: C:\boost      
 
       - name: Run Tests
         run: | 
