@@ -1,0 +1,114 @@
+name: Build Wheels
+
+on:
+  push:
+    branches:
+      - master
+      - 'release/**'
+  pull_request:
+    branches: [ master ]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install cibuildwheel
+        run: pip install cibuildwheel==2.16.5
+
+      - name: Cache Boost on Windows
+        if: runner.os == 'Windows'
+        id: cache-boost
+        uses: actions/cache@v4
+        with:
+          path: C:/boost
+          key: boost-1.90.0-headers
+
+      - name: Download Boost headers for Windows
+        if: runner.os == 'Windows' && steps.cache-boost.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          curl -L https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip -o boost.zip
+          Expand-Archive boost.zip -DestinationPath C:\
+          Rename-Item C:\boost_1_90_0 C:\boost
+
+      - name: Build wheels
+        run: cibuildwheel --output-dir wheelhouse
+        env:
+          # Build only Python 3.12 and 3.13
+          CIBW_BUILD: cp312-* cp313-*
+
+          # Skip 32-bit builds and musl builds
+          CIBW_SKIP: "*-win32 *-manylinux_i686 *-musllinux_*"
+
+          # Install build dependencies
+          CIBW_BEFORE_BUILD: pip install meson-python meson ninja cython numpy
+
+          # Linux: Install system dependencies
+          CIBW_BEFORE_ALL_LINUX: |
+            yum install -y eigen3-devel boost-devel || apt-get update && apt-get install -y libeigen3-dev libboost-all-dev
+
+          # macOS: Install dependencies via brew
+          CIBW_BEFORE_ALL_MACOS: |
+            brew install eigen boost
+
+          # Windows: Set BOOST_ROOT environment variable
+          CIBW_ENVIRONMENT_WINDOWS: BOOST_ROOT=C:\\boost
+
+          # Windows: Setup MSVC compiler before build
+          CIBW_BEFORE_BUILD_WINDOWS: |
+            pip install meson-python meson ninja cython numpy
+
+          # Run tests after building (optional - runs pytest in the wheel)
+          CIBW_TEST_COMMAND: pytest {project}/pysim/tests
+          CIBW_TEST_REQUIRES: pytest
+
+          # Use meson-python build backend
+          CIBW_BUILD_FRONTEND: build
+
+      - name: Upload wheels as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
+          retention-days: 30
+
+  # Optional: Upload to PyPI on release
+  upload_pypi:
+    name: Upload to PyPI
+    needs: [build_wheels]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    environment:
+      name: pypi
+      url: https://pypi.org/p/pysim
+    permissions:
+      id-token: write  # For trusted publishing
+
+    steps:
+      - name: Download all wheels
+        uses: actions/download-artifact@v4
+        with:
+          pattern: wheels-*
+          merge-multiple: true
+          path: dist
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          skip-existing: true
