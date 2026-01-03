@@ -14,7 +14,7 @@ cy = meson.get_compiler('cython')
 cxx = meson.get_compiler('cpp')
 
 if host_machine.system() == 'windows'
-  boost_root = meson.get_env('BOOST_ROOT')
+  boost_root = environment().get('BOOST_ROOT')
   if boost_root == ''
     error('BOOST_ROOT must be set on Windows')
   endif
