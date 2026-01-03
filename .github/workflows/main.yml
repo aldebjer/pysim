@@ -89,6 +89,8 @@ jobs:
       - name: Install C++ dependencies on Windows and build
         if: runner.os == 'Windows'
         run: | 
+          Remove-Item Env:CC -ErrorAction SilentlyContinue
+          Remove-Item Env:CXX -ErrorAction SilentlyContinue
           meson setup build --prefix=$PWD/build-install --buildtype=release
           meson compile -C build
           meson install -C build
