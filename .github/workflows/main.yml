@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:  # https://github.com/actions/python-versions/releases
-        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+        python-version: ['3.12', '3.13']
         os: ['macos-latest', 'ubuntu-latest', 'windows-latest']
     name: Python ${{ matrix.python-version }} test on ${{ matrix.os }}
     steps:
@@ -35,14 +35,14 @@ jobs:
           pip install wheel
           # Use setuptools<60.0 until aldebjer/pysim#45 is fixed.
           pip install -r ./requirements.txt 'setuptools<60.0'
+          pip3 install meson
+          pip3 install ninja
 
       - name: Install C++ dependencies on macOS and build
         if: runner.os == 'macOS'
         run: | 
           brew install eigen
           brew install boost
-          pip3 install meson
-          pip3 install ninja
           meson setup build --prefix=$PWD/build-install
           meson compile -C build
           meson install -C build
@@ -53,25 +53,29 @@ jobs:
         run: | 
           sudo apt-get install libeigen3-dev
           sudo apt-get install -y libboost-all-dev
-          pip3 install meson
-          pip3 install ninja
           meson setup build --prefix=$PWD/build-install
           meson compile -C build
           meson install -C build
           export PYTHONPATH=$PWD/build-install/lib/python${{ matrix.python-version }}/site-packages/
 
+      - name: Download Boost headers for windows
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          run: |
+            curl -L https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip -o boost.zip
+            Expand-Archive boost.zip -DestinationPath C:\
+            Rename-Item C:\boost_1_90_0 C:\boost
+            $env:BOOST_ROOT="C:\boost"
+            
+
       - name: Install C++ dependencies on Windows and build
         if: runner.os == 'Windows'
         run: | 
-          python get_external.py
-          $Env:BOOST_ROOT = $pwd.path + "\external\boost_1_90_0"
-          pip3 install meson
-          pip3 install ninja
           meson setup build --prefix=$PWD/build-install --buildtype=release
           meson compile -C build
           meson install -C build
-          export PYTHONPATH=$PWD/build-install/Lib/site-packages/
-
+          Env:PYTHONPATH=$PWD/build-install/Lib/site-packages/
         shell: powershell          
 
       - name: Run Tests
