@@ -80,7 +80,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: C:\boost
-          key: ${{ steps.cache-boost.outputs.cache-primary-key }}
+          key: oost-1.90.0-headers
 
       - name: Setup MSVC
         if: runner.os == 'Windows'

@@ -13,18 +13,7 @@ py = py_mod.find_installation(pure: false)
 cy = meson.get_compiler('cython')
 cxx = meson.get_compiler('cpp')
 
-if host_machine.system() == 'windows'
-  boost_root = environment().get('BOOST_ROOT')
-  if boost_root == ''
-    error('BOOST_ROOT must be set on Windows')
-  endif
-
-  boost_inc = include_directories(boost_root)
-  boost_dep = declare_dependency(include_directories: boost_inc)
-else
-  boost_dep = dependency('boost', required: true)
-endif
-
+boost_dep = dependency('boost', required: true)
 eigen_dep = dependency('eigen3', required: true)
 numpy_dep = dependency('numpy', required: true)
 
