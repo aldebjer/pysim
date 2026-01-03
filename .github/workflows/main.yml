@@ -60,7 +60,7 @@ jobs:
 
       - name: Download Boost headers for windows
         if: runner.os == 'Windows'
-        shell: powershell
+        shell: pwsh
         run: |
           curl -L https://archives.boost.io/release/1.90.0/source/boost_1_90_0.zip -o boost.zip
           Expand-Archive boost.zip -DestinationPath C:\
