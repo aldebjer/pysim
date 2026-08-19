@@ -1,20 +1,16 @@
 __copyright__ = 'Copyright (c) 2014-2016 SSPA Sweden AB'
 
-import setuptools
-from numpy.distutils.core import setup
-from numpy.distutils.misc_util import Configuration
-from numpy.distutils.extension import Extension
-from distutils.command.sdist import sdist
+from setuptools import Command, Extension, setup
+from setuptools.command.sdist import sdist
 from Cython.Build import cythonize
 import sys
 import sysconfig
 import numpy
 import os
-import distutils.cmd
 
 from pysim import __version__
 
-class BuildExeCommand(distutils.cmd.Command):
+class BuildExeCommand(Command):
     """A custom command to build the pysim c++ executable"""
     description = 'Create the pure c++ pysim executable'
     user_options = []
@@ -50,27 +46,27 @@ class BuildExeCommand(distutils.cmd.Command):
     
 
 
-config = Configuration()
-config.add_include_dirs(['pysim/cppsource', numpy.get_include()])
+include_dirs = ['pysim/cppsource', numpy.get_include()]
 
 extracompileargs = []
 if sys.platform == "win32":
-    config.add_include_dirs([os.environ['BOOST_ROOT'],os.environ['EIGEN_ROOT']])
+    include_dirs.extend([os.environ['BOOST_ROOT'], os.environ['EIGEN_ROOT']])
 
 if sys.platform in ("linux","darwin"):
     extracompileargs.append("-std=c++11")
     extracompileargs.append("-std=c++14")
 
 if sys.platform == "linux":
-    extracompileargs.append("-I/usr/include/eigen3")
+    include_dirs.append("/usr/include/eigen3")
 
 if sys.platform == "darwin":
-    extracompileargs.append("-I/usr/local/include/eigen3")
-    extracompileargs.append("-I/opt/homebrew/include/eigen3")
-    extracompileargs.append("-I/opt/homebrew/include")
+    include_dirs.append("/usr/local/include/eigen3")
+    include_dirs.append("/opt/homebrew/include/eigen3")
+    include_dirs.append("/opt/homebrew/include")
     
 config.add_installed_library("cppsystemlib",
-                    ['pysim/cppsource/CppSystem.cpp',
++cppsystemlib = ("cppsystemlib",
++                    {"sources": ['pysim/cppsource/CppSystem.cpp',
                      'pysim/cppsource/StoreHandler.cpp',
                      'pysim/cppsource/CommonSystemImpl.cpp',
                      'pysim/cppsource/Variable.cpp',
@@ -78,11 +74,7 @@ config.add_installed_library("cppsystemlib",
                      'pysim/cppsource/CompositeSystemImpl.cpp',
                      'pysim/cppsource/CppSimulation.cpp',
                     ],
-                    build_info = {
-                    "extra_compiler_args":extracompileargs,
-                    "language":"c++"},
-                    install_dir = "pysim/lib",
-                    )
+                    "include_dirs": include_dirs})
 
                                 
 extensions = [Extension("pysim.cppsystem",
@@ -160,6 +152,7 @@ def readme():
 
 for e in extensions:
     e.cython_directives = {"embedsignature": True}
+    e.include_dirs.extend(include_dirs)
     
 setup(
     name="pysim",
@@ -167,33 +160,14 @@ setup(
     author="Linus Aldebjer",
     author_email="aldebjer@gmail.com",
     url="http://pysim.org",
-    ext_modules=cythonize(extensions),
+    ext_modules=cythonize(extensions, include_path=["pysim"]),
+    libraries=[cppsystemlib],
     cmdclass={'build_exe': BuildExeCommand, 
               'sdist': sdist},
     scripts=['scripts/new_pysim_system.py'],
-    data_files=[('pysim/include',['pysim/cppsource/SimulatableSystem.hpp',
-                                  'pysim/cppsource/CppSystem.hpp',
-                                  'pysim/cppsource/PysimTypes.hpp',
-                                  'pysim/cppsource/CommonSystemImpl.hpp',
-                                  'pysim/cppsource/Variable.hpp',
-                                  'pysim/cppsource/StoreHandler.hpp',
-                                  'pysim/cppsource/CythonSystemImpl.hpp',
-                                  'pysim/cppsource/ConnectionHandler.hpp',
-                                  'pysim/cppsource/CompositeSystemImpl.hpp',
-                                  ]),
-                ('pysim',['pysim/cppsystem.pxd',
-                          'pysim/commonsystem.pxd',
-                          'pysim/simulatablesystem.pxd',
-                          'pysim/cythonsystem.pxd',
-                          'pysim/connections.pxd',
-                          'pysim/compositesystem.pxd',
-                          ]),
-                ('pysim/templates',['pysim/templates/system_template.cpp',
-                                    'pysim/templates/system_template.hpp',
-                                   ]),
-                ],
+    package_data={'pysim': ['*.pxd', 'cppsource/*.hpp', 'templates/*']},
     packages=['pysim', 'pysim.systems','pysim.tests'],
-    install_requires = ['numpy>=1.8.1',],
+    install_requires=['colorama', 'jinja2', 'numpy>=1.8.1'],
     description = "Modeling and Simulation of Dynamical Systems",
     long_description=readme(),
     classifiers=[
@@ -213,7 +187,6 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    **config.todict()
 )
 
 
