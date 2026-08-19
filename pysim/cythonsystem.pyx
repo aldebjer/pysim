@@ -147,4 +147,3 @@ cdef api void post_step_callback(void* sys):
     cdef Sys s
     s = <Sys> (sys)
     s.post_step()
-
