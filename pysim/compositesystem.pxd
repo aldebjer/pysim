@@ -55,4 +55,3 @@ cdef class CompositeSystem(SimulatableSystem):
     cdef public object out_ports
     cdef public object in_ports
     cdef public Connections connections
-

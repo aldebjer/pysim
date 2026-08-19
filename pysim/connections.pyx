@@ -63,18 +63,14 @@ cdef class Connections:
         bsin_t =  inputname.encode('utf-8')
         cdef char* bsin = bsin_t
 
-        cdef int output_element_int
-
         if isinstance(inputsys,CommonSystem):
             if output_element:
-                output_element_int = int(output_element)
-                self._c_connectionHandler.connect[CommonSystemImpl](bsout,(<CommonSystem>inputsys)._c_s, bsin, output_element_int)
+                self._c_connectionHandler.connect[CommonSystemImpl](bsout,(<CommonSystem>inputsys)._c_s,bsin, <int>output_element)
             else:
                 self._c_connectionHandler.connect[CommonSystemImpl](bsout,(<CommonSystem>inputsys)._c_s,bsin)
         elif isinstance(inputsys, CompositeSystem):
             if output_element:
-                output_element_int = int(output_element)
-                self._c_connectionHandler.connect[CompositeSystemImpl](bsout,(<CompositeSystem>inputsys)._c_sys,bsin, output_element_int)
+                self._c_connectionHandler.connect[CompositeSystemImpl](bsout,(<CompositeSystem>inputsys)._c_sys,bsin, <int>output_element)
             else:
                 self._c_connectionHandler.connect[CompositeSystemImpl](bsout,(<CompositeSystem>inputsys)._c_sys,bsin)
 
